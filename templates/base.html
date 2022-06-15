@@ -13,7 +13,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 </head>
-<body class="hold-transition sidebar-collapse ">
+<body class="hold-transition ">
 <!-- Site wrapper -->
 <div class="wrapper">
     <!-- Navbar -->
@@ -41,7 +41,7 @@
                                 <i class="fas fa-plus"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
-                                <a href="#" class="dropdown-item">Crear calse</a>
+                                <a href="{% url 'clase' %}" class="dropdown-item">Crear clase</a>
                                 <a href="#" class="dropdown-item">Unirme a clase</a>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{% url 'dashboard' %}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p class="text">Clases</p>
                         </a>

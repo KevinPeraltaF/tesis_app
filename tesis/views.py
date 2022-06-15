@@ -5,7 +5,7 @@ from django.db import transaction
 from django.shortcuts import render
 
 # Create your views here.
-def dashboard(request):
+def Dashboard(request):
     global ex
     data = {}
     if request.method == 'POST':
@@ -23,7 +23,7 @@ def dashboard(request):
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
-def login(request):
+def Login(request):
     global ex
     data = {}
     if request.method == 'POST':

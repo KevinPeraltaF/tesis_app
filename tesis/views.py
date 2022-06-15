@@ -2,9 +2,15 @@ import sys
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.template.loader import get_template
+
+from tesis.forms import ClaseForm
+
+
 def Dashboard(request):
     global ex
     data = {}
@@ -14,6 +20,16 @@ def Dashboard(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
+
+            if peticion == 'crear_clase':
+                try:
+                    form = ClaseForm()
+                    data['form'] = form
+                    template = get_template("clase/crear_clase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
 
         else:
             try:

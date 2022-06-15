@@ -1,4 +1,24 @@
 {% extends 'base.html' %}
+{% block opciones %}
+    <li class="nav-item">
+        <div class="mt-2 ">
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                        data-offset="-52">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                    <a href="javascript:;" onclick="ventana_modal('crear_clase','{{ fila.pk }}','Crear clase')"
+                       class="dropdown-item">Crear clase</a>
+                    <a href="#" class="dropdown-item">Unirme a clase</a>
+                </div>
+            </div>
+
+        </div>
+    </li>
+
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-3">
@@ -38,4 +58,59 @@
             <!--/.direct-chat -->
         </div>
     </div>
+{% endblock %}
+
+
+{% block modal %}
+    <!-- Modal -->
+    <div class="modal fade" id="modalGeneric">
+
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'clase' %}" class="btn btn-success" data-bs-dismiss="modal">Crear clase</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.modal-body').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
+    </script>
 {% endblock %}

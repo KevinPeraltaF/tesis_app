@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+
 </head>
 <body class="hold-transition ">
 <!-- Site wrapper -->
@@ -70,21 +72,24 @@
                         </a>
                     </li>
                     <li class="nav-header">CLASES IMPARTIDAS</li>
+                 {% for clase in clases %}
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
-                            <p class="text">Programación web III</p>
+                            <p class="text">{{ clase.nombre}}</p>
                         </a>
                     </li>
-
+                {% endfor %}
 
                     <li class="nav-header">CLASES ARCHIVADAS</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger"></i>
-                            <p class="text">Base de datos III</p>
+                      <li class="nav-item">
+                        <a href="?peticion=clases_archivadas" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p class="text">Clases Archivadas</p>
                         </a>
                     </li>
+
+
 
 
                 </ul>
@@ -140,6 +145,7 @@
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
 
 {% block modal %}
 {% endblock %}

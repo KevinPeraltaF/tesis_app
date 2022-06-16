@@ -3,6 +3,7 @@ import sys
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 
@@ -39,20 +40,56 @@ def Dashboard(request):
                         )
                         clase.save(request)
 
-                        return JsonResponse({"result": True}, safe=False)
+                        return render(request, "registration/dashboard.html ", data)
                     else:
-                        return JsonResponse( {"respuesta": False, "mensaje": "Ha ocurrido un error al enviar los datos."})
+                        return render(request, "registration/dashboard.html", {'form': form})
 
 
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'editar_clase':
+                try:
+                    form = ClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        nombre = form.cleaned_data['nombre']
+                        seccion = form.cleaned_data['seccion']
+                        materia = form.cleaned_data['materia']
+                        aula = form.cleaned_data['aula']
+
+                        clase = Clase.objects.get(pk=request.POST['id'])
+                        clase.nombre = nombre
+                        clase.seccion = seccion
+                        clase.materia = materia
+                        clase.aula = aula
+                        clase.save(request)
+                        return render(request, "registration/dashboard.html ", data)
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form,})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+
         if peticion == 'archivar_clase':
             try:
                 with transaction.atomic():
                     registro = Clase.objects.get(pk=request.POST['id'])
                     registro.archivada = True
+                    registro.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
+
+            except Exception as ex:
+                pass
+
+        if peticion == 'restaurar_clase':
+            try:
+                with transaction.atomic():
+                    registro = Clase.objects.get(pk=request.POST['id'])
+                    registro.archivada = False
                     registro.save(request)
                     return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
 
@@ -68,17 +105,38 @@ def Dashboard(request):
                     form = ClaseForm()
                     data['form'] = form
                     data['peticion'] = 'crear_clase'
-                    template = get_template("clase/crear_clase.html")
+                    template = get_template("clase/formClase.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
+
+            if peticion == 'editar_clase':
+                try:
+                    data['clase'] = clase = Clase.objects.get(pk=request.GET['id'])
+                    form = ClaseForm(initial=model_to_dict(clase))
+                    data['form'] = form
+                    data['peticion'] = 'editar_clase'
+                    template = get_template("clase/formClase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'clases_archivadas':
+                try:
+                    data['peticion'] = 'clases_archivadas'
+                    data['clases'] = clases = Clase.objects.filter(status=True, archivada=False)
+                    data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True)
+                    return render(request, "clase/clases_Archivadas.html ", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
 
         else:
             try:
                 data['titulo'] = 'Menú principal'
 
-                data['clase'] = clase = Clase.objects.filter(status=True, archivada=False)
+                data['clases'] = clases = Clase.objects.filter(status=True, archivada=False)
+
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

@@ -1,7 +1,10 @@
 import sys
 
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.shortcuts import render
-
+@login_required(redirect_field_name='next', login_url='/login')
+@transaction.atomic()
 def Clase(request):
     global ex
     data = {}

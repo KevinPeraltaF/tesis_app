@@ -48,28 +48,17 @@ def Dashboard(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
-            if peticion == 'crear_clase':
-                try:
-                    form = ClaseForm(request.POST, request.FILES)
-                    if form.is_valid():
-                        nombre = form.cleaned_data['nombre']
-                        seccion = form.cleaned_data['seccion']
-                        materia = form.cleaned_data['materia']
-                        aula = form.cleaned_data['aula']
-                        clase = Clase(
-                            nombre=nombre,
-                            seccion=seccion,
-                            materia=materia,
-                            aula=aula,
-                            archivada=False
+        if peticion == 'archivar_clase':
+            try:
+                with transaction.atomic():
+                    registro = Clase.objects.get(pk=request.POST['id'])
+                    registro.archivada = True
+                    registro.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
 
-                        )
-                        clase.save(request)
-                        return JsonResponse({"result": False}, safe=False)
+            except Exception as ex:
+                pass
 
-                except Exception as ex:
-                    transaction.set_rollback(True)
-                    return JsonResponse({"result": True, "mensaje": "Datos erróneos, intente nuevamente."}, safe=False)
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
@@ -89,6 +78,7 @@ def Dashboard(request):
             try:
                 data['titulo'] = 'Menú principal'
 
+                data['clase'] = clase = Clase.objects.filter(status=True, archivada=False)
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

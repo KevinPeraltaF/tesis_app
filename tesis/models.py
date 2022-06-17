@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -38,3 +39,48 @@ class Clase(ModeloBase):
 
     def __str__(self):
         return u'%s' % self.nombre
+
+
+class Genero(ModeloBase):
+    nombre = models.CharField(max_length=100, verbose_name=u'Género')
+
+    class Meta:
+        verbose_name = "Género"
+        verbose_name_plural = "Géneros"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s' % self.nombre
+
+
+class Persona(ModeloBase):
+    usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    nombre1 = models.CharField(max_length=100, verbose_name=u'1er Nombre')
+    nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
+    apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
+    apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
+    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal")
+    genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Persona"
+        verbose_name_plural = "Personas"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
+
+class Usuario(ModeloBase):
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s' % self.persona
+
+
+class Aula(ModeloBase):
+    clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)

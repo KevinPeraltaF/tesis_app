@@ -29,6 +29,7 @@ class Clase(ModeloBase):
     materia =models.CharField(verbose_name="Materia", max_length=100)
     aula =models.CharField(verbose_name="Aula", max_length=100)
     archivada = models.BooleanField(default=False, verbose_name=u'Archivada')
+    codigo_clase = models.CharField(verbose_name="Código de la clase", max_length=100,null=True , unique=True)
     class Meta:
         verbose_name = "Clase"
         verbose_name_plural = "Clases"

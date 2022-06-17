@@ -23,7 +23,7 @@
     <div class="row">
         {% for foo in clases %}
             <div class="col-md-3">
-                <div class="card card-primary card-outline direct-chat direct-chat-primary">
+                <div class="card card-primary card-outline direct-chat direct-chat-primary bg-gradient-white">
                     <div class="card-header">
                         <h3 class="card-title">{{ foo.nombre }}</h3>
 
@@ -51,11 +51,12 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <br><br><br><br><br><br><br><br>
+                        <br><br><br><br><br><br>
+
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer">
-                        <br><br>
+                    <div class="card-footer text-center ">
+                        <a href="?peticion=ver_clase&id={{ foo.pk }}" class="small-box-footer">Ir a la clase <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                     <!-- /.card-footer-->
                 </div>

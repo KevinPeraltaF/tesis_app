@@ -2,10 +2,11 @@ import sys
 
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.template.loader import get_template
@@ -25,22 +26,26 @@ def Dashboard(request):
                 try:
                     form = ClaseForm(request.POST, request.FILES)
                     if form.is_valid():
+
                         nombre = form.cleaned_data['nombre']
                         seccion = form.cleaned_data['seccion']
                         materia = form.cleaned_data['materia']
                         aula = form.cleaned_data['aula']
+                        generador_codigo_clase = User.objects.make_random_password(length=7)
+                        while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
+                            generador_codigo_clase = User.objects.make_random_password(length=7)
 
                         clase = Clase(
                             nombre=nombre,
                             seccion=seccion,
                             materia=materia,
                             aula=aula,
-                            archivada=False
-
+                            archivada=False,
+                            codigo_clase = generador_codigo_clase
                         )
                         clase.save(request)
 
-                        return render(request, "registration/dashboard.html ", data)
+                        return  redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form})
 
@@ -57,14 +62,16 @@ def Dashboard(request):
                         seccion = form.cleaned_data['seccion']
                         materia = form.cleaned_data['materia']
                         aula = form.cleaned_data['aula']
-
                         clase = Clase.objects.get(pk=request.POST['id'])
                         clase.nombre = nombre
                         clase.seccion = seccion
                         clase.materia = materia
                         clase.aula = aula
                         clase.save(request)
-                        return render(request, "registration/dashboard.html ", data)
+
+
+
+                        return redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form,})
 
@@ -73,28 +80,27 @@ def Dashboard(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'archivar_clase':
+                try:
+                    with transaction.atomic():
+                        registro = Clase.objects.get(pk=request.POST['id'])
+                        registro.archivada = True
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
 
-        if peticion == 'archivar_clase':
-            try:
-                with transaction.atomic():
-                    registro = Clase.objects.get(pk=request.POST['id'])
-                    registro.archivada = True
-                    registro.save(request)
-                    return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
+                except Exception as ex:
+                    pass
 
-            except Exception as ex:
-                pass
+            if peticion == 'restaurar_clase':
+                try:
+                    with transaction.atomic():
+                        registro = Clase.objects.get(pk=request.POST['id'])
+                        registro.archivada = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
 
-        if peticion == 'restaurar_clase':
-            try:
-                with transaction.atomic():
-                    registro = Clase.objects.get(pk=request.POST['id'])
-                    registro.archivada = False
-                    registro.save(request)
-                    return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
-
-            except Exception as ex:
-                pass
+                except Exception as ex:
+                    pass
 
     else:
         if 'peticion' in request.GET:
@@ -130,6 +136,12 @@ def Dashboard(request):
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
+            if peticion == 'ver_clase':
+                try:
+                    data['mi_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
+                    return render(request, "clase/clase.html", data)
+                except Exception as ex:
+                    pass
 
         else:
             try:

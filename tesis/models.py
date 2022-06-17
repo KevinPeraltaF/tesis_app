@@ -23,7 +23,6 @@ class ModeloBase(models.Model):
             self.usuario_creacion_id = usuario
         models.Model.save(self)
 
-
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)
     seccion =models.CharField(verbose_name="Sección", max_length=100)
@@ -40,10 +39,8 @@ class Clase(ModeloBase):
     def __str__(self):
         return u'%s' % self.nombre
 
-
 class Genero(ModeloBase):
     nombre = models.CharField(max_length=100, verbose_name=u'Género')
-
     class Meta:
         verbose_name = "Género"
         verbose_name_plural = "Géneros"
@@ -52,14 +49,13 @@ class Genero(ModeloBase):
     def __str__(self):
         return u'%s' % self.nombre
 
-
 class Persona(ModeloBase):
     usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     nombre1 = models.CharField(max_length=100, verbose_name=u'1er Nombre')
     nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
     apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
     apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
-    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal")
+    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico")
     genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
 
     class Meta:
@@ -70,7 +66,7 @@ class Persona(ModeloBase):
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
 
-class Usuario(ModeloBase):
+class UsuarioPersona(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Usuario"
@@ -81,6 +77,6 @@ class Usuario(ModeloBase):
         return u'%s' % self.persona
 
 
-class Aula(ModeloBase):
+class AulaClase(ModeloBase):
     clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(UsuarioPersona,on_delete=models.CASCADE)

@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
 from tesis.forms import ClaseForm
+from tesis.funciones import Data_inicial
 from tesis.models import Clase
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -19,6 +20,7 @@ from tesis.models import Clase
 def Dashboard(request):
     global ex
     data = {}
+    Data_inicial(request, data)
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -68,9 +70,6 @@ def Dashboard(request):
                         clase.materia = materia
                         clase.aula = aula
                         clase.save(request)
-
-
-
                         return redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form,})
@@ -87,7 +86,6 @@ def Dashboard(request):
                         registro.archivada = True
                         registro.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
-
                 except Exception as ex:
                     pass
 
@@ -118,7 +116,7 @@ def Dashboard(request):
 
             if peticion == 'editar_clase':
                 try:
-                    data['clase'] = clase = Clase.objects.get(pk=request.GET['id'])
+                    data['obtener_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
                     form = ClaseForm(initial=model_to_dict(clase))
                     data['form'] = form
                     data['peticion'] = 'editar_clase'
@@ -130,7 +128,6 @@ def Dashboard(request):
             if peticion == 'clases_archivadas':
                 try:
                     data['peticion'] = 'clases_archivadas'
-                    data['clases'] = clases = Clase.objects.filter(status=True, archivada=False)
                     data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True)
                     return render(request, "clase/clases_Archivadas.html ", data)
                 except Exception as ex:
@@ -146,8 +143,6 @@ def Dashboard(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
-
-                data['clases'] = clases = Clase.objects.filter(status=True, archivada=False)
 
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:

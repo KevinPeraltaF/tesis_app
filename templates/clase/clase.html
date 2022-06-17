@@ -1,40 +1,105 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block opciones %}
 {% endblock %}
 {% block content %}
-    <div class="card">
-     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="tablon-tab" data-toggle="tab" href="#tablon" role="tab" aria-controls="tablon"
-               aria-selected="true">Panel</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="trabajo_de_clase-tab" data-toggle="tab" href="#trabajo_de_clase" role="tab" aria-controls="trabajo_de_clase"
-               aria-selected="false">Trabajo de clase</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="personas-tab" data-toggle="tab" href="#persona" role="tab" aria-controls="persona"
-               aria-selected="false">Personas</a>
-        </li>
-         <li class="nav-item">
-            <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab" aria-controls="calificaciones"
-               aria-selected="false">Calificaciones</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="tablon" role="tabpanel" aria-labelledby="tablon-tab">
-            {% include 'clase/tablon.html' %}
-        </div>
-        <div class="tab-pane fade" id="trabajo_de_clase" role="tabpanel" aria-labelledby="trabajo_de_clase-tab">
-            {% include 'clase/trabajo_de_clase.html' %}
-        </div>
-        <div class="tab-pane fade" id="persona" role="tabpanel" aria-labelledby="personas-tab">
-            {% include 'clase/personas.html' %}
-        </div>
-        <div class="tab-pane fade" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">
-            {% include 'clase/calificaciones.html' %}
+    <div class="container-fluid ">
+        <div class="card card-widget widget-user">
+
+            <div class="widget-user-header text-white"
+                 style="background: url({% static 'dist/img/photo2.png' %}) center center;">
+                <h3 class="widget-user-username text-right">{{ mi_clase.nombre }}</h3>
+                <h5 class="widget-user-desc text-right">{{ mi_clase.seccion }}</h5>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-4 border-right">
+                        <div class="info-box shadow">
+                            <span class="info-box-icon bg-blue"><i class="far fa-copy"></i></span>
+                            <div class="info-box-content">
+                                Código de clase<a href="javascript:;"
+                                                  class="info-box-text">{{ mi_clase.codigo_clase }}</a>
+
+                            </div>
+                            <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            data-offset="-52">
+                                        <i class="fas fa-bars"></i>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
+                                        <a href="javascript:;"onclick="accion_actualizar_codigo_clase('actualizar_codigo_clase','{{mi_clase.codigo_clase}}','{{ mi_clase.pk }}')" class="dropdown-item">Actualizar el código de la clase</a>
+
+
+                                    </div>
+                                </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">{{ mi_clase.materia }}</h5>
+                            <span class="description-text">Materia</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="description-block">
+                            <h5 class="description-header">{{ mi_clase.aula }}</h5>
+                            <span class="description-text">Aula</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
+
+    <div class="card">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="tablon-tab" data-toggle="tab" href="#tablon" role="tab"
+                   aria-controls="tablon"
+                   aria-selected="true">Panel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="trabajo_de_clase-tab" data-toggle="tab" href="#trabajo_de_clase" role="tab"
+                   aria-controls="trabajo_de_clase"
+                   aria-selected="false">Trabajo de clase</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="personas-tab" data-toggle="tab" href="#persona" role="tab"
+                   aria-controls="persona"
+                   aria-selected="false">Personas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab"
+                   aria-controls="calificaciones"
+                   aria-selected="false">Calificaciones</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tablon" role="tabpanel" aria-labelledby="tablon-tab">
+                {% include 'clase/tablon.html' %}
+            </div>
+            <div class="tab-pane fade" id="trabajo_de_clase" role="tabpanel" aria-labelledby="trabajo_de_clase-tab">
+                {% include 'clase/trabajo_de_clase.html' %}
+            </div>
+            <div class="tab-pane fade" id="persona" role="tabpanel" aria-labelledby="personas-tab">
+                {% include 'clase/personas.html' %}
+            </div>
+            <div class="tab-pane fade" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">
+                {% include 'clase/calificaciones.html' %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
@@ -66,5 +131,58 @@
 {% endblock %}
 
 {% block script %}
+    <script >
+    function accion_actualizar_codigo_clase(peticion, registro, id) {
+
+            Swal.fire({
+                title: '¿Estás seguro de actualizar el código de la clase?',
+                text: registro,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, actualizar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ request.path }}',
+                        async: false,
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            peticion: peticion,
+                            id: id,
+                        },
+                        dataType: "json",
+                        beforeSend: function () {
+
+                        }
+                    }).done(function (data) {
+                        if (data.respuesta === true) {
+                            Swal.fire(
+                                'código actualizado!',
+                                data.mensaje,
+                                'success'
+                            ).then(function () {
+                                location.reload();
+                            });
+                        } else {
+
+                            Swal.fire(data.mensaje);
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                    }).always(function () {
+                    });
+
+
+                }
+
+            })
+
+
+        }
+    </script>
 
 {% endblock %}

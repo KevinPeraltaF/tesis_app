@@ -100,6 +100,20 @@ def Dashboard(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'actualizar_codigo_clase':
+                try:
+                    with transaction.atomic():
+                        registro = Clase.objects.get(pk=request.POST['id'])
+                        generador_codigo_clase = User.objects.make_random_password(length=7)
+                        while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
+                            generador_codigo_clase = User.objects.make_random_password(length=7)
+                        registro.codigo_clase =generador_codigo_clase
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Código de clase actualizado correctamente."})
+
+                except Exception as ex:
+                    pass
+
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']

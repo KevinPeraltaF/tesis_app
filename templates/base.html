@@ -38,7 +38,7 @@
             <li class="nav-item">
                 <div class="user-panel mt-1  ">
                     <button class=" btn rounded-circle">
-                        <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2"
+                        <img src="{% static 'dist/img/user1-128x128.jpg' %}" class="img-circle elevation-2"
                              alt="User Image">
                     </button>
 
@@ -68,28 +68,25 @@
                     <li class="nav-item">
                         <a href="{% url 'dashboard' %}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p class="text">Clases</p>
+                            <p class="text">CLASES</p>
                         </a>
                     </li>
                     <li class="nav-header">CLASES IMPARTIDAS</li>
-                 {% for clase in clases %}
+                    {% for clase in clases %}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p class="text">{{ clase.nombre }}</p>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <hr>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p class="text">{{ clase.nombre}}</p>
-                        </a>
-                    </li>
-                {% endfor %}
-
-                    <li class="nav-header">CLASES ARCHIVADAS</li>
-                      <li class="nav-item">
                         <a href="?peticion=clases_archivadas" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
-                            <p class="text">Clases Archivadas</p>
+                            <p class="text">CLASES ARCHIVADAS</p>
                         </a>
                     </li>
-
-
 
 
                 </ul>

@@ -20,22 +20,24 @@
                             <span class="info-box-icon bg-blue"><i class="far fa-copy"></i></span>
                             <div class="info-box-content">
                                 Código de clase<label href="javascript:;"
-                                                  class="info-box-text">{{ mi_clase.codigo_clase }}</label>
+                                                      class="info-box-text">{{ mi_clase.codigo_clase }}</label>
 
                             </div>
                             <div class="btn-group">
-                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            data-offset="-52">
-                                        <i class="fas fa-bars"></i>
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
-                                        <a href="javascript:;"onclick="accion_actualizar_codigo_clase('actualizar_codigo_clase','{{mi_clase.codigo_clase}}','{{ mi_clase.pk }}')" class="dropdown-item">Actualizar el código de la clase</a>
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        data-offset="-52">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
+                                    <a href="javascript:;"
+                                       onclick="accion_actualizar_codigo_clase('actualizar_codigo_clase','{{ mi_clase.codigo_clase }}','{{ mi_clase.pk }}')"
+                                       class="dropdown-item">Actualizar el código de la clase</a>
 
 
-                                    </div>
                                 </div>
+                            </div>
 
                         </div>
 
@@ -131,8 +133,8 @@
 {% endblock %}
 
 {% block script %}
-    <script >
-    function accion_actualizar_codigo_clase(peticion, registro, id) {
+    <script>
+        function accion_actualizar_codigo_clase(peticion, registro, id) {
 
             Swal.fire({
                 title: '¿Estás seguro de actualizar el código de la clase?',
@@ -184,5 +186,25 @@
 
         }
     </script>
+
+    <script>
+        $(function () {
+            var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
+            if (!tab_trabajo_de_clase) {
+                tab_trabajo_de_clase = "#tablon-tab";
+                localStorage.setItem("tab_trabajo_de_clase", tab_trabajo_de_clase);
+            }
+
+            $('.nav-link').each(function () {
+                if ($(this).attr('href') == tab_trabajo_de_clase) {
+                    $(this).trigger('click');
+                }
+            }).click(function () {
+                localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
+            });
+        });
+
+    </script>
+
 
 {% endblock %}

@@ -32,7 +32,8 @@
                 <a href="{% url 'logout' %}" class="nav-link">Cerrar Sesión</a>
             </li>
             <li class=" d-sm-inline-block">
-                <spam>{{ request.user }}</spam>
+
+                 <a  href="javascript:;" class="nav-link text-right">  <strong>Usted inicio sesión como: </strong>{{ request.user }}</a>
             </li>
         </ul>
 

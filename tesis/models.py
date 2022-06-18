@@ -39,6 +39,8 @@ class Clase(ModeloBase):
     def __str__(self):
         return u'%s' % self.nombre
 
+    def obtener_inscritos(self):
+        return self.claseinscrita_set.filter(status=True)
 
 class Persona(ModeloBase):
     usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -59,6 +61,13 @@ class Persona(ModeloBase):
 class ClaseInscrita(ModeloBase):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
+
+    def __str__(self):
+        if Persona.objects.filter(usuario=self.usuario, status=True).exists():
+            persona = Persona.objects.get(usuario=self.usuario, status=True)
+        else:
+            persona = self.usuario
+        return u'%s' % persona
 
     def obtener_profesor(self):
         if Persona.objects.filter(usuario=self.clase.usuario_creacion,status=True).exists():

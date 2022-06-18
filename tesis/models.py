@@ -78,10 +78,32 @@ class ClaseInscrita(ModeloBase):
 
 
 
-TIPO_POST = (
+TIPO_PUBLICACION = (
     (1, u"TAREA"),
     (2, u"MATERIAL"),
     (3, u"VIDEO"),
 )
 
+class Publicacion(ModeloBase):
+    clase = models.ForeignKey(Clase, null=True, on_delete=models.CASCADE)
+    tipo_publicacion = models.IntegerField(choices=TIPO_PUBLICACION, null=True, blank=True, verbose_name=u'Tipo publicación')
+    titulo = models.CharField(max_length=100, verbose_name=u"Titulo")
+    instrucciones = models.CharField(max_length=100, verbose_name=u"Instrucciones")
+    calificacion_maxima = models.IntegerField(verbose_name="Calificación máxima", blank=False, null=False)
+    fecha_fin_entrega = models.DateTimeField(verbose_name=u'Fecha máxima de entrega', blank=False, null=False)
 
+class DetalleTarea(ModeloBase):
+    publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
+    archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True, verbose_name=u'Archivo Tarea')
+    calificacion = models.IntegerField(verbose_name="Calificación", blank=False, null=False)
+    fecha_de_entrega = models.DateTimeField(verbose_name=u'Fecha de entrega', blank=False, null=False)
+    calificado = models.BooleanField(verbose_name="Estado calificado", default=False)
+
+class DetalleMaterial(ModeloBase):
+    publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
+    archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True, verbose_name=u'Archivo Tarea')
+    calificacion = models.IntegerField(verbose_name="Calificación", blank=False, null=False)
+    fecha_de_entrega = models.DateTimeField(verbose_name=u'Fecha de entrega', blank=False, null=False)
+    calificado = models.BooleanField(verbose_name="Estado calificado", default=False)

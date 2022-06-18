@@ -1,0 +1,27 @@
+<form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="peticion" value="{{ peticion }}"/>
+    <div class="row-fluid">
+        {{ form.codigo_clase.label_tag }}
+
+        {{ form.codigo_clase }}{{ form.codigo_clase.errors }}
+        <small>Pídele a tu profesor el código de clase e introdúcelo aquí.</small>
+
+        <div class="row">
+
+            <ul>
+                <li><small>Usa un código de clase con 7 letras y números, sin espacios ni símbolos</small></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="row-fluid">
+        <div style="text-align: right; float: left; width: 100%">
+            <button type="submit" id="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Guardar
+            </button>
+            <a href="javascript:;" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-window-close"></i>
+                Cancelar</a>
+        </div>
+    </div>
+</form>
+

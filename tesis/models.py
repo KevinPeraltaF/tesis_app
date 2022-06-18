@@ -57,5 +57,5 @@ class Persona(ModeloBase):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
 
 class ClaseInscrita(ModeloBase):
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     clase = models.ForeignKey(Clase,on_delete=models.CASCADE)

@@ -82,3 +82,8 @@ class RegistroUsuarioForm(UserCreationForm):
                 }
             ),
         }
+
+
+class UnirmeClaseForm(forms.Form):
+    codigo_clase = forms.CharField(label='Código de clase', required=True, max_length=7,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))

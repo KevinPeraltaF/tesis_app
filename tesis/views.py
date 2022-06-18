@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.loader import get_template
 
-from tesis.forms import ClaseForm, RegistroUsuarioForm
+from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Persona, ClaseInscrita
 
@@ -47,6 +47,30 @@ def Dashboard(request):
                             codigo_clase = generador_codigo_clase
                         )
                         clase.save(request)
+
+                        return  redirect('/')
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+
+                        codigo_clase = form.cleaned_data['codigo_clase']
+                        usuario =request.user
+                        clase = Clase.objects.get(codigo_clase = codigo_clase )
+                        clase_inscrita = ClaseInscrita(
+                            usuario=usuario,
+                            clase=clase,
+
+                        )
+                        clase_inscrita.save(request)
 
                         return  redirect('/')
                     else:
@@ -151,12 +175,22 @@ def Dashboard(request):
             if peticion == 'cursos_inscritos':
                 try:
                     data['peticion'] = 'cursos_inscritos'
-                    person = Persona.objects.get(usuario=request.user)
+                    usuariio = request.user
                     data['cursos_inscritos'] = cursos_inscritos = ClaseInscrita.objects.filter(status=True,
-                                                                                               persona=person)
+                                                                                               usuario=usuariio)
                     return render(request, "clase/clases_inscritas.html ", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm()
+                    data['form'] = form
+                    data['peticion'] = 'unirme_a_clase'
+                    template = get_template("clase/formUnirmeClase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
 
 
             if peticion == 'ver_clase':

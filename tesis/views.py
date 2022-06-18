@@ -11,9 +11,10 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.loader import get_template
 
-from tesis.forms import ClaseForm
+from tesis.forms import ClaseForm, RegistroUsuarioForm
 from tesis.funciones import Data_inicial
-from tesis.models import Clase
+from tesis.models import Clase, Persona
+
 
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
@@ -201,3 +202,55 @@ def Login(request):
 def Logout(request):
     logout(request)
     return HttpResponseRedirect("/login")
+
+
+@transaction.atomic()
+def registrate(request):
+    global ex
+    data = {}
+    if request.method == 'POST':
+        if 'peticion' in request.POST:
+            peticion = request.POST['peticion']
+            if peticion == 'registrarpaciente':
+                try:
+                    if request.session.get('id') != None:  # Regístrese solo cuando no haya iniciado sesión
+                        return JsonResponse({"respuesta": False, "mensaje": "Ya tiene sesión iniciada."})
+                    form = RegistroUsuarioForm(request.POST)
+
+                    if form.is_valid():
+                        username = form.cleaned_data['username']
+                        password = form.cleaned_data['password1']
+                        nombre1 = form.cleaned_data['nombre1']
+                        nombre2 = form.cleaned_data['nombre2']
+                        apellido1 = form.cleaned_data['apellido1']
+                        apellido2 = form.cleaned_data['apellido2']
+                        genero = form.cleaned_data['genero']
+                        email = form.cleaned_data['email']
+                        username = username.strip()  # Eliminar espacios y líneas nuevas
+                        password = password.strip()
+                        usuario = User.objects.create_user(username, '', password)
+                        usuario.save()
+
+                        persona = Persona(
+                            usuario=usuario,
+                            nombre1=nombre1,
+                            nombre2=nombre2,
+                            apellido1=apellido1,
+                            apellido2=apellido2,
+                            email=email,
+                            genero=genero,
+                        )
+                        persona.save(request)
+                        return redirect('/login/')
+
+                    else:
+                        return render(request, "registration/registrate.html", {'form': form})
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+        return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
+
+    else:
+        data['form'] = RegistroUsuarioForm()
+
+    return render(request, "registration/registrate.html", data)

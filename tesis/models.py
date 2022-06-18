@@ -76,3 +76,12 @@ class ClaseInscrita(ModeloBase):
             persona = self.clase.usuario_creacion
         return  persona
 
+
+
+TIPO_POST = (
+    (1, u"TAREA"),
+    (2, u"MATERIAL"),
+    (3, u"VIDEO"),
+)
+
+

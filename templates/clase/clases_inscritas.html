@@ -4,6 +4,17 @@
 
 
 {% endblock %}
+
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Clases inscritas</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="row">
         {% for foo in cursos_inscritos %}

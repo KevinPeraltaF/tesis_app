@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
     {% block head %}
-    
+
     {% endblock %}
 </head>
 <body class="hold-transition ">
@@ -35,7 +35,8 @@
             </li>
             <li class=" d-sm-inline-block">
 
-                 <a  href="javascript:;" class="nav-link text-right">  <strong>Usted inicio sesión como: </strong>{{ request.user }}</a>
+                <a href="javascript:;" class="nav-link text-right"> <strong>Usted inicio sesión
+                    como: </strong>{{ request.user }}</a>
             </li>
         </ul>
 
@@ -117,9 +118,9 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-
-                </div>
+                {% block rutas %}
+                
+                {% endblock %}
             </div><!-- /.container-fluid -->
         </section>
 

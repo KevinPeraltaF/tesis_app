@@ -5,6 +5,16 @@
 {% endblock %}
 {% block opciones %}
 {% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ mi_clase.nombre }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="container-fluid ">
         <div class="card card-widget widget-user">
@@ -32,7 +42,7 @@
                                     <i class="fas fa-bars"></i>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
+                                    <a href="#" class="dropdown-item">Copiar código de la clase</a>
                                     <a href="javascript:;"
                                        onclick="accion_actualizar_codigo_clase('actualizar_codigo_clase','{{ mi_clase.codigo_clase }}','{{ mi_clase.pk }}')"
                                        class="dropdown-item">Actualizar el código de la clase</a>

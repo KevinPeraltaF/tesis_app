@@ -13,7 +13,7 @@ from django.template.loader import get_template
 
 from tesis.forms import ClaseForm, RegistroUsuarioForm
 from tesis.funciones import Data_inicial
-from tesis.models import Clase, Persona
+from tesis.models import Clase, Persona, ClaseInscrita
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -143,10 +143,21 @@ def Dashboard(request):
             if peticion == 'clases_archivadas':
                 try:
                     data['peticion'] = 'clases_archivadas'
-                    data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True)
+                    data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True,usuario_creacion = request.user)
                     return render(request, "clase/clases_Archivadas.html ", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
+            if peticion == 'cursos_inscritos':
+                try:
+                    data['peticion'] = 'cursos_inscritos'
+                    person = Persona.objects.get(usuario=request.user)
+                    data['cursos_inscritos'] = cursos_inscritos = ClaseInscrita.objects.filter(status=True,
+                                                                                               persona=person)
+                    return render(request, "clase/clases_inscritas.html ", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
 
             if peticion == 'ver_clase':
                 try:

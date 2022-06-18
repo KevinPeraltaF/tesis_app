@@ -56,17 +56,6 @@ class Persona(ModeloBase):
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
 
-class UsuarioPersona(ModeloBase):
+class ClaseInscrita(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    class Meta:
-        verbose_name = "Usuario"
-        verbose_name_plural = "Usuarios"
-        ordering = ['id']
-
-    def __str__(self):
-        return u'%s' % self.persona
-
-
-class AulaClase(ModeloBase):
     clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
-    estudiante = models.ForeignKey(UsuarioPersona,on_delete=models.CASCADE)

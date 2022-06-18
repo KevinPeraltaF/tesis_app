@@ -65,12 +65,13 @@ def Dashboard(request):
                         codigo_clase = form.cleaned_data['codigo_clase']
                         usuario =request.user
                         clase = Clase.objects.get(codigo_clase = codigo_clase )
-                        clase_inscrita = ClaseInscrita(
-                            usuario=usuario,
-                            clase=clase,
+                        if not clase.usuario_creacion == usuario:
+                            clase_inscrita = ClaseInscrita(
+                                usuario=usuario,
+                                clase=clase,
 
-                        )
-                        clase_inscrita.save(request)
+                            )
+                            clase_inscrita.save(request)
 
                         return  redirect('/')
                     else:

@@ -31,6 +31,9 @@
             <li class=" d-sm-inline-block">
                 <a href="{% url 'logout' %}" class="nav-link">Cerrar Sesión</a>
             </li>
+            <li class=" d-sm-inline-block">
+                <spam>{{ request.user }}</spam>
+            </li>
         </ul>
 
         <!-- Right navbar links -->
@@ -153,11 +156,20 @@
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
 <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+<script src="{% static 'plugins/clipboard.min.js' %}"></script>
 
 {% block modal %}
 {% endblock %}
 
-
+<script>
+    function copyToClipboard(elemento) {
+        var $temp = $("<input>")
+        $("body").append($temp);
+        $temp.val($(elemento).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+</script>
 {% block script %}
 {% endblock %}
 

@@ -37,7 +37,8 @@
                                     <i class="fas fa-bars"></i>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
+                                    <input type="hidden" name="codigo_clase" id="codigo_clase" value="{{ foo.codigo_clase }}">
+                                    <a href="javascript:;" class="dropdown-item">Copiar código de la clase</a>
                                     <a href="javascript:;"
                                        onclick="ventana_modal('editar_clase','{{ foo.pk }}','Editar clase')"  class="dropdown-item">Editar</a>
                                     <a href="javascript:;"

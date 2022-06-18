@@ -34,7 +34,12 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body "  style="background: url({% static 'dist/img/boxed-bg.jpg' %}) center center;">
-                        <br><br><br><br><br><br><br><br>
+                        <br>
+                        <div class="description-block">
+                            <h5 class="description-header">Creado por:</h5>
+                            <span class="description-text">{{ foo.obtener_profesor }}</span>
+                        </div>
+                        <br>
                     </div>
                       <!-- /.card-body -->
                     <div class="card-footer text-center ">

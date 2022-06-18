@@ -59,3 +59,11 @@ class Persona(ModeloBase):
 class ClaseInscrita(ModeloBase):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
+
+    def obtener_profesor(self):
+        if Persona.objects.filter(usuario=self.clase.usuario_creacion,status=True).exists():
+            persona = Persona.objects.get(usuario=self.clase.usuario_creacion,status=True)
+        else:
+            persona = self.clase.usuario_creacion
+        return  persona
+

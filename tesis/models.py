@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
 # Create your models here.
 class ModeloBase(models.Model):
     from django.contrib.auth.models import User
-    usuario_creacion = models.ForeignKey(User, verbose_name='Usuario Creación', blank=True, null=True, on_delete= models.CASCADE, related_name='+', editable=False)
-    fecha_creacion = models.DateTimeField(verbose_name='Fecha creación',auto_now_add=True)
+    usuario_creacion = models.ForeignKey(User, verbose_name='Usuario Creación', blank=True, null=True,
+                                         on_delete=models.CASCADE, related_name='+', editable=False)
+    fecha_creacion = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     fecha_modificacion = models.DateTimeField(verbose_name='Fecha Modificación', auto_now=True)
-    usuario_modificacion = models.ForeignKey(User, verbose_name='Usuario Modificación', blank=True, null=True, on_delete= models.CASCADE, related_name='+', editable=False)
+    usuario_modificacion = models.ForeignKey(User, verbose_name='Usuario Modificación', blank=True, null=True,
+                                             on_delete=models.CASCADE, related_name='+', editable=False)
     status = models.BooleanField(verbose_name="Estado del registro", default=True)
 
     class Meta:
@@ -23,18 +26,19 @@ class ModeloBase(models.Model):
             self.usuario_creacion_id = usuario
         models.Model.save(self)
 
+
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)
-    seccion =models.CharField(verbose_name="Sección", max_length=100)
-    materia =models.CharField(verbose_name="Materia", max_length=100)
-    aula =models.CharField(verbose_name="Aula", max_length=100)
+    seccion = models.CharField(verbose_name="Sección", max_length=100)
+    materia = models.CharField(verbose_name="Materia", max_length=100)
+    aula = models.CharField(verbose_name="Aula", max_length=100)
     archivada = models.BooleanField(default=False, verbose_name=u'Archivada')
-    codigo_clase = models.CharField(verbose_name="Código de la clase", max_length=100,null=True , unique=True)
+    codigo_clase = models.CharField(verbose_name="Código de la clase", max_length=100, null=True, unique=True)
+
     class Meta:
         verbose_name = "Clase"
         verbose_name_plural = "Clases"
         ordering = ['id']
-
 
     def __str__(self):
         return u'%s' % self.nombre
@@ -42,13 +46,14 @@ class Clase(ModeloBase):
     def obtener_inscritos(self):
         return self.claseinscrita_set.filter(status=True)
 
+
 class Persona(ModeloBase):
     usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    nombre1 = models.CharField(max_length=100, verbose_name=u'1er Nombre')
-    nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
-    apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
-    apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
-    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico")
+    nombre1 = models.CharField(max_length=100, verbose_name='1er Nombre')
+    nombre2 = models.CharField(max_length=100, verbose_name='2do Nombre')
+    apellido1 = models.CharField(max_length=100, verbose_name="1er Apellido")
+    apellido2 = models.CharField(max_length=100, verbose_name="2do Apellido")
+    email = models.CharField(default='', max_length=200, verbose_name="Correo electronico")
 
     class Meta:
         verbose_name = "Persona"
@@ -58,9 +63,10 @@ class Persona(ModeloBase):
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
 
+
 class ClaseInscrita(ModeloBase):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    clase = models.ForeignKey(Clase,on_delete=models.CASCADE)
+    clase = models.ForeignKey(Clase, on_delete=models.CASCADE)
 
     def __str__(self):
         if Persona.objects.filter(usuario=self.usuario, status=True).exists():
@@ -70,12 +76,11 @@ class ClaseInscrita(ModeloBase):
         return u'%s' % persona
 
     def obtener_profesor(self):
-        if Persona.objects.filter(usuario=self.clase.usuario_creacion,status=True).exists():
-            persona = Persona.objects.get(usuario=self.clase.usuario_creacion,status=True)
+        if Persona.objects.filter(usuario=self.clase.usuario_creacion, status=True).exists():
+            persona = Persona.objects.get(usuario=self.clase.usuario_creacion, status=True)
         else:
             persona = self.clase.usuario_creacion
-        return  persona
-
+        return persona
 
 
 TIPO_PUBLICACION = (
@@ -84,26 +89,63 @@ TIPO_PUBLICACION = (
     (3, u"VIDEO"),
 )
 
+TIPO_ARCHIVO = (
+    (1, u"ARCHIVO EXCEL"),
+    (2, u"ARCHIVO PDF"),
+    (3, u"ARCHIVO WORD"),
+)
+
+
 class Publicacion(ModeloBase):
     clase = models.ForeignKey(Clase, null=True, on_delete=models.CASCADE)
-    tipo_publicacion = models.IntegerField(choices=TIPO_PUBLICACION, null=True, blank=True, verbose_name=u'Tipo publicación')
-    titulo = models.CharField(max_length=100, verbose_name=u"Titulo")
+    tipo_publicacion = models.IntegerField(choices=TIPO_PUBLICACION, null=True, blank=True,
+                                           verbose_name='Tipo publicación')
+    titulo = models.CharField(max_length=100, verbose_name="Titulo")
     instrucciones = models.CharField(max_length=100, verbose_name=u"Instrucciones")
     calificacion_maxima = models.IntegerField(verbose_name="Calificación máxima", blank=False, null=False)
-    fecha_fin_entrega = models.DateTimeField(verbose_name=u'Fecha máxima de entrega', blank=False, null=False)
+    fecha_fin_entrega = models.DateTimeField(verbose_name='Fecha máxima de entrega', blank=False, null=False)
 
-class DetalleTarea(ModeloBase):
+    def __str__(self):
+        return u'%s - %s' % (self.get_tipo_publicacion_display(), self.titulo)
+
+
+class DetallePublicacionTarea(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
-    archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True, verbose_name=u'Archivo Tarea')
+    archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True,
+                               verbose_name='Archivo Tarea')
     calificacion = models.IntegerField(verbose_name="Calificación", blank=False, null=False)
-    fecha_de_entrega = models.DateTimeField(verbose_name=u'Fecha de entrega', blank=False, null=False)
+    fecha_de_entrega = models.DateTimeField(verbose_name='Fecha de entrega', blank=False, null=False)
     calificado = models.BooleanField(verbose_name="Estado calificado", default=False)
+    retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=False, null=False)
+    def __str__(self):
+        if self.calificado:
+            estado_calificacion = 'Calificado'
+        else:
+            estado_calificacion = 'No calificado'
+        if self.calificado:
+            estado_entrega = 'Entregado'
+        else:
+            estado_entrega = 'No entregado'
 
-class DetalleMaterial(ModeloBase):
+        return u'%s - %s - %s' % (self.publicacion, estado_entrega, estado_calificacion)
+
+
+class DetallePublicacionMaterial(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
-    estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
-    archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True, verbose_name=u'Archivo Tarea')
-    calificacion = models.IntegerField(verbose_name="Calificación", blank=False, null=False)
-    fecha_de_entrega = models.DateTimeField(verbose_name=u'Fecha de entrega', blank=False, null=False)
-    calificado = models.BooleanField(verbose_name="Estado calificado", default=False)
+    tipo_archivo = models.IntegerField(choices=TIPO_ARCHIVO, null=True, blank=True, verbose_name='Tipo archivo')
+    archivo = models.FileField(upload_to='material_subido/%Y/%m/%d', verbose_name='Archivo Material')
+
+    def __str__(self):
+        return u'%s - %s' % (self.publicacion, self.get_tipo_archivo_display())
+
+
+class DetallePublicacionVideo(ModeloBase):
+    publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
+    urlvideo = models.TextField(default='', verbose_name=u'URL Video')
+
+    def __str__(self):
+        return u'%s - %s' % (self.publicacion, self.urlvideo)
+
+
+

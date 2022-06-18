@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block head %}
+<script>
+        $(function () {
+            var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
+            if (!tab_trabajo_de_clase) {
+                tab_trabajo_de_clase = "#tablon-tab";
+                localStorage.setItem("tab_trabajo_de_clase", tab_trabajo_de_clase);
+            }
 
+            $('.nav-link').each(function () {
+                if ($(this).attr('href') == tab_trabajo_de_clase) {
+                    $(this).trigger('click');
+                }
+            }).click(function () {
+                localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
+            });
+        });
+
+    </script>
+{% endblock %}
 {% block opciones %}
 {% endblock %}
 {% block content %}
@@ -187,24 +206,7 @@
         }
     </script>
 
-    <script>
-        $(function () {
-            var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
-            if (!tab_trabajo_de_clase) {
-                tab_trabajo_de_clase = "#tablon-tab";
-                localStorage.setItem("tab_trabajo_de_clase", tab_trabajo_de_clase);
-            }
 
-            $('.nav-link').each(function () {
-                if ($(this).attr('href') == tab_trabajo_de_clase) {
-                    $(this).trigger('click');
-                }
-            }).click(function () {
-                localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
-            });
-        });
-
-    </script>
 
 
 {% endblock %}

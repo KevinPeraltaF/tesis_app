@@ -211,7 +211,7 @@ def registrate(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
-            if peticion == 'registrarpaciente':
+            if peticion == 'registrate':
                 try:
                     if request.session.get('id') != None:  # Regístrese solo cuando no haya iniciado sesión
                         return JsonResponse({"respuesta": False, "mensaje": "Ya tiene sesión iniciada."})
@@ -224,7 +224,6 @@ def registrate(request):
                         nombre2 = form.cleaned_data['nombre2']
                         apellido1 = form.cleaned_data['apellido1']
                         apellido2 = form.cleaned_data['apellido2']
-                        genero = form.cleaned_data['genero']
                         email = form.cleaned_data['email']
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
@@ -238,7 +237,6 @@ def registrate(request):
                             apellido1=apellido1,
                             apellido2=apellido2,
                             email=email,
-                            genero=genero,
                         )
                         persona.save(request)
                         return redirect('/login/')

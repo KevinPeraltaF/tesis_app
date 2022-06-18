@@ -39,15 +39,6 @@ class Clase(ModeloBase):
     def __str__(self):
         return u'%s' % self.nombre
 
-class Genero(ModeloBase):
-    nombre = models.CharField(max_length=100, verbose_name=u'Género')
-    class Meta:
-        verbose_name = "Género"
-        verbose_name_plural = "Géneros"
-        ordering = ['id']
-
-    def __str__(self):
-        return u'%s' % self.nombre
 
 class Persona(ModeloBase):
     usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -56,7 +47,6 @@ class Persona(ModeloBase):
     apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
     apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
     email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico")
-    genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Persona"

@@ -3,8 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from tesis.models import Genero
-
 
 class ClaseForm(forms.Form):
     nombre = forms.CharField(label='Nombre de la clase ( Obligatorio)', required=False,
@@ -30,8 +28,6 @@ class PersonaForm(forms.Form):
     email = forms.CharField(label=u"Correo electrónico", max_length=200, required=True,
                             widget=forms.TextInput(attrs={'class': 'form-control',}))
 
-    genero = forms.ModelChoiceField(label=u"Gènero",required=True, queryset=Genero.objects.filter(status=True),
-                                  widget=forms.Select(attrs={'class': 'form-control',}))
 
 
 
@@ -49,8 +45,6 @@ class RegistroUsuarioForm(UserCreationForm):
     apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
 
-    genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.filter(status=True),
-                                    widget=forms.Select(attrs={'class': 'form-control', }))
 
 
     def clean_username(self):

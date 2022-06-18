@@ -17,55 +17,88 @@
 <body class="hold-transition register-page">
 <div class="register-box">
     <div class="register-logo">
-        <a href="../../index2.html"><b>Admin</b>LTE</a>
+        <a href="../../index2.html"><b>Registrate</b>SAYCT</a>
     </div>
 
     <div class="card">
         <div class="card-body register-card-body">
-            <p class="login-box-msg">Register a new membership</p>
+            <p class="login-box-msg">Formulario de registro de nuevo usuario</p>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="peticion" value="registrate">
+                <div class="row">
+                    <div class="col">
+                        <fieldset class="form-group ">
+                            {{ form.nombre1.label_tag }} {{ form.nombre1 }}{{ form.nombre1.errors }}
+                            {% if form.nombre1.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.nombre1.help_text|safe }}</small> {% endif %}
 
-            <form action="../../index.html" method="post">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Full name">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
-                        </div>
+                        </fieldset>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    <div class="col">
+                        <div class="form-group   ">
+                            {{ form.nombre2.label_tag }} {{ form.nombre2 }}{{ form.nombre2.errors }}
+                            {% if form.nombre2.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.nombre2.help_text|safe }}</small> {% endif %}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                                   <!-- /.col -->
                     <div class="col">
-                        <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+                        <div class="form-group   ">
+                            {{ form.apellido1.label_tag }} {{ form.apellido1 }}{{ form.apellido1.errors }}
+                            {% if form.apellido1.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.apellido1.help_text|safe }}</small> {% endif %}
+                        </div>
                     </div>
-                    <!-- /.col -->
-                </div>
-            </form>
 
+                    <div class="col">
+                        <div class="form-group  ">
+                            {{ form.apellido2.label_tag }} {{ form.apellido2 }}{{ form.apellido2.errors }}
+                            {% if form.apellido2.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.apellido2.help_text|safe }}</small> {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
+                    {% if form.username.help_text %}
+                        <small id="help"
+                               class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
+                    {% if form.email.help_text %}
+                        <small id="help"
+                               class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
+                        {% if form.password1.help_text %}
+                            <small id="help"
+                                   class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
+                        {% if form.password2.help_text %}
+                            <small id="help"
+                                   class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="enviar_registro_usuario" type="submit"
+                            class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Crear cuenta
+                    </button>
+                </div>
+
+            </form>
 
 
             <a href="{% url 'login' %}" class="text-center">Ya tengo una cuenta, iniciar sesión.</a>

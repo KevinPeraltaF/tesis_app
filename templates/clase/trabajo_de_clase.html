@@ -1,3 +1,129 @@
 <div class="container-fluid">
-    trab clase
+    <div class="row">
+        <div class="form-group">
+            <select class="custom-select rounded-0" id="exampleSelectRounded0">
+                <option>Tarea</option>
+                <option>Subir Material</option>
+                <option>Subir Video</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <table class="table table-striped projects">
+            <thead>
+            <tr>
+                <th class="text-center" style="width: 1%">
+                    N°.
+                </th>
+                <th class="text-center" style="width: 20%">
+                    Tipo
+                </th>
+                <th class="text-center" style="width: 20%">
+                    Fecha Publicación
+                </th>
+                <th class="text-center" style="width: 20%">
+                    Acciones
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">
+                    1
+                </td>
+
+                <td class="text-center">
+                    Tarea
+                </td>
+                <td class="text-center">
+                    18/06/2022 22:00
+                </td>
+
+                <td class="text-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                data-toggle="dropdown"
+                                data-offset="-52">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                            <a href="javascript:;"
+                               onclick="ventana_modal('editar_clase','{{ foo.pk }}','Editar clase')"
+                               class="dropdown-item">Editar</a>
+                            <a href="javascript:;"
+                               class="dropdown-item">Eliminar</a>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+             <tr>
+                <td class="text-center">
+                    2
+                </td>
+
+                <td class="text-center">
+                    Material
+                </td>
+                <td class="text-center">
+                    19/06/2022 08:00
+                </td>
+
+                <td class="text-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                data-toggle="dropdown"
+                                data-offset="-52">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                            <a href="javascript:;"
+                               onclick="ventana_modal('editar_clase','{{ foo.pk }}','Editar clase')"
+                               class="dropdown-item">Editar</a>
+                            <a href="javascript:;"
+                               class="dropdown-item">Eliminar</a>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+             <tr>
+                <td class="text-center">
+                    3
+                </td>
+
+                <td class="text-center">
+                    Video
+                </td>
+                <td class="text-center">
+                    19/06/2022 09:00
+                </td>
+
+                <td class="text-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                data-toggle="dropdown"
+                                data-offset="-52">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                            <a href="javascript:;"
+                               onclick="ventana_modal('editar_clase','{{ foo.pk }}','Editar clase')"
+                               class="dropdown-item">Editar</a>
+                            <a href="javascript:;"
+                               class="dropdown-item">Eliminar</a>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <br><br><br><br><br><br>
 </div>

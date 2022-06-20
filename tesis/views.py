@@ -14,7 +14,8 @@ from django.template.loader import get_template
 from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm, CrearTareaForm, \
     CrearVideoForm, CrearMaterialForm
 from tesis.funciones import Data_inicial
-from tesis.models import Clase, Persona, ClaseInscrita, Publicacion, DetallePublicacionTarea, DetallePublicacionMaterial
+from tesis.models import Clase, Persona, ClaseInscrita, Publicacion, DetallePublicacionTarea, \
+    DetallePublicacionMaterial, DetallePublicacionVideo
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -122,6 +123,39 @@ def Dashboard(request):
                         )
 
                         detalle_material.save(request)
+
+                        return redirect('/')
+                    else:
+                        return redirect('/')
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'crear_video':
+                try:
+                    form = CrearVideoForm(request.POST, request.FILES)
+                    id_clase = request.POST['id']
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones = form.cleaned_data['instrucciones']
+                        urlvideo = form.cleaned_data['urlvideo']
+
+                        cabecera_publicacion = Publicacion(
+                            clase_id=id_clase,
+                            tipo_publicacion = 3,
+                            titulo=titulo,
+                            instrucciones=instrucciones
+                        )
+                        cabecera_publicacion.save(request)
+
+                        detalle_video = DetallePublicacionVideo(
+                            publicacion=cabecera_publicacion,
+                            urlvideo=urlvideo
+                        )
+
+                        detalle_video.save(request)
 
                         return redirect('/')
                     else:
@@ -278,7 +312,6 @@ def Dashboard(request):
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
-
 
             if peticion == 'crear_video':
                 try:

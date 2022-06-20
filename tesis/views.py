@@ -11,9 +11,10 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.loader import get_template
 
-from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm
+from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm, CrearTareaForm, \
+    CrearVideoForm, CrearMaterialForm
 from tesis.funciones import Data_inicial
-from tesis.models import Clase, Persona, ClaseInscrita
+from tesis.models import Clase, Persona, ClaseInscrita, Publicacion, DetallePublicacionTarea
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -51,6 +52,47 @@ def Dashboard(request):
                         return  redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+            if peticion == 'crear_tarea':
+                try:
+                    form = CrearTareaForm(request.POST, request.FILES)
+                    id_clase = request.POST['id']
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones= form.cleaned_data['instrucciones']
+                        calificacion_maxima= form.cleaned_data['calificacion_maxima']
+                        fecha_fin_entrega= form.cleaned_data['fecha_fin_entrega']
+
+                        cabecera_publicacion = Publicacion(
+                            clase_id=id_clase,
+                            tipo_publicacion= 1,
+                            titulo= titulo,
+                            instrucciones= instrucciones,
+                            calificacion_maxima=calificacion_maxima,
+                            fecha_fin_entrega=fecha_fin_entrega
+                        )
+                        cabecera_publicacion.save(request)
+
+                        estudiantes_de_la_clase = ClaseInscrita.objects.filter(status=True,clase__id= id_clase)
+                        for estudiante in estudiantes_de_la_clase:
+                            detalle_tarea = DetallePublicacionTarea(
+                                publicacion=cabecera_publicacion,
+                                estudiante=estudiante.usuario,
+                                archivo = None,
+                                calificacion = None,
+                                fecha_de_entrega=None,
+                                retroalimentacion=None
+
+                            )
+                            detalle_tarea.save(request)
+
+                        redirect('/&peticion=ver_clase&id=%s' % id_clase)
+                    else:
+                        redirect('/?peticion=ver_clase&id=%s' % id_clase)
 
 
                 except Exception as ex:
@@ -193,6 +235,39 @@ def Dashboard(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'crear_tarea':
+                try:
+                    form = CrearTareaForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_tarea'
+                    data['id_clase'] = request.GET['id']
+                    template = get_template("clase/formCrearTarea.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+
+            if peticion == 'crear_video':
+                try:
+                    form = CrearVideoForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_video'
+                    data['id_clase'] = request.GET['id']
+                    template = get_template("clase/formCrearVideo.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'crear_material':
+                try:
+                    form = CrearMaterialForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_material'
+                    data['id_clase'] = request.GET['id']
+                    template = get_template("clase/formCrearMaterial.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
 
             if peticion == 'ver_clase':
                 try:

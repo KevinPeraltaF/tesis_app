@@ -1,21 +1,12 @@
 <form method="POST" enctype="multipart/form-data">
     <input type="hidden" name="peticion" value="{{ peticion }}"/>
+    <input type="hidden" name="id" value="{{ id_clase }}"/>
     <div class="row-fluid">
-        {{ form.codigo_clase.label_tag }}
-
-        {{ form.codigo_clase }}{{ form.codigo_clase.errors }}
-        <small>Pídele a tu profesor el código del curso e introdúcelo aquí.</small>
-
-        <div class="row">
-
-            <ul>
-                <li><small>Usa un código de curso con 7 letras y números, sin espacios ni símbolos</small></li>
-            </ul>
-        </div>
+        {{ form }}
 
     </div>
 
-    <div class="row-fluid">
+    <div class="row-fluid mt-3">
         <div style="text-align: right; float: left; width: 100%">
             <button type="submit" id="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Guardar
             </button>

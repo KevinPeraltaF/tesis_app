@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Clase</li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
                 <li class="breadcrumb-item active" aria-current="page">{{ mi_clase.nombre }}</li>
             </ol>
         </nav>
@@ -148,6 +148,19 @@
 {% block script %}
     <script>
         $(function () {
+
+            $("#option_tarea").click(function () {
+                ventana_modal('crear_tarea', '{{ mi_clase.pk }}', 'Crear Tarea');
+            });
+            $("#option_material").click(function () {
+                ventana_modal('crear_material', '{{ mi_clase.pk }}', 'Crear Material');
+            });
+
+            $("#option_video").click(function () {
+                ventana_modal('crear_video', '{{ mi_clase.pk }}', 'Crear video');
+            });
+
+
             var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
             if (!tab_trabajo_de_clase) {
                 tab_trabajo_de_clase = "#tablon-tab";
@@ -161,10 +174,37 @@
             }).click(function () {
                 localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
             });
+
+
         });
 
     </script>
     <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
         function accion_actualizar_codigo_clase(peticion, registro, id) {
 
             Swal.fire({
@@ -217,7 +257,6 @@
 
         }
     </script>
-
 
 
 

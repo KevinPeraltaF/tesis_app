@@ -89,13 +89,6 @@ TIPO_PUBLICACION = (
     (3, u"VIDEO"),
 )
 
-TIPO_ARCHIVO = (
-    (1, u"ARCHIVO EXCEL"),
-    (2, u"ARCHIVO PDF"),
-    (3, u"ARCHIVO WORD"),
-)
-
-
 class Publicacion(ModeloBase):
     clase = models.ForeignKey(Clase, null=True, on_delete=models.CASCADE)
     tipo_publicacion = models.IntegerField(choices=TIPO_PUBLICACION, null=True, blank=True,
@@ -114,10 +107,10 @@ class DetallePublicacionTarea(ModeloBase):
     estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
     archivo = models.FileField(upload_to='tareas_Estudiantes/%Y/%m/%d', blank=True, null=True,
                                verbose_name='Archivo Tarea')
-    calificacion = models.IntegerField(verbose_name="Calificación", blank=False, null=False)
-    fecha_de_entrega = models.DateTimeField(verbose_name='Fecha de entrega', blank=False, null=False)
+    calificacion = models.IntegerField(verbose_name="Calificación", blank=True, null=True)
+    fecha_de_entrega = models.DateTimeField(verbose_name='Fecha de entrega', blank=True, null=True)
     calificado = models.BooleanField(verbose_name="Estado calificado", default=False)
-    retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=False, null=False)
+    retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=True, null=True)
     def __str__(self):
         if self.calificado:
             estado_calificacion = 'Calificado'
@@ -133,7 +126,6 @@ class DetallePublicacionTarea(ModeloBase):
 
 class DetallePublicacionMaterial(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
-    tipo_archivo = models.IntegerField(choices=TIPO_ARCHIVO, null=True, blank=True, verbose_name='Tipo archivo')
     archivo = models.FileField(upload_to='material_subido/%Y/%m/%d', verbose_name='Archivo Material')
 
     def __str__(self):

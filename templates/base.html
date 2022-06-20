@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clases</title>
+    <title>SAYCT</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="{% static 'fonts/fontsgoogle.css' %}">
@@ -78,10 +78,10 @@
                     <li class="nav-item">
                         <a href="{% url 'dashboard' %}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p class="text">CLASES</p>
+                            <p class="text">CURSOS</p>
                         </a>
                     </li>
-                    <li class="nav-header">CLASES IMPARTIDAS</li>
+                    <li class="nav-header">CURSOS IMPARTIDOS</li>
                     {% for clase in clases %}
                         <li class="nav-item">
                             <a href="?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
@@ -90,18 +90,18 @@
                             </a>
                         </li>
                     {% endfor %}
-                    <hr>
+                   <li class="nav-header">CURSOS TERMINADOS</li>
                     <li class="nav-item">
                         <a href="?peticion=clases_archivadas" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
-                            <p class="text">CLASES ARCHIVADAS</p>
+                            <p class="text">CURSOS CULMINADOS</p>
                         </a>
                     </li>
-
+                       <li class="nav-header">CURSOS INSCRITOS</li>
                     <li class="nav-item">
                         <a href="?peticion=cursos_inscritos" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
-                            <p class="text">CURSOS EN LOS QUE TE HAS INSCRITO</p>
+                            <p class="text">MIS CURSOS</p>
                         </a>
                     </li>
 

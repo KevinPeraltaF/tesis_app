@@ -2,10 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.forms import DateTimeInput
 
 
 class ClaseForm(forms.Form):
-    nombre = forms.CharField(label='Nombre de la clase ( Obligatorio)', required=False,
+    nombre = forms.CharField(label='Nombre del curso ( Obligatorio)', required=False,
                              widget=forms.TextInput(attrs={'class': ' form-control', }))
     seccion = forms.CharField(label='Sección', required=False,
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
@@ -85,5 +86,29 @@ class RegistroUsuarioForm(UserCreationForm):
 
 
 class UnirmeClaseForm(forms.Form):
-    codigo_clase = forms.CharField(label='Código de clase', required=True, max_length=7,
+    codigo_clase = forms.CharField(label='Código del curso', required=True, max_length=7,
                              widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+
+class FormularioGeneralPublicacion(forms.Form):
+    titulo = forms.CharField(label='Titulo', required=False,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+    instrucciones = forms.CharField(label=u'Instrucciones', required=False,
+                                    widget=forms.Textarea(attrs={'class': ' form-control', 'rows': '5'}))
+
+
+class CrearTareaForm(FormularioGeneralPublicacion):
+    calificacion_maxima = forms.IntegerField(label='Calificación máxima', required=False,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+    fecha_fin_entrega = forms.DateField(label="Fecha Fin de entrega",
+                            widget=DateTimeInput( attrs={'class': 'form-control'}), required=False)
+
+
+class CrearMaterialForm(FormularioGeneralPublicacion):
+    archivo= forms.CharField(label='Archivo', required=True, widget=forms.FileInput(attrs={'class': ' form-control', }))
+
+
+
+class CrearVideoForm(FormularioGeneralPublicacion):
+    urlvideo= forms.CharField(label='Url video', required=True, widget=forms.TextInput(attrs={'class': ' form-control', }))
+

@@ -90,9 +90,9 @@ def Dashboard(request):
                             )
                             detalle_tarea.save(request)
 
-                        redirect('/&peticion=ver_clase&id=%s' % id_clase)
+                        return redirect('/')
                     else:
-                        redirect('/?peticion=ver_clase&id=%s' % id_clase)
+                        return redirect('/')
 
 
                 except Exception as ex:

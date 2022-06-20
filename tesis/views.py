@@ -14,7 +14,7 @@ from django.template.loader import get_template
 from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm, CrearTareaForm, \
     CrearVideoForm, CrearMaterialForm
 from tesis.funciones import Data_inicial
-from tesis.models import Clase, Persona, ClaseInscrita, Publicacion, DetallePublicacionTarea
+from tesis.models import Clase, Persona, ClaseInscrita, Publicacion, DetallePublicacionTarea, DetallePublicacionMaterial
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -89,6 +89,39 @@ def Dashboard(request):
 
                             )
                             detalle_tarea.save(request)
+
+                        return redirect('/')
+                    else:
+                        return redirect('/')
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'crear_material':
+                try:
+                    form = CrearMaterialForm(request.POST, request.FILES)
+                    id_clase = request.POST['id']
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones = form.cleaned_data['instrucciones']
+                        archivo = form.cleaned_data['archivo']
+
+                        cabecera_publicacion = Publicacion(
+                            clase_id=id_clase,
+                            tipo_publicacion=2,
+                            titulo=titulo,
+                            instrucciones=instrucciones
+                        )
+                        cabecera_publicacion.save(request)
+
+                        detalle_material = DetallePublicacionMaterial(
+                            publicacion=cabecera_publicacion,
+                            archivo=archivo
+                        )
+
+                        detalle_material.save(request)
 
                         return redirect('/')
                     else:

@@ -1,79 +1,90 @@
 <div class="container-fluid">
     <div class="timeline">
-        <div>
-            <i class="fas fa-user bg-green"></i>
-            <div class="timeline-item">
-                <span class="time"><i class="fas fa-clock"></i> 27 mins ago</span>
-                <h3 class="timeline-header"><a href="#">Admin</a> Creo una nueva tarea</h3>
-                <div class="timeline-body">
-                    Realizar diagrama de flujo para resolver el area de un triangulo.
-                </div>
-                <div class="timeline-footer">
 
-                </div>
-            </div>
-        </div>
-        <div>
-            <i class="fas fa-user bg-green"></i>
-            <div class="timeline-item">
-                <span class="time"><i class="fas fa-clock"></i> 57 mins ago</span>
-                <h3 class="timeline-header"><a href="#">Admin</a> Creo una nuevo material</h3>
-                <div class="timeline-body">
-                    Archivo con los tipos de diagramas de flujo
-                    <br>
-                    <br>
-                    <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
-                        <li>
-                            <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>
+        {% for foo in publicacion %}
+            <div>
+                {% if foo.tipo_publicacion == 1 %}
+                    <i class="fas fa-user bg-green"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fas fa-clock"></i>  {{ foo.fecha_creacion }}</span>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nueva tarea</h3>
+                        <div class="timeline-body">
+                            {{ foo.instrucciones }}
+                        </div>
+                        <div class="timeline-footer">
 
-                            <div class="mailbox-attachment-info">
-                                <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i>
-                                    diagrama_de_flujos.pdf</a>
-                                <span class="mailbox-attachment-size clearfix mt-1">
-                          <span>1,245 KB</span>
-                          <a href="#" class="btn btn-default btn-sm float-right"><i
-                                  class="fas fa-cloud-download-alt"></i></a>
-                        </span>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="mailbox-attachment-icon"><i class="far fa-file-word"></i></span>
-
-                            <div class="mailbox-attachment-info">
-                                <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> App
-                                    manual_diagrama_de_flujos.docx</a>
-                                <span class="mailbox-attachment-size clearfix mt-1">
-                          <span>1,245 KB</span>
-                          <a href="#" class="btn btn-default btn-sm float-right"><i
-                                  class="fas fa-cloud-download-alt"></i></a>
-                        </span>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <div class="timeline-footer">
-
-                </div>
-            </div>
-        </div>
-        <div>
-            <i class="fas fa-video bg-maroon"></i>
-            <div class="timeline-item">
-                <span class="time"><i class="fas fa-clock"></i> 5 days ago</span>
-
-                <h3 class="timeline-header"><a href="#">Admin</a> Compartio un video</h3>
-
-                <div class="timeline-body">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/wEIN3PGiOuw"
-                                allowfullscreen></iframe>
+                        </div>
                     </div>
-                </div>
-                <div class="timeline-footer">
 
-                </div>
+                {% endif %}
             </div>
-        </div>
+        {% endfor %}
+
+
+
+
+
+        {#        <div>#}
+        {#            <i class="fas fa-user bg-green"></i>#}
+        {#            <div class="timeline-item">#}
+        {#                <span class="time"><i class="fas fa-clock"></i> 57 mins ago</span>#}
+        {#                <h3 class="timeline-header"><a href="#">Admin</a> Creo una nuevo material</h3>#}
+        {#                <div class="timeline-body">#}
+        {#                    Archivo con los tipos de diagramas de flujo#}
+        {#                    <br>#}
+        {#                    <br>#}
+        {#                    <ul class="mailbox-attachments d-flex align-items-stretch clearfix">#}
+        {#                        <li>#}
+        {#                            <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>#}
+        {##}
+        {#                            <div class="mailbox-attachment-info">#}
+        {#                                <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i>#}
+        {#                                    diagrama_de_flujos.pdf</a>#}
+        {#                                <span class="mailbox-attachment-size clearfix mt-1">#}
+        {#                          <span>1,245 KB</span>#}
+        {#                          <a href="#" class="btn btn-default btn-sm float-right"><i#}
+        {#                                  class="fas fa-cloud-download-alt"></i></a>#}
+        {#                        </span>#}
+        {#                            </div>#}
+        {#                        </li>#}
+        {#                        <li>#}
+        {#                            <span class="mailbox-attachment-icon"><i class="far fa-file-word"></i></span>#}
+        {##}
+        {#                            <div class="mailbox-attachment-info">#}
+        {#                                <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> App#}
+        {#                                    manual_diagrama_de_flujos.docx</a>#}
+        {#                                <span class="mailbox-attachment-size clearfix mt-1">#}
+        {#                          <span>1,245 KB</span>#}
+        {#                          <a href="#" class="btn btn-default btn-sm float-right"><i#}
+        {#                                  class="fas fa-cloud-download-alt"></i></a>#}
+        {#                        </span>#}
+        {#                            </div>#}
+        {#                        </li>#}
+        {##}
+        {#                    </ul>#}
+        {#                </div>#}
+        {#                <div class="timeline-footer">#}
+        {##}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div>#}
+        {#            <i class="fas fa-video bg-maroon"></i>#}
+        {#            <div class="timeline-item">#}
+        {#                <span class="time"><i class="fas fa-clock"></i> 5 days ago</span>#}
+        {##}
+        {#                <h3 class="timeline-header"><a href="#">Admin</a> Compartio un video</h3>#}
+        {##}
+        {#                <div class="timeline-body">#}
+        {#                    <div class="embed-responsive embed-responsive-16by9">#}
+        {#                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/wEIN3PGiOuw"#}
+        {#                                allowfullscreen></iframe>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#                <div class="timeline-footer">#}
+        {##}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
     </div>
 </div>

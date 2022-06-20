@@ -272,6 +272,7 @@ def Dashboard(request):
             if peticion == 'ver_clase':
                 try:
                     data['mi_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
+                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True)
                     return render(request, "clase/clase.html", data)
                 except Exception as ex:
                     pass

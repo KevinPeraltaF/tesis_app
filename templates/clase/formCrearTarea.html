@@ -1,6 +1,7 @@
 <form method="POST" enctype="multipart/form-data">
     <input type="hidden" name="peticion" value="{{ peticion }}"/>
     <input type="hidden" name="id" value="{{ id_clase }}"/>
+    <input type="hidden" name="id_publicacion" value="{{ publicacion.pk }}"/>
     <div class="row-fluid">
         {{ form }}
 

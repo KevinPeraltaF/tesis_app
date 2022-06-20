@@ -3,6 +3,7 @@ import sys
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
@@ -62,6 +63,34 @@ def Ver_Clase(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'editar_tarea':
+                try:
+                    form = CrearTareaForm(request.POST, request.FILES)
+                    publicacion = Publicacion.objects.get(pk=request.POST['id_publicacion'])
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones = form.cleaned_data['instrucciones']
+                        calificacion_maxima = form.cleaned_data['calificacion_maxima']
+                        fecha_fin_entrega = form.cleaned_data['fecha_fin_entrega']
+
+                        publicacion.titulo = titulo
+                        publicacion.instrucciones = instrucciones
+                        publicacion.calificacion_maxima = calificacion_maxima
+                        publicacion.fecha_fin_entrega = fecha_fin_entrega
+
+                        publicacion.save(request)
+
+
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+                    else:
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
 
             if peticion == 'crear_material':
                 try:
@@ -143,6 +172,8 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+
+
             if peticion == 'eliminar_publicacion':
                 try:
                     with transaction.atomic():
@@ -173,6 +204,18 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['peticion'] = 'crear_tarea'
                     data['id_clase'] = request.GET['id']
+                    template = get_template("clase/formCrearTarea.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'editar_tarea':
+                try:
+                    data['publicacion'] = publicacion = Publicacion.objects.get(pk=request.GET['id'])
+                    form = CrearTareaForm(initial=model_to_dict(publicacion))
+                    data['form'] = form
+                    data['id_clase'] = request.GET['id']
+                    data['peticion'] = 'editar_tarea'
                     template = get_template("clase/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:

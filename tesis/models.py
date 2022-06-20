@@ -1,8 +1,16 @@
+import os
+
 from django.contrib.auth.models import User
 from django.db import models
 
 
 # Create your models here.
+from django.db.models.signals import post_delete, pre_save
+from django.dispatch import receiver
+
+from tesis_app import settings
+
+
 class ModeloBase(models.Model):
     from django.contrib.auth.models import User
     usuario_creacion = models.ForeignKey(User, verbose_name='Usuario Creación', blank=True, null=True,
@@ -101,6 +109,8 @@ class Publicacion(ModeloBase):
     def __str__(self):
         return u'%s - %s' % (self.get_tipo_publicacion_display(), self.titulo)
 
+    def obtener_detalle_material(self):
+        return self.detallepublicacionmaterial_set.filter(status=True)
 
 class DetallePublicacionTarea(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
@@ -132,6 +142,7 @@ class DetallePublicacionMaterial(ModeloBase):
         return u'%s - %s' % (self.publicacion, self.get_tipo_archivo_display())
 
 
+
 class DetallePublicacionVideo(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     urlvideo = models.TextField(default='', verbose_name=u'URL Video')
@@ -139,5 +150,39 @@ class DetallePublicacionVideo(ModeloBase):
     def __str__(self):
         return u'%s - %s' % (self.publicacion, self.urlvideo)
 
+
+
+
+
+@receiver(post_delete, sender=DetallePublicacionMaterial)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `MediaFile` object is deleted.
+    """
+    ruta = settings.MEDIA_ROOT +"\\"+ str(instance.archivo)
+    if ruta:
+        if os.path.isfile(ruta):
+            os.remove(ruta)
+@receiver(pre_save, sender=DetallePublicacionMaterial)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `MediaFile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = DetallePublicacionMaterial.objects.get(pk=instance.pk).archivo
+    except DetallePublicacionMaterial.DoesNotExist:
+        return False
+
+    new_file = instance.archivo
+    if not old_file == new_file:
+        ruta = settings.MEDIA_ROOT +"\\"+ str(old_file)
+        if os.path.isfile(ruta):
+            os.remove(ruta)
 
 

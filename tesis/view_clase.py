@@ -143,6 +143,17 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'eliminar_publicacion':
+                try:
+                    with transaction.atomic():
+                        registro = Publicacion.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
+
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']

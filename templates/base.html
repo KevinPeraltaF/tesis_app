@@ -84,7 +84,7 @@
                     <li class="nav-header">CURSOS IMPARTIDOS</li>
                     {% for clase in clases %}
                         <li class="nav-item">
-                            <a href="?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
+                            <a href="/clase/?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p class="text">{{ clase.nombre }}</p>
                             </a>

@@ -40,22 +40,25 @@
                 <tbody>
                 {% for foo in publicacion %}
                     <tr>
-                        <td class="text-center">
+                        <td class="text-center text-sm ">
                             {{ forloop.counter }}
                         </td>
 
-                        <td class="text-center">
-                            {{ foo.titulo }}
+                        <td class="text-sm ">
+                            <h6 class="text-xms mb-0">{{ foo.titulo }}</h6>
+                            {% if foo.tipo_publicacion == 1 %}
+                                <p class="text-xs  text-secondary mb-0"><strong>Fecha máxima de entrega: </strong>{{ foo.fecha_fin_entrega }}</p>
+                            {% endif %}
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-center text-sm ">
                             {{ foo.get_tipo_publicacion_display }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-center text-sm ">
                             {{ foo.fecha_creacion }}
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-center ">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
                                         data-toggle="dropdown"

@@ -104,7 +104,7 @@ class Publicacion(ModeloBase):
     titulo = models.CharField(max_length=100, verbose_name="Titulo")
     instrucciones = models.CharField(max_length=100, verbose_name=u"Instrucciones")
     calificacion_maxima = models.IntegerField(verbose_name="Calificación máxima", blank=True, null=True)
-    fecha_fin_entrega = models.DateTimeField(verbose_name='Fecha máxima de entrega', blank=True, null=True)
+    fecha_fin_entrega = models.DateField(verbose_name='Fecha máxima de entrega', blank=True, null=True)
 
     def __str__(self):
         return u'%s - %s' % (self.get_tipo_publicacion_display(), self.titulo)

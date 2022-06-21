@@ -100,8 +100,8 @@ class FormularioGeneralPublicacion(forms.Form):
 class CrearTareaForm(FormularioGeneralPublicacion):
     calificacion_maxima = forms.IntegerField(label='Calificación máxima', required=False,
                              widget=forms.TextInput(attrs={'class': ' form-control', }))
-    fecha_fin_entrega = forms.DateField(label="Fecha Fin de entrega",
-                            widget=DateTimeInput( attrs={'class': 'form-control'}), required=False)
+    fecha_fin_entrega = forms.DateField(label="Fecha Fin de entrega",input_formats=['%d-%m-%Y'],
+                            widget=DateTimeInput(format='%d-%m-%Y',attrs={'class': 'form-control'}), required=False)
 
 
 class CrearMaterialForm(FormularioGeneralPublicacion):

@@ -1,103 +1,111 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="form-group">
-            <select id="tipo_actividad" class="custom-select rounded-0" id="exampleSelectRounded0">
-                <option >------------</option>
-                <option id="option_tarea">Subir Tarea</option>
-                <option id="option_material">Subir Material</option>
-                <option id="option_video">Subir Video</option>
-            </select>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                    data-toggle="dropdown"
+                    data-offset="53">
+                <i class="fas fa-bars"></i> CREAR ACTIVIDAD
+            </button>
+            <div class="dropdown-menu" role="menu">
+                <a href="javascript:;" id="option_tarea" class="dropdown-item">Crear Tarea</a>
+                <a href="javascript:;" id="option_material" class="dropdown-item">Crear Material</a>
+                <a href="javascript:;" id="option_video" class="dropdown-item">Crear Video</a>
+
+            </div>
         </div>
     </div>
-    <br>
-    <div class="container-fluid">
-        <table class="table table-striped projects">
-            <thead>
-            <tr>
-                <th class="text-center" style="width: 1%">
-                    N°.
-                </th>
-                <th class="text-center" style="width: 20%">
-                    Titulo
-                </th>
-                <th class="text-center" style="width: 20%">
-                    Tipo
-                </th>
-                <th class="text-center" style="width: 20%">
-                    Fecha Publicación
-                </th>
-                <th class="text-center" style="width: 20%">
-                    Acciones
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for foo in publicacion %}
+    <div class="row mt-3">
+
+        <div class="container-fluid">
+            <table class="table table-striped projects">
+                <thead>
                 <tr>
-                    <td class="text-center">
-                        {{ forloop.counter }}
-                    </td>
-
-                    <td class="text-center">
-                        {{ foo.titulo }}
-                    </td>
-
-                    <td class="text-center">
-                        {{ foo.get_tipo_publicacion_display }}
-                    </td>
-                    <td class="text-center">
-                        {{ foo.fecha_creacion }}
-                    </td>
-
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
-                                    data-toggle="dropdown"
-                                    data-offset="-52">
-                                <i class="fas fa-bars"></i>
-                            </button>
-                            <div class="dropdown-menu" role="menu">
-                                {% if foo.tipo_publicacion == 1 %}
-                                    <a href="javascript:;"
-                                       class="dropdown-item">Calificar</a>
-
-                                {% endif %}
-
-                                {% if foo.tipo_publicacion == 1 %}
-                                    <a href="javascript:;"
-                                       onclick="ventana_modal('editar_tarea','{{ foo.pk }}','Editar tarea')"
-                                       class="dropdown-item">Editar</a>
-
-                                {% endif %}
-
-                                {% if foo.tipo_publicacion == 2 %}
-                                    <a href="javascript:;"
-                                       onclick="ventana_modal('editar_material','{{ foo.pk }}','Editar materia')"
-                                       class="dropdown-item">Editar</a>
-
-                                {% endif %}
-
-                                {% if foo.tipo_publicacion == 3 %}
-                                    <a href="javascript:;"
-                                       onclick="ventana_modal('editar_video','{{ foo.pk }}','Editar video')"
-                                       class="dropdown-item">Editar</a>
-
-                                {% endif %}
-
-
-                                <a href="javascript:;"  onclick="eliminar_registro('eliminar_publicacion','{{ foo }}','{{ foo.pk }}')"class="dropdown-item">Eliminar</a>
-                            </div>
-                        </div>
-                    </td>
-
-
+                    <th class="text-center" style="width: 1%">
+                        N°.
+                    </th>
+                    <th class="text-center" style="width: 20%">
+                        Titulo
+                    </th>
+                    <th class="text-center" style="width: 20%">
+                        Tipo
+                    </th>
+                    <th class="text-center" style="width: 20%">
+                        Fecha Publicación
+                    </th>
+                    <th class="text-center" style="width: 20%">
+                        Acciones
+                    </th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for foo in publicacion %}
+                    <tr>
+                        <td class="text-center">
+                            {{ forloop.counter }}
+                        </td>
 
-            {% endfor %}
+                        <td class="text-center">
+                            {{ foo.titulo }}
+                        </td>
+
+                        <td class="text-center">
+                            {{ foo.get_tipo_publicacion_display }}
+                        </td>
+                        <td class="text-center">
+                            {{ foo.fecha_creacion }}
+                        </td>
+
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        data-offset="-52">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    {% if foo.tipo_publicacion == 1 %}
+                                        <a href="javascript:;"
+                                           class="dropdown-item">Calificar</a>
+
+                                    {% endif %}
+
+                                    {% if foo.tipo_publicacion == 1 %}
+                                        <a href="javascript:;"
+                                           onclick="ventana_modal('editar_tarea','{{ foo.pk }}','Editar tarea')"
+                                           class="dropdown-item">Editar</a>
+
+                                    {% endif %}
+
+                                    {% if foo.tipo_publicacion == 2 %}
+                                        <a href="javascript:;"
+                                           onclick="ventana_modal('editar_material','{{ foo.pk }}','Editar materia')"
+                                           class="dropdown-item">Editar</a>
+
+                                    {% endif %}
+
+                                    {% if foo.tipo_publicacion == 3 %}
+                                        <a href="javascript:;"
+                                           onclick="ventana_modal('editar_video','{{ foo.pk }}','Editar video')"
+                                           class="dropdown-item">Editar</a>
+
+                                    {% endif %}
 
 
-            </tbody>
-        </table>
+                                    <a href="javascript:;"
+                                       onclick="eliminar_registro('eliminar_publicacion','{{ foo }}','{{ foo.pk }}')"
+                                       class="dropdown-item">Eliminar</a>
+                                </div>
+                            </div>
+                        </td>
+
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+        </div>
+        <br><br><br><br><br><br>
     </div>
-    <br><br><br><br><br><br>
-</div>

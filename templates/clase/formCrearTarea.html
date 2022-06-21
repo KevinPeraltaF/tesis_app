@@ -1,19 +1,50 @@
-<form method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="peticion" value="{{ peticion }}"/>
-    <input type="hidden" name="id" value="{{ id_clase }}"/>
-    <input type="hidden" name="id_publicacion" value="{{ publicacion.pk }}"/>
-    <div class="row-fluid">
-        {{ form }}
+<input type="hidden" name="peticion" value="{{ peticion }}"/>
+<input type="hidden" name="id" value="{{ id_clase }}"/>
+<input type="hidden" name="id_publicacion" value="{{ publicacion.pk }}"/>
+<div class="row-fluid">
+    {% for foo in form %}
+        {% if not foo.auto_id == 'id_fecha_fin_entrega' %}
+            <div class="form-group  ">
+                {{ foo.errors }} {{ foo.label_tag }} {{ foo }} {% if foo.help_text %}
+                <small id="help"
+                       class="form-text text-muted">{{ foo.help_text|safe }}</small> {% endif %}
+            </div>
+        {% else %}
+            <div class="form-group">
+                {{ foo.label_tag }}
+                <div class="input-group date" id="{{ foo.auto_id }}" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#{{ foo.auto_id }}"
+                           id="{{ foo.auto_id }}" name="{{ foo.name }}" value="{{ foo.initial|date:'d-m-Y' }}">
+                    <div class="input-group-append" data-target="#{{ foo.auto_id }}" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
 
-    </div>
+        {% endif %}
+    {% endfor %}
 
-    <div class="row-fluid mt-3">
-        <div style="text-align: right; float: left; width: 100%">
-            <button type="submit" id="submit" class="btn btn-success"> Guardar
-            </button>
-            <a href="javascript:;" class="btn btn-danger" data-dismiss="modal">
-                Cancelar</a>
-        </div>
+
+</div>
+
+<div class="row-fluid mt-3">
+    <div style="text-align: right; float: left; width: 100%">
+        <button type="submit" id="submit" class="btn btn-success"> Guardar
+        </button>
+        <a href="javascript:;" class="btn btn-danger" data-dismiss="modal">
+            Cancelar</a>
     </div>
-</form>
+</div>
+
+<script>
+
+    $(function () {
+        //Date picker
+        $('#id_fecha_fin_entrega').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+    });
+
+</script>
 

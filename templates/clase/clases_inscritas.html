@@ -47,14 +47,14 @@
                     <div class="card-body "  style="background: url({% static 'dist/img/boxed-bg.jpg' %}) center center;">
                         <br>
                         <div class="description-block">
-                            <h5 class="description-header">Creado por:</h5>
+                            <h5 class="description-header">Profesor(a):</h5>
                             <span class="description-text">{{ foo.obtener_profesor }}</span>
                         </div>
                         <br>
                     </div>
                       <!-- /.card-body -->
                     <div class="card-footer text-center ">
-                        <a href="?peticion=ver_clase&id={{ foo.pk }}" class="small-box-footer">Ir a la clase <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="/clase/?peticion=estudiante_ver_clase&id={{ foo.clase.pk }}" class="small-box-footer">Ir a la clase <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                     <!-- /.card-footer-->
                 </div>

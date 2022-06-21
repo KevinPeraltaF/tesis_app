@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
 from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm
+from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
     DetallePublicacionTarea, ClaseInscrita
 
@@ -18,6 +19,7 @@ from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePub
 def Ver_Clase(request):
     global ex
     data = {}
+    Data_inicial(request, data)
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -266,13 +268,22 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'estudiante_ver_clase':
+                try:
+                    data['curso'] = curso = Clase.objects.get(pk=request.GET['id'])
+                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by('-id')
+                    return render(request, "clase/estudiante/estudiante_ver_clase.html", data)
+                except Exception as ex:
+                    pass
+
+
             if peticion == 'crear_tarea':
                 try:
                     form = CrearTareaForm()
                     data['form'] = form
                     data['peticion'] = 'crear_tarea'
                     data['id_clase'] = request.GET['id']
-                    template = get_template("clase/formCrearTarea.html")
+                    template = get_template("clase/profesor/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
@@ -284,7 +295,7 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['id_clase'] = request.GET['id']
                     data['peticion'] = 'editar_tarea'
-                    template = get_template("clase/formCrearTarea.html")
+                    template = get_template("clase/profesor/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
@@ -295,7 +306,7 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['peticion'] = 'crear_video'
                     data['id_clase'] = request.GET['id']
-                    template = get_template("clase/formCrearVideo.html")
+                    template = get_template("clase/profesor/formCrearVideo.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
@@ -313,7 +324,7 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['id_clase'] = request.GET['id']
                     data['peticion'] = 'editar_tarea'
-                    template = get_template("clase/formCrearTarea.html")
+                    template = get_template("clase/profesor/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
@@ -324,7 +335,7 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['peticion'] = 'crear_material'
                     data['id_clase'] = request.GET['id']
-                    template = get_template("clase/formCrearMaterial.html")
+                    template = get_template("clase/profesor/formCrearMaterial.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
@@ -342,7 +353,7 @@ def Ver_Clase(request):
                     data['form'] = form
                     data['id_clase'] = request.GET['id']
                     data['peticion'] = 'editar_tarea'
-                    template = get_template("clase/formCrearTarea.html")
+                    template = get_template("clase/profesor/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

@@ -157,7 +157,7 @@ def Dashboard(request):
                     form = UnirmeClaseForm()
                     data['form'] = form
                     data['peticion'] = 'unirme_a_clase'
-                    template = get_template("clase/formUnirmeClase.html")
+                    template = get_template("clase/profesor/../templates/clase/formUnirmeClase.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

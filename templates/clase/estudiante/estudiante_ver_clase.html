@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ curso.nombre }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid ">
+        <div class="card card-widget widget-user">
+
+            <div class="widget-user-header text-white"
+                 style="background: url({% static 'dist/img/photo2.png' %}) center center;">
+                <h3 class="widget-user-username text-right">{{ curso.nombre }}</h3>
+                <h5 class="widget-user-desc text-right">{{ curso.seccion }}</h5>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-4 border-right">
+                        <div class="info-box shadow">
+                            <span class="info-box-icon bg-blue"><i class="far fa-user"></i></span>
+                            <div class="info-box-content">
+                                Profesor de la clase:<label href="javascript:;"
+                                                      class="info-box-text">{{ curso.obtener_profesor_clase|upper}}</label>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">{{ curso.materia }}</h5>
+                            <span class="description-text">Materia</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="description-block">
+                            <h5 class="description-header">{{ curso.aula }}</h5>
+                            <span class="description-text">Aula</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="tablon-tab" data-toggle="tab" href="#tablon" role="tab"
+                   aria-controls="tablon"
+                   aria-selected="true">Panel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tarea-tab" data-toggle="tab" href="#tarea" role="tab"
+                   aria-controls="tarea"
+                   aria-selected="false">Tareas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab"
+                   aria-controls="calificaciones"
+                   aria-selected="false">Calificaciones</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade  p-3 show active" id="tablon" role="tabpanel" aria-labelledby="tablon-tab">
+                {% include 'clase/estudiante/tablon_estudiante.html' %}
+            </div>
+            <div class="tab-pane fade p-3" id="tarea" role="tabpanel" aria-labelledby="tarea-tab">
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block modal %}
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function () {
+
+            $("#option_tarea").click(function () {
+                ventana_modal('crear_tarea', '{{ mi_clase.pk }}', 'Crear Tarea');
+            });
+            $("#option_material").click(function () {
+                ventana_modal('crear_material', '{{ mi_clase.pk }}', 'Crear Material');
+            });
+
+            $("#option_video").click(function () {
+                ventana_modal('crear_video', '{{ mi_clase.pk }}', 'Crear video');
+            });
+
+
+            var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
+            if (!tab_trabajo_de_clase) {
+                tab_trabajo_de_clase = "#tablon-tab";
+                localStorage.setItem("tab_trabajo_de_clase", tab_trabajo_de_clase);
+            }
+
+            $('.nav-link').each(function () {
+                if ($(this).attr('href') == tab_trabajo_de_clase) {
+                    $(this).trigger('click');
+                }
+            }).click(function () {
+                localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
+            });
+
+
+        });
+
+    </script>
+
+
+
+
+
+{% endblock %}

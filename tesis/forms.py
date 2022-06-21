@@ -105,7 +105,7 @@ class CrearTareaForm(FormularioGeneralPublicacion):
 
 
 class CrearMaterialForm(FormularioGeneralPublicacion):
-    archivo= forms.FileField(label='Archivo', required=True, widget=forms.FileInput(attrs={'class': ' form-control', }))
+    archivo= forms.FileField(label='Archivo', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf docx' }))
 
 
 

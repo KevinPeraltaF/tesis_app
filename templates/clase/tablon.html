@@ -30,24 +30,24 @@
                             <ul class="mailbox-attachments d-flex align-items-stretch clearfix mt-2">
 
                                 <div class="row">
-                                    {% for material in foo.obtener_detalle_material %}
-                                        <li>
-                                            <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>
+                                    {#                                    {% for material in foo.obtener_detalle_material %}#}
+                                    <li>
+                                        <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>
 
-                                            <div class="mailbox-attachment-info">
-                                                <a href="{{ material.archivo.url }}" target="_blank"
-                                                   class="mailbox-attachment-name"><i
-                                                        class="fas fa-paperclip"></i>
-                                                    {{ material.archivo }}</a>
-                                                <span class="mailbox-attachment-size clearfix mt-1">
+                                        <div class="mailbox-attachment-info">
+                                            <a href="{{ foo.obtener_detalle_material.archivo.url }}" target="_blank"
+                                               class="mailbox-attachment-name"><i
+                                                    class="fas fa-paperclip"></i>
+                                                {{ foo.obtener_detalle_material.archivo }}</a>
+                                            <span class="mailbox-attachment-size clearfix mt-1">
                                   <span>1,245 KB</span>
-                                  <a href="{{ material.archivo.url }}" class="btn btn-default btn-sm float-right"
+                                  <a href="{{ foo.obtener_detalle_material.archivo.url }}" class="btn btn-default btn-sm float-right"
                                      download><i
                                           class="fas fa-cloud-download-alt"></i></a>
                                 </span>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
+                                        </div>
+                                    </li>
+{#                                    {% endfor %}#}
 
 
                                 </div>

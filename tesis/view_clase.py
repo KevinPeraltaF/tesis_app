@@ -125,6 +125,32 @@ def Ver_Clase(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'editar_material':
+                try:
+                    form = CrearMaterialForm(request.POST, request.FILES)
+                    publicacion = Publicacion.objects.get(pk=request.POST['id_publicacion'])
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones = form.cleaned_data['instrucciones']
+                        archivo = form.cleaned_data['archivo']
+
+                        publicacion.titulo = titulo
+                        publicacion.instrucciones = instrucciones
+                        publicacion.save(request)
+
+                        material = DetallePublicacionMaterial.objects.get(publicacion=publicacion)
+                        material.archivo = archivo
+                        material.save()
+
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+                    else:
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
             if peticion == 'crear_video':
                 try:
                     form = CrearVideoForm(request.POST, request.FILES)
@@ -184,7 +210,6 @@ def Ver_Clase(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
-
             if peticion == 'actualizar_codigo_clase':
                 try:
                     with transaction.atomic():
@@ -198,8 +223,6 @@ def Ver_Clase(request):
 
                 except Exception as ex:
                     pass
-
-
 
             if peticion == 'eliminar_publicacion':
                 try:
@@ -277,7 +300,6 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
-
             if peticion == 'crear_material':
                 try:
                     form = CrearMaterialForm()
@@ -285,6 +307,24 @@ def Ver_Clase(request):
                     data['peticion'] = 'crear_material'
                     data['id_clase'] = request.GET['id']
                     template = get_template("clase/formCrearMaterial.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'editar_material':
+                try:
+                    data['publicacion'] = publicacion = Publicacion.objects.get(pk=request.GET['id'])
+
+                    form = CrearMaterialForm(initial={
+                        'titulo': publicacion.titulo,
+                        'instrucciones': publicacion.instrucciones,
+                        'archivo': publicacion.obtener_detalle_material().archivo,
+
+                    })
+                    data['form'] = form
+                    data['id_clase'] = request.GET['id']
+                    data['peticion'] = 'editar_tarea'
+                    template = get_template("clase/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

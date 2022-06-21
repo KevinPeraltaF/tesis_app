@@ -110,7 +110,7 @@ class Publicacion(ModeloBase):
         return u'%s - %s' % (self.get_tipo_publicacion_display(), self.titulo)
 
     def obtener_detalle_material(self):
-        return self.detallepublicacionmaterial_set.filter(status=True)
+        return self.detallepublicacionmaterial_set.filter(status=True)[0]
 
     def obtener_detalle_video(self):
         return self.detallepublicacionvideo_set.filter(status=True)[0]

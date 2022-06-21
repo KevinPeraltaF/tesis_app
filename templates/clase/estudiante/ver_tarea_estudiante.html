@@ -35,19 +35,39 @@
                         <p>{{ tarea.calificacion_maxima |upper }}</p>
                         <label href="javascript:;" class="info-box-text">FECHA MÁXIMA DE ENTREGA </label>:
                         <p>{{ tarea.fecha_fin_entrega }}</p>
-
                     </div>
                     <div class="col">
+                        <div class="text-xl-right">
 
+                            <label class="info-box-text">SUBIR TAREA</label>:
+                            <div class="btn btn-default btn-file">
+                                <i class="fas fa-paperclip"></i> Attachment
+                                <input type="file" name="attachment">
+                            </div>
+                            <hr>
+
+                            <label href="javascript:;" class="info-box-text">ESTADO DE LA TAREA</label>:
+                            <p><span class="badge badge-sm bg-gradient-warning">EVIADO PARA CALIFICAR</span></p>
+                            <hr>
+                            <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
+                            <p>30 de Junio de 2022</p>
+                            <hr>
+                            <label href="javascript:;" class="info-box-text">NOTA OBTENIDA </label>:
+                            <p>8</p>
+                            <hr>
+                            <label> RETROALIMENTACIÓN: </label>
+                            <p>ashdsadasdsad dsad asd asd asd as das das dsad asd asd as das das dsad asd asd as das das dsad asd asd as das das dsad asd asd as das das dsa sa dsa </p>
+
+                        </div>
                     </div>
 
                 </div>
+                <hr>
                 <div class="row">
-
                     <label> INSTRUCCIONES DE LA TAREA: </label>
                     <textarea class="form-control" disabled readonly>{{ tarea.instrucciones }}</textarea>
-
                 </div>
+                <hr>
 
             </div>
 

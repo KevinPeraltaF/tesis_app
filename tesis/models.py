@@ -122,7 +122,11 @@ class Publicacion(ModeloBase):
     def obtener_detalle_video(self):
         return self.detallepublicacionvideo_set.filter(status=True)[0]
 
-
+ESTADO_TAREA = (
+    (1, u"ENTREGADO"),
+    (2, u"ENVIADO PARA CALIFICAR"),
+    (3, u"NO ENTREGADO"),
+)
 class DetallePublicacionTarea(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     estudiante = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -131,6 +135,7 @@ class DetallePublicacionTarea(ModeloBase):
     calificacion = models.IntegerField(verbose_name="Calificación", blank=True, null=True)
     fecha_de_entrega = models.DateTimeField(verbose_name='Fecha de entrega', blank=True, null=True)
     calificado = models.BooleanField(verbose_name="Estado calificado", default=False)
+    estado_tarea = models.IntegerField(choices=ESTADO_TAREA, null=True, blank=True,  verbose_name='Tipo publicación')
     retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=True, null=True)
     def __str__(self):
         if self.calificado:

@@ -6,8 +6,25 @@
                 {% if foo.tipo_publicacion == 1 %}
                     <i class="fas fa-user bg-green"></i>
                     <div class="timeline-item">
-                        <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nueva tarea <br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p></h3>
+                        <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}
+                            {% if  foo.tipo_publicacion == 1%}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        data-offset="-122">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a href="?peticion=ver_tarea&clase_id={{ foo.clase.pk }}&tarea_id={{ foo.pk }}" class="dropdown-item">Ver tarea</a>
+
+                                </div>
+                            </div>
+                            {% endif %}
+                        </span>
+
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nueva tarea <br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        </h3>
 
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
@@ -24,7 +41,9 @@
                     <i class="fas fa-user bg-green"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nuevo material<br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nuevo
+                            material<br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
                         </h3>
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
@@ -69,7 +88,9 @@
                     <div class="timeline-item">
                         <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
 
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Compartio un video<br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p></h3>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Compartio un video<br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        </h3>
 
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>

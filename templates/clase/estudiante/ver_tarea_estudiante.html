@@ -21,55 +21,36 @@
 {% block content %}
 
     <div class="container-fluid">
-        <div class="card">
-            <div class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">INSTRUCCIONES DE LA TAREA</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="form-group">
-                        <div class="note-editor note-frame card">
-                            <div class="note-editing-area">
-                                <div class="note-editable card-block" role="textbox" aria-multiline="true"
-                                     spellcheck="true" autocorrect="true" contenteditable="true">
-                                    <h4>
-                                        <u>{{ tarea.titulo }}</u></h4>
-                                    <p>{{ tarea.instrucciones }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="note-editor note-frame card">
-                            <div class="note-editing-area">
-                                <div class="note-editable card-block" role="textbox" aria-multiline="true"
-                                     spellcheck="true" autocorrect="true" contenteditable="true">
-                                    <h4> <u>{{ tarea.titulo }}</u></h4>
-                                    <p>{{ tarea.instrucciones }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="btn btn-default btn-file">
-                            <i class="fas fa-paperclip"></i> Subir archivo
-                            <input type="file" name="attachment">
-                        </div>
-                    </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <div class="float-right">
-                        <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Retroceder</button>
-
-                    </div>
-
-                </div>
-                <!-- /.card-footer -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">INFORMACIÓN GENERAL DE LA TAREA</h3>
             </div>
-        </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <label href="javascript:;" class="info-box-text"> TITULO DE LA TAREA </label>:
+                        <p>{{ tarea.titulo |upper }}</p>
+                        <label href="javascript:;" class="info-box-text"> NOTA MÁXIMA</label>:
+                        <p>{{ tarea.calificacion_maxima |upper }}</p>
+                        <label href="javascript:;" class="info-box-text">FECHA MÁXIMA DE ENTREGA </label>:
+                        <p>{{ tarea.fecha_fin_entrega }}</p>
 
-    </div>
+                    </div>
+                    <div class="col">
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <label> INSTRUCCIONES DE LA TAREA: </label>
+                    <textarea class="form-control" disabled readonly>{{ tarea.instrucciones }}</textarea>
+
+                </div>
+
+            </div>
+
+        </div>
 
 {% endblock %}

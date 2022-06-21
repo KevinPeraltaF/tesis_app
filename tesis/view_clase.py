@@ -81,7 +81,6 @@ def Ver_Clase(request):
 
                         publicacion.save(request)
 
-
                         return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
                     else:
                         return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
@@ -90,7 +89,6 @@ def Ver_Clase(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
-
 
             if peticion == 'crear_material':
                 try:
@@ -197,7 +195,7 @@ def Ver_Clase(request):
                         publicacion.instrucciones = instrucciones
                         publicacion.save(request)
 
-                        video = DetallePublicacionVideo.objects.get(publicacion = publicacion)
+                        video = DetallePublicacionVideo.objects.get(publicacion=publicacion)
                         video.urlvideo = urlvideo
                         video.save()
 
@@ -217,9 +215,10 @@ def Ver_Clase(request):
                         generador_codigo_clase = User.objects.make_random_password(length=7)
                         while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
                             generador_codigo_clase = User.objects.make_random_password(length=7)
-                        registro.codigo_clase =generador_codigo_clase
+                        registro.codigo_clase = generador_codigo_clase
                         registro.save(request)
-                        return JsonResponse({"respuesta": True, "mensaje": "Código de clase actualizado correctamente."})
+                        return JsonResponse(
+                            {"respuesta": True, "mensaje": "Código de clase actualizado correctamente."})
 
                 except Exception as ex:
                     pass
@@ -239,11 +238,30 @@ def Ver_Clase(request):
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
 
+            if peticion == 'cursos_inscritos':
+                try:
+                    data['peticion'] = 'cursos_inscritos'
+                    usuariio = request.user
+                    data['cursos_inscritos'] = cursos_inscritos = ClaseInscrita.objects.filter(status=True,
+                                                                                               usuario=usuariio)
+                    return render(request, "clase/clases_inscritas.html ", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
+            if peticion == 'clases_archivadas':
+                try:
+                    data['peticion'] = 'clases_archivadas'
+                    data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True,
+                                                                                         usuario_creacion=request.user)
+                    return render(request, "clase/clases_Archivadas.html ", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
             if peticion == 'ver_clase':
                 try:
                     data['mi_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
-                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase =clase).order_by('-id')
+                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).order_by(
+                        '-id')
                     return render(request, "clase/clase.html", data)
                 except Exception as ex:
                     pass
@@ -287,9 +305,9 @@ def Ver_Clase(request):
                     data['publicacion'] = publicacion = Publicacion.objects.get(pk=request.GET['id'])
 
                     form = CrearVideoForm(initial={
-                        'titulo' : publicacion.titulo,
+                        'titulo': publicacion.titulo,
                         'instrucciones': publicacion.instrucciones,
-                        'urlvideo':publicacion.obtener_detalle_video().urlvideo,
+                        'urlvideo': publicacion.obtener_detalle_video().urlvideo,
 
                     })
                     data['form'] = form

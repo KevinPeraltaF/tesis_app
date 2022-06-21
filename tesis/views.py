@@ -44,11 +44,11 @@ def Dashboard(request):
                             materia=materia,
                             aula=aula,
                             archivada=False,
-                            codigo_clase = generador_codigo_clase
+                            codigo_clase=generador_codigo_clase
                         )
                         clase.save(request)
 
-                        return  redirect('/')
+                        return redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form})
 
@@ -63,8 +63,8 @@ def Dashboard(request):
                     if form.is_valid():
 
                         codigo_clase = form.cleaned_data['codigo_clase']
-                        usuario =request.user
-                        clase = Clase.objects.get(codigo_clase = codigo_clase )
+                        usuario = request.user
+                        clase = Clase.objects.get(codigo_clase=codigo_clase)
                         if not clase.usuario_creacion == usuario:
                             clase_inscrita = ClaseInscrita(
                                 usuario=usuario,
@@ -73,7 +73,7 @@ def Dashboard(request):
                             )
                             clase_inscrita.save(request)
 
-                        return  redirect('/')
+                        return redirect('/')
                     else:
                         return render(request, "registration/dashboard.html", {'form': form})
 
@@ -98,7 +98,7 @@ def Dashboard(request):
                         clase.save(request)
                         return redirect('/')
                     else:
-                        return render(request, "registration/dashboard.html", {'form': form,})
+                        return render(request, "registration/dashboard.html", {'form': form, })
 
 
                 except Exception as ex:
@@ -152,24 +152,6 @@ def Dashboard(request):
                 except Exception as ex:
                     pass
 
-            if peticion == 'clases_archivadas':
-                try:
-                    data['peticion'] = 'clases_archivadas'
-                    data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True,usuario_creacion = request.user)
-                    return render(request, "clase/clases_Archivadas.html ", data)
-                except Exception as ex:
-                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
-
-            if peticion == 'cursos_inscritos':
-                try:
-                    data['peticion'] = 'cursos_inscritos'
-                    usuariio = request.user
-                    data['cursos_inscritos'] = cursos_inscritos = ClaseInscrita.objects.filter(status=True,
-                                                                                               usuario=usuariio)
-                    return render(request, "clase/clases_inscritas.html ", data)
-                except Exception as ex:
-                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
-
             if peticion == 'unirme_a_clase':
                 try:
                     form = UnirmeClaseForm()
@@ -189,6 +171,7 @@ def Dashboard(request):
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
+
 @transaction.atomic()
 def Login(request):
     global ex
@@ -198,18 +181,22 @@ def Login(request):
             peticion = request.POST['peticion']
             if peticion == 'login_usuario':
                 try:
-                    usuario = authenticate(username=request.POST['usuario'].lower().strip(), password=request.POST['clave'])
+                    usuario = authenticate(username=request.POST['usuario'].lower().strip(),
+                                           password=request.POST['clave'])
                     if usuario is not None:
                         if usuario.is_active:
                             login(request, usuario)
                             return JsonResponse({"respuesta": True})
                         else:
-                            return JsonResponse({"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
+                            return JsonResponse(
+                                {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
-                        return JsonResponse({"respuesta": False,'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
+                        return JsonResponse({"respuesta": False,
+                                             'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
                 except Exception as ex:
                     transaction.set_rollback(True)
-                    return JsonResponse({"respuesta": False, "mensaje": "Error al iniciar sesión, intentelo más tarde."})
+                    return JsonResponse(
+                        {"respuesta": False, "mensaje": "Error al iniciar sesión, intentelo más tarde."})
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:

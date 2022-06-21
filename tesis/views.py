@@ -64,16 +64,22 @@ def Dashboard(request):
 
                         codigo_clase = form.cleaned_data['codigo_clase']
                         usuario = request.user
-                        clase = Clase.objects.get(codigo_clase=codigo_clase)
-                        if not clase.usuario_creacion == usuario:
-                            clase_inscrita = ClaseInscrita(
-                                usuario=usuario,
-                                clase=clase,
+                        if Clase.objects.filter(codigo_clase=codigo_clase).exists():
+                            clase = Clase.objects.get(codigo_clase=codigo_clase)
+                            if not clase.usuario_creacion == usuario:
+                                clase_inscrita = ClaseInscrita(
+                                    usuario=usuario,
+                                    clase=clase,
 
-                            )
-                            clase_inscrita.save(request)
+                                )
+                                clase_inscrita.save(request)
 
-                        return redirect('/')
+                            return redirect('/')
+                        else:
+                            return JsonResponse(
+                                {"respuesta": False, "mensaje": "El código que ingreso es incorrecto."})
+
+
                     else:
                         return render(request, "registration/dashboard.html", {'form': form})
 
@@ -157,7 +163,7 @@ def Dashboard(request):
                     form = UnirmeClaseForm()
                     data['form'] = form
                     data['peticion'] = 'unirme_a_clase'
-                    template = get_template("clase/profesor/../templates/clase/formUnirmeClase.html")
+                    template = get_template("clase/formUnirmeClase.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

@@ -277,6 +277,17 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'ver_tarea':
+                try:
+                    clase_id = request.GET['clase_id']
+                    tarea_id = request.GET['tarea_id']
+                    data['curso'] =  Clase.objects.get(pk=clase_id)
+                    data['tarea'] =  Publicacion.objects.get(pk=tarea_id)
+
+
+                    return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
             if peticion == 'crear_tarea':
                 try:

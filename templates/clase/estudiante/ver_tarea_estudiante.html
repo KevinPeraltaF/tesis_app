@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ curso.nombre }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ tarea }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}

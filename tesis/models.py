@@ -122,6 +122,9 @@ class Publicacion(ModeloBase):
     def obtener_detalle_video(self):
         return self.detallepublicacionvideo_set.filter(status=True)[0]
 
+    def obtener_tarea(self):
+        return self.detallepublicaciontarea_set.get()
+
 ESTADO_TAREA = (
     (1, u"ENTREGADO"),
     (2, u"ENVIADO PARA CALIFICAR"),

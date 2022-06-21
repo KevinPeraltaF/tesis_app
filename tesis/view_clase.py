@@ -52,7 +52,8 @@ def Ver_Clase(request):
                                 archivo=None,
                                 calificacion=None,
                                 fecha_de_entrega=None,
-                                retroalimentacion=None
+                                retroalimentacion=None,
+                                estado_tarea=3
 
                             )
                             detalle_tarea.save(request)
@@ -271,8 +272,12 @@ def Ver_Clase(request):
             if peticion == 'estudiante_ver_clase':
                 try:
                     data['curso'] = curso = Clase.objects.get(pk=request.GET['id'])
-                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by('-id')
-                    data['publicacion_tipo_tarea'] = publicacion_tipo_tarea = Publicacion.objects.filter(status=True, clase=curso,tipo_publicacion =1).order_by('-id')
+                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by(
+                        '-id')
+                    data['publicacion_tipo_tarea'] = publicacion_tipo_tarea = Publicacion.objects.filter(status=True,
+                                                                                                         clase=curso,
+                                                                                                         tipo_publicacion=1).order_by(
+                        '-id')
                     return render(request, "clase/estudiante/estudiante_ver_clase.html", data)
                 except Exception as ex:
                     pass
@@ -281,9 +286,8 @@ def Ver_Clase(request):
                 try:
                     clase_id = request.GET['clase_id']
                     tarea_id = request.GET['tarea_id']
-                    data['curso'] =  Clase.objects.get(pk=clase_id)
-                    data['tarea'] =  Publicacion.objects.get(pk=tarea_id)
-
+                    data['curso'] = Clase.objects.get(pk=clase_id)
+                    data['tarea'] = Publicacion.objects.get(pk=tarea_id)
 
                     return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
                 except Exception as ex:

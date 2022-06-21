@@ -40,14 +40,26 @@
                         <div class="text-xl-right">
 
                             <label class="info-box-text">SUBIR TAREA</label>:
-                            <div class="btn btn-default btn-file">
-                                <i class="fas fa-paperclip"></i> Attachment
+                            <div class="btn btn-success btn-file">
+                                <i class="fas fa-paperclip"></i> Subir archivo
                                 <input type="file" name="attachment">
                             </div>
                             <hr>
 
                             <label href="javascript:;" class="info-box-text">ESTADO DE LA TAREA</label>:
-                            <p><span class="badge badge-sm bg-gradient-warning">EVIADO PARA CALIFICAR</span></p>
+                            <p>
+                                {% if tarea.obtener_tarea.estado_tarea == 1 %}
+                                    <span class="badge badge-sm bg-gradient-success">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                {% endif %}
+
+                            {% if tarea.obtener_tarea.estado_tarea == 2 %}
+                                    <span class="badge badge-sm bg-gradient-warning">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                {% endif %}
+
+                            {% if tarea.obtener_tarea.estado_tarea == 3 %}
+                                    <span class="badge badge-sm bg-gradient-danger">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                {% endif %}
+                            </p>
                             <hr>
                             <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
                             <p>30 de Junio de 2022</p>
@@ -56,7 +68,8 @@
                             <p>8</p>
                             <hr>
                             <label> RETROALIMENTACIÓN: </label>
-                            <p>ashdsadasdsad dsad asd asd asd as das das dsad asd asd as das das dsad asd asd as das das dsad asd asd as das das dsad asd asd as das das dsa sa dsa </p>
+                            <p>ashdsadasdsad dsad asd asd asd as das das dsad asd asd as das das dsad asd asd as das das
+                                dsad asd asd as das das dsad asd asd as das das dsa sa dsa </p>
 
                         </div>
                     </div>

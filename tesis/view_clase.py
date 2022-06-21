@@ -158,6 +158,33 @@ def Ver_Clase(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'editar_video':
+                try:
+                    form = CrearVideoForm(request.POST, request.FILES)
+                    publicacion = Publicacion.objects.get(pk=request.POST['id_publicacion'])
+                    if form.is_valid():
+                        titulo = form.cleaned_data['titulo']
+                        instrucciones = form.cleaned_data['instrucciones']
+                        urlvideo = form.cleaned_data['urlvideo']
+
+                        publicacion.titulo = titulo
+                        publicacion.instrucciones = instrucciones
+                        publicacion.save(request)
+
+                        video = DetallePublicacionVideo.objects.get(publicacion = publicacion)
+                        video.urlvideo = urlvideo
+                        video.save()
+
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+                    else:
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % publicacion.clase.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+
             if peticion == 'actualizar_codigo_clase':
                 try:
                     with transaction.atomic():
@@ -231,6 +258,25 @@ def Ver_Clase(request):
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
+
+            if peticion == 'editar_video':
+                try:
+                    data['publicacion'] = publicacion = Publicacion.objects.get(pk=request.GET['id'])
+
+                    form = CrearVideoForm(initial={
+                        'titulo' : publicacion.titulo,
+                        'instrucciones': publicacion.instrucciones,
+                        'urlvideo':publicacion.obtener_detalle_video().urlvideo,
+
+                    })
+                    data['form'] = form
+                    data['id_clase'] = request.GET['id']
+                    data['peticion'] = 'editar_tarea'
+                    template = get_template("clase/formCrearTarea.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
 
             if peticion == 'crear_material':
                 try:

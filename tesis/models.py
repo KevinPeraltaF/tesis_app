@@ -113,7 +113,7 @@ class Publicacion(ModeloBase):
         return self.detallepublicacionmaterial_set.filter(status=True)
 
     def obtener_detalle_video(self):
-        return self.detallepublicacionvideo_set.filter(status=True)
+        return self.detallepublicacionvideo_set.filter(status=True)[0]
 
 class DetallePublicacionTarea(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)

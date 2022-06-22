@@ -74,7 +74,7 @@ def Ver_Clase(request):
                                 )
                                 clase_inscrita.save(request)
 
-                            return redirect('/')
+                            return redirect('/clase/?peticion=estudiante_ver_clase&id=%s' % clase.pk)
                         else:
                             return JsonResponse(
                                 {"respuesta": False, "mensaje": "El código que ingreso es incorrecto."})

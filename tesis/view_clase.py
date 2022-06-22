@@ -318,7 +318,7 @@ def Ver_Clase(request):
                     form = SubirTareaForm(request.POST, request.FILES)
                     if form.is_valid():
                         archivo = form.cleaned_data['archivo']
-                        id_tarea_estudiante =  form.cleaned_data['id']
+                        id_tarea_estudiante =  request.POST['id']
 
                         tarea = DetallePublicacionTarea.objects.get(pk=id_tarea_estudiante)
                         tarea.archivo = archivo
@@ -326,11 +326,11 @@ def Ver_Clase(request):
                         tarea.fecha_de_entrega = datetime.now().date()
                         tarea.save(request)
 
-                        return redirect("/clase/?peticion=ver_tarea&clase_id=%s&tarea_id=%s" % ({{tarea.publicacion.clase}},{{tarea.pk}}))
+                        return redirect("/clase/?peticion=ver_tarea&clase_id=%s&tarea_id=%s" % (tarea.publicacion.clase.id, tarea.publicacion.pk))
 
 
                     else:
-                        return render(request, "registration/dashboard.html", {'form': form})
+                        return redirect("/")
 
 
                 except Exception as ex:
@@ -529,6 +529,7 @@ def Ver_Clase(request):
                     form = SubirTareaForm()
                     data['form'] = form
                     data['peticion'] = 'subir_tarea'
+                    data['id_tarea'] = request.GET['id']
                     template = get_template("clase/estudiante/formSubirTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:

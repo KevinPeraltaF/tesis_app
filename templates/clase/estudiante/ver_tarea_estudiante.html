@@ -41,7 +41,9 @@
 
                             <label class="info-box-text">SUBIR TAREA</label>:
                             <div class="btn btn-default">
-                                <a href="javascript:;"  onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i class="fas fa-paperclip"></i> Subir archivo</a>
+                                <a href="javascript:;"
+                                   onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i
+                                        class="fas fa-paperclip"></i> Subir archivo</a>
                             </div>
                             <hr>
 
@@ -59,16 +61,19 @@
                                     <span class="badge badge-sm bg-gradient-danger">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
                             </p>
-                            <hr>
-                            <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
-                            <p>30 de Junio de 2022</p>
-                            <hr>
-                            <label href="javascript:;" class="info-box-text">NOTA OBTENIDA </label>:
-                            <p>8</p>
-                            <hr>
-                            <label> RETROALIMENTACIÓN: </label>
-                            <p>ashdsadasdsad dsad asd asd asd as das das dsad asd asd as das das dsad asd asd as das das
-                                dsad asd asd as das das dsad asd asd as das das dsa sa dsa </p>
+
+                            {% if tarea.obtener_tarea.estado_tarea == 1 %}
+                                  <hr>
+                                <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
+                                <p>{{ tarea.obtener_tarea.fecha_de_entrega }}</p>
+                                <hr>
+                                <label href="javascript:;" class="info-box-text">NOTA OBTENIDA </label>:
+                                <p>{{ tarea.obtener_tarea.calificacion }}</p>
+                                <hr>
+                                <label> RETROALIMENTACIÓN: </label>
+                                <p>{{ tarea.obtener_tarea.retroalimentacion }} </p>
+
+                            {% endif %}
 
                         </div>
                     </div>

@@ -131,7 +131,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ reques.path }}',
+                        url: '{{ request.path }}',
                         async: false,
                         data: {
                             csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -156,7 +156,7 @@
                             Swal.fire(data.mensaje);
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
-                        mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                        alert('Error al intentar conectar con el servidor', 'Error de conexiòn');
                     }).always(function () {
                     });
 

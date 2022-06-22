@@ -237,6 +237,17 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'restaurar_clase':
+                try:
+                    with transaction.atomic():
+                        registro = Clase.objects.get(pk=request.POST['id'])
+                        registro.archivada = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Clase archivada correctamente."})
+
+                except Exception as ex:
+                    pass
+
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']

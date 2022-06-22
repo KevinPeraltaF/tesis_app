@@ -173,7 +173,7 @@ def Dashboard(request):
             try:
                 data['titulo'] = 'Menú principal'
 
-                return render(request, "registration/dashboard.html ", data)
+                return render(request, "registration/dashboard.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 

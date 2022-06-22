@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ curso.nombre }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ video.titulo }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid card">
+        <label for="">Titulo</label>
+        <h6>{{ video.titulo }}</h6>
+        <label for="">Descripción</label>
+        <p> {{ video.instrucciones }}</p>
+
+        <div class="timeline-body">
+            <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
+            <div class="embed-responsive embed-responsive-16by9 mt-2">
+                <iframe class="embed-responsive-item"
+                        src="{{ video.obtener_detalle_video.urlvideo }}"
+                        allowfullscreen></iframe>
+            </div>
+
+
+        </div>
+     <div class="form-group mt-3 text-right">
+          <a href="javascript:history.back()" class="btn btn-primary">Regresar</a>
+     </div>
+
+
+
+    </div>
+
+
+{% endblock %}

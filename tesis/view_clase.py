@@ -307,6 +307,18 @@ def Ver_Clase(request):
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
 
+            if peticion == 'ver_video':
+                try:
+                    clase_id = request.GET['clase_id']
+                    video_id = request.GET['video_id']
+                    data['curso'] = Clase.objects.get(pk=clase_id)
+                    data['video'] = Publicacion.objects.get(pk=video_id)
+
+                    return render(request, "clase/estudiante/ver_video_estudiante.html", data)
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                    pass
+
             if peticion == 'crear_tarea':
                 try:
                     form = CrearTareaForm()

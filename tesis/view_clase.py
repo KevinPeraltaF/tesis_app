@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
-from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm
+from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm, ClaseForm, UnirmeClaseForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
     DetallePublicacionTarea, ClaseInscrita
@@ -24,6 +24,70 @@ def Ver_Clase(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
+
+            if peticion == 'crear_clase':
+                try:
+                    form = ClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+
+                        nombre = form.cleaned_data['nombre']
+                        seccion = form.cleaned_data['seccion']
+                        materia = form.cleaned_data['materia']
+                        aula = form.cleaned_data['aula']
+                        generador_codigo_clase = User.objects.make_random_password(length=7)
+                        while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
+                            generador_codigo_clase = User.objects.make_random_password(length=7)
+
+                        clase = Clase(
+                            nombre=nombre,
+                            seccion=seccion,
+                            materia=materia,
+                            aula=aula,
+                            archivada=False,
+                            codigo_clase=generador_codigo_clase
+                        )
+                        clase.save(request)
+
+                        return redirect('/')
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+
+                        codigo_clase = form.cleaned_data['codigo_clase']
+                        usuario = request.user
+                        if Clase.objects.filter(codigo_clase=codigo_clase).exists():
+                            clase = Clase.objects.get(codigo_clase=codigo_clase)
+                            if not clase.usuario_creacion == usuario:
+                                clase_inscrita = ClaseInscrita(
+                                    usuario=usuario,
+                                    clase=clase,
+
+                                )
+                                clase_inscrita.save(request)
+
+                            return redirect('/')
+                        else:
+                            return JsonResponse(
+                                {"respuesta": False, "mensaje": "El código que ingreso es incorrecto."})
+
+
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
 
             if peticion == 'crear_tarea':
                 try:
@@ -278,6 +342,26 @@ def Ver_Clase(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
+
+            if peticion == 'crear_clase':
+                try:
+                    form = ClaseForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_clase'
+                    template = get_template("clase/formClase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm()
+                    data['form'] = form
+                    data['peticion'] = 'unirme_a_clase'
+                    template = get_template("clase/formUnirmeClase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
 
             if peticion == 'cursos_inscritos':
                 try:

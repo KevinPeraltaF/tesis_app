@@ -247,7 +247,7 @@ def Ver_Clase(request):
                     usuariio = request.user
                     data['cursos_inscritos'] = cursos_inscritos = ClaseInscrita.objects.filter(status=True,
                                                                                                usuario=usuariio)
-                    return render(request, "clase/clases_inscritas.html ", data)
+                    return render(request, "clase/clases_inscritas.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
@@ -257,7 +257,7 @@ def Ver_Clase(request):
                     data['peticion'] = 'clases_archivadas'
                     data['clases_archivadas'] = clases_archivadas = Clase.objects.filter(status=True, archivada=True,
                                                                                          usuario_creacion=request.user)
-                    return render(request, "clase/clases_Archivadas.html ", data)
+                    return render(request, "clase/clases_Archivadas.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
@@ -381,7 +381,7 @@ def Ver_Clase(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
-                return render(request, "clase/clase.html ", data)
+                return render(request, "clase/clase.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                 pass

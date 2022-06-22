@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ curso.nombre }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ material.titulo }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid card">
+        <label for="">Titulo</label>
+        <h6>{{ material.titulo }}</h6>
+        <label for="">Descripción</label>
+        <p> {{ material.instrucciones }}</p>
+
+        <div class="timeline-body">
+            <p class="text-xs  text-secondary mb-0">{{ material.instrucciones }}</p>
+            <div class=" row mt-2">
+                <div>
+                    <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>
+
+                    <div class="mailbox-attachment-info">
+                        <a href="{{ material.obtener_detalle_material.archivo.url }}" target="_blank"
+                           class="mailbox-attachment-name"><i
+                                class="fas fa-paperclip"></i>
+                            {{ material.obtener_detalle_material.archivo }}</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                                  <span>1,245 KB</span>
+                                  <a href="{{ material.obtener_detalle_material.archivo.url }}"
+                                     class="btn btn-default btn-sm float-right"
+                                     download><i
+                                          class="fas fa-cloud-download-alt"></i></a>
+                                </span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group mt-3 text-right">
+            <a href="javascript:history.back()" class="btn btn-primary">Regresar</a>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

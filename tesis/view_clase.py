@@ -381,3 +381,4 @@ def Ver_Clase(request):
                 return render(request, "clase/clase.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                pass

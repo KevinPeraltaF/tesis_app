@@ -176,6 +176,7 @@ def Dashboard(request):
                 return render(request, "registration/dashboard.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                pass
 
 
 @transaction.atomic()

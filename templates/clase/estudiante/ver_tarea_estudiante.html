@@ -40,9 +40,8 @@
                         <div class="text-xl-right">
 
                             <label class="info-box-text">SUBIR TAREA</label>:
-                            <div class="btn btn-success btn-file">
-                                <i class="fas fa-paperclip"></i> Subir archivo
-                                <input type="file" name="attachment">
+                            <div class="btn btn-default">
+                                <a href="javascript:;"  onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i class="fas fa-paperclip"></i> Subir archivo</a>
                             </div>
                             <hr>
 
@@ -52,11 +51,11 @@
                                     <span class="badge badge-sm bg-gradient-success">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
 
-                            {% if tarea.obtener_tarea.estado_tarea == 2 %}
+                                {% if tarea.obtener_tarea.estado_tarea == 2 %}
                                     <span class="badge badge-sm bg-gradient-warning">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
 
-                            {% if tarea.obtener_tarea.estado_tarea == 3 %}
+                                {% if tarea.obtener_tarea.estado_tarea == 3 %}
                                     <span class="badge badge-sm bg-gradient-danger">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
                             </p>
@@ -78,12 +77,68 @@
                 <hr>
                 <div class="row">
                     <label> INSTRUCCIONES DE LA TAREA: </label>
-                    <textarea  rows="15" class="form-control" disabled readonly>{{ tarea.instrucciones }}</textarea>
+                    <textarea rows="15" class="form-control" disabled readonly>{{ tarea.instrucciones }}</textarea>
                 </div>
                 <hr>
 
             </div>
 
         </div>
+    </div>
 
 {% endblock %}
+
+{% block modal %}
+    <!-- Modal -->
+    <div class="modal fade" id="modalGeneric">
+
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-modal" autocomplete="off" method="post"
+                          enctype="multipart/form-data" action="{{ request.path }}">
+                        {% csrf_token %}
+                        <div class=" contenido-modal">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+    </script>
+{% endblock %}
+

@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,7 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
-from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm
+from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
     DetallePublicacionTarea, ClaseInscrita
@@ -248,6 +249,32 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'subir_tarea':
+                try:
+                    form = SubirTareaForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        archivo = form.cleaned_data['archivo']
+                        id_tarea_estudiante =  form.cleaned_data['id']
+
+                        tarea = DetallePublicacionTarea.objects.get(pk=id_tarea_estudiante)
+                        tarea.archivo = archivo
+                        tarea.estado_tarea =2
+                        tarea.fecha_de_entrega = datetime.now().date()
+                        tarea.save(request)
+
+                        return redirect("/clase/?peticion=ver_tarea&clase_id=%s&tarea_id=%s" % ({{tarea.publicacion.clase}},{{tarea.pk}}))
+
+
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+
+
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
@@ -409,6 +436,16 @@ def Ver_Clase(request):
                     data['id_clase'] = request.GET['id']
                     data['peticion'] = 'editar_tarea'
                     template = get_template("clase/profesor/formCrearTarea.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'subir_tarea':
+                try:
+                    form = SubirTareaForm()
+                    data['form'] = form
+                    data['peticion'] = 'subir_tarea'
+                    template = get_template("clase/estudiante/formSubirTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

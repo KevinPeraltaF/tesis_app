@@ -112,3 +112,9 @@ class CrearMaterialForm(FormularioGeneralPublicacion):
 class CrearVideoForm(FormularioGeneralPublicacion):
     urlvideo= forms.CharField(label='Url video', required=True, widget=forms.TextInput(attrs={'class': ' form-control', }))
 
+
+
+class SubirTareaForm(forms.Form):
+    archivo= forms.FileField(label='Subir Tarea', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf docx' }))
+
+

@@ -378,7 +378,7 @@ def Ver_Clase(request):
                     })
                     data['form'] = form
                     data['id_clase'] = request.GET['id']
-                    data['peticion'] = 'editar_tarea'
+                    data['peticion'] = 'editar_video'
                     template = get_template("clase/profesor/formCrearTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:

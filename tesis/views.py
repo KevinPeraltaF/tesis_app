@@ -217,6 +217,7 @@ def Login(request):
                 return render(request, "registration/login.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                pass
 
 
 def Logout(request):

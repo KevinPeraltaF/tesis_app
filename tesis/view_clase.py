@@ -250,6 +250,7 @@ def Ver_Clase(request):
                     return render(request, "clase/clases_inscritas.html ", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                    pass
 
             if peticion == 'clases_archivadas':
                 try:
@@ -259,6 +260,7 @@ def Ver_Clase(request):
                     return render(request, "clase/clases_Archivadas.html ", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                    pass
 
             if peticion == 'ver_clase':
                 try:
@@ -292,6 +294,7 @@ def Ver_Clase(request):
                     return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+                    pass
 
             if peticion == 'crear_tarea':
                 try:

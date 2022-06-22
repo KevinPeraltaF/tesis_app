@@ -66,9 +66,10 @@
             {% block opciones %}
 
             {% endblock %}
-            <li class="nav-item"">
+            <li class="nav-item"
+            ">
 
-                <a href="javascript:;" class="nav-link text-right"> <strong>Bienvenido: </strong>{{ request.user }}</a>
+            <a href="javascript:;" class="nav-link text-right"> <strong>Bienvenido: </strong>{{ request.user }}</a>
             </li>
 
             <li class="nav-item">
@@ -102,10 +103,13 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-
+        <a href="/" class="brand-link">
+            <img  alt="SayCT" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">Gestión de tareas</span>
+        </a>
         <!-- Sidebar -->
-        <div class="sidebar os-host os-theme-light os-host-overflow os-host-resize-disabled os-host-transition os-host-overflow-y os-host-scrollbar-horizontal-hidden">
-
+        <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-overflow-x">
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -113,10 +117,10 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                <li class="nav-header">PANEL</li>
+                    <li class="nav-header">PANEL</li>
                     <li class="nav-item">
                         <a href="{% url 'dashboard' %}" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-th"></i>
                             <p class="text">Cursos</p>
                         </a>
                     </li>
@@ -124,7 +128,7 @@
                     {% for clase in clases %}
                         <li class="nav-item">
                             <a href="/clase/?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-table"></i>
                                 <p class="text">{{ clase.nombre }}</p>
                             </a>
                         </li>
@@ -132,7 +136,7 @@
                     <li class="nav-header">CURSOS TERMINADOS</li>
                     <li class="nav-item">
                         <a href="/clase/?peticion=clases_archivadas" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
+                            <i class="nav-icon fas fa-file"></i>
                             <p class="text">Cursos Finalizados</p>
                         </a>
                     </li>

@@ -63,7 +63,7 @@
                             </p>
 
                             {% if tarea.obtener_tarea.estado_tarea == 1 %}
-                                  <hr>
+                                <hr>
                                 <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
                                 <p>{{ tarea.obtener_tarea.fecha_de_entrega }}</p>
                                 <hr>
@@ -85,6 +85,9 @@
                     <textarea rows="15" class="form-control" disabled readonly>{{ tarea.instrucciones }}</textarea>
                 </div>
                 <hr>
+                <div class="form-group mt-3 text-right">
+                    <a href="javascript:history.back()" class="btn btn-primary">Regresar</a>
+                </div>
 
             </div>
 

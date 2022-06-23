@@ -54,20 +54,20 @@
 
                             <label href="javascript:;" class="info-box-text">ESTADO DE LA TAREA</label>:
                             <p>
-                                {% if tarea.obtener_tarea.estado_tarea == 1 %}
+                                {% if estado_entrega.estado_tarea == 1 %}
                                     <span class="badge badge-sm bg-gradient-success">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
 
-                                {% if tarea.obtener_tarea.estado_tarea == 2 %}
+                                {% if estado_entrega.estado_tarea == 2 %}
                                     <span class="badge badge-sm bg-gradient-warning">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
 
-                                {% if tarea.obtener_tarea.estado_tarea == 3 %}
+                                {% if estado_entrega.estado_tarea == 3 %}
                                     <span class="badge badge-sm bg-gradient-danger">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
                                 {% endif %}
                             </p>
 
-                            {% if tarea.obtener_tarea.estado_tarea == 1 %}
+                            {% if estado_entrega.estado_tarea == 1 %}
                                 <hr>
                                 <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
                                 <p>{{ tarea.obtener_tarea.fecha_de_entrega }}</p>

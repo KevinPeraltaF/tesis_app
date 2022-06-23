@@ -145,6 +145,9 @@ class DetallePublicacionTarea(ModeloBase):
         else:
             return True
 
+    def obtener_tarea_de_estudiante(self, usuario):
+        return self.tareaestudiante_set.get(status=True,estudiante = usuario)
+
 class tareaEstudiante(ModeloBase):
     tarea =  models.ForeignKey(DetallePublicacionTarea, null=True, on_delete=models.CASCADE)
     estudiante = models.ForeignKey(User, on_delete=models.CASCADE)

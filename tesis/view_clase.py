@@ -12,7 +12,7 @@ from django.template.loader import get_template
 from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm, ClaseForm, UnirmeClaseForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
-    DetallePublicacionTarea, ClaseInscrita
+    DetallePublicacionTarea, ClaseInscrita, tareaEstudiante
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -311,16 +311,20 @@ def Ver_Clase(request):
                     form = SubirTareaForm(request.POST, request.FILES)
                     if form.is_valid():
                         archivo = form.cleaned_data['archivo']
-                        id_tarea_estudiante = request.POST['id']
+                        id_tarea = request.POST['id']
 
-                        tarea = DetallePublicacionTarea.objects.get(pk=id_tarea_estudiante)
-                        tarea.archivo = archivo
-                        tarea.estado_tarea = 2
-                        tarea.fecha_de_entrega = datetime.now().date()
-                        tarea.save(request)
+                        subir_tarea = tareaEstudiante(
+                            tarea_id=id_tarea,
+                            estudiante=request.user,
+                            archivo=archivo,
+                            fecha_de_entrega=datetime.now().date(),
+                            estado_tarea=2
+
+                        )
+                        subir_tarea.save(request)
 
                         return redirect("/clase/?peticion=ver_tarea&clase_id=%s&tarea_id=%s" % (
-                        tarea.publicacion.clase.id, tarea.publicacion.pk))
+                        subir_tarea.tarea.publicacion.clase.id, subir_tarea.tarea.publicacion.pk))
 
 
                     else:
@@ -412,8 +416,8 @@ def Ver_Clase(request):
                     clase_id = request.GET['clase_id']
                     tarea_id = request.GET['tarea_id']
                     data['curso'] = Clase.objects.get(pk=clase_id)
-                    data['tarea'] = Publicacion.objects.get(pk=tarea_id)
-
+                    data['tarea'] = publicac = Publicacion.objects.get(pk=tarea_id)
+                    data['estado_entrega'] =publicac.obtener_tarea().obtener_tarea_de_estudiante(request.user)
                     return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

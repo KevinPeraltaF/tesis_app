@@ -33,7 +33,7 @@
                             <span class="info-box-icon bg-blue"><i class="far fa-user"></i></span>
                             <div class="info-box-content">
                                 Profesor de la clase:<label href="javascript:;"
-                                                      class="info-box-text">{{ curso.obtener_profesor_clase|upper}}</label>
+                                                            class="info-box-text">{{ curso.obtener_profesor_clase|upper }}</label>
 
                             </div>
 
@@ -88,7 +88,7 @@
                 {% include 'clase/estudiante/tablon_estudiante.html' %}
             </div>
             <div class="tab-pane fade p-3" id="tarea" role="tabpanel" aria-labelledby="tarea-tab">
-                      {% include 'clase/estudiante/tareas_estudiantes.html' %}
+                {% include 'clase/estudiante/tareas_estudiantes.html' %}
             </div>
 
             <div class="tab-pane fade p-3" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">
@@ -101,7 +101,28 @@
 
 
 {% block modal %}
+  <!-- Modal -->
+    <div class="modal fade" id="modalGeneric">
 
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-modal" autocomplete="off" method="post"
+                          enctype="multipart/form-data" action="{{ request.path }}">
+                        {% csrf_token %}
+                        <div class=" contenido-modal">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script %}
@@ -137,7 +158,34 @@
 
         });
 
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
     </script>
+
+
 
 
 

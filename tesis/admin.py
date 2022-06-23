@@ -19,5 +19,5 @@ class ClaseInscritaAdmin(admin.ModelAdmin):
 
 @admin.register(Publicacion)
 class PublicacionAdmin(admin.ModelAdmin):
-    list_display = ('clase','tipo_publicacion','titulo','instrucciones','calificacion_maxima','fecha_fin_entrega','clase','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
+    list_display = ('clase','tipo_publicacion','titulo','instrucciones','clase','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     search_fields = ('titulo','instrucciones',)

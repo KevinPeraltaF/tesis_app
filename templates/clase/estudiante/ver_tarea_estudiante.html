@@ -32,14 +32,14 @@
                         <label href="javascript:;" class="info-box-text"> TITULO DE LA TAREA </label>:
                         <p>{{ tarea.titulo |upper }}</p>
                         <label href="javascript:;" class="info-box-text"> NOTA MÁXIMA</label>:
-                        <p>{{ tarea.calificacion_maxima |upper }}</p>
+                        <p>{{ tarea.obtener_tarea.calificacion_maxima |upper }}</p>
                         <label href="javascript:;" class="info-box-text">FECHA MÁXIMA DE ENTREGA </label>:
-                        <p>{{ tarea.fecha_fin_entrega }}</p>
+                        <p>{{ tarea.obtener_tarea.fecha_fin_entrega }}</p>
                     </div>
                     <div class="col">
                         <div class="text-xl-right">
 
-                            {% if not tarea.puede_subir_tarea == True %}
+                            {% if not tarea.obtener_tarea.puede_subir_tarea == True %}
                                 <label class="info-box-text">SUBIR TAREA</label>:
                                 <div class="btn btn-default">
                                     <a href="javascript:;"

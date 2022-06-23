@@ -88,7 +88,6 @@ def Ver_Clase(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
-
             if peticion == 'crear_tarea':
                 try:
                     form = CrearTareaForm(request.POST, request.FILES)
@@ -393,6 +392,14 @@ def Ver_Clase(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'ver_tareas_entregadas':
+                try:
+                    data['tarea'] = tarea = Publicacion.objects.get(pk=request.GET['id'])
+                    return render(request, "clase/profesor/tareas_entregadas.html", data)
+                except Exception as ex:
+                    pass
+
+
             if peticion == 'estudiante_ver_clase':
                 try:
                     data['curso'] = curso = Clase.objects.get(pk=request.GET['id'])
@@ -441,7 +448,6 @@ def Ver_Clase(request):
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
                     pass
-
 
             if peticion == 'crear_tarea':
                 try:

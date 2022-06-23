@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Curso</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ tarea.clase.nombre }}</li>
+            </ol>
+        </nav>
+
+
+    </div>
+
+{% endblock %}
+{% block content %}
+    <div class="container-fluid ">
+        <div class="card card-widget widget-user">
+
+            <div class="widget-user-header text-white"
+                 style="background: url({% static 'dist/img/photo2.png' %}) center center;">
+                <h3 class="widget-user-username text-right">{{ tarea.clase.nombre }}</h3>
+                <h5 class="widget-user-desc text-right">{{ tarea.clase.seccion }}</h5>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <p>Total entregados: 2/3</p>
+                    <hr>
+                    <p>Total calificados: 1/2</p>
+                </div>
+                <div class="row">
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block modal %}
+    <!-- Modal -->
+    <div class="modal fade" id="modalGeneric">
+
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-modal" autocomplete="off" method="post"
+                          enctype="multipart/form-data" action="{{ request.path }}">
+                        {% csrf_token %}
+                        <div class=" contenido-modal">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
+    </script>
+
+
+{% endblock %}

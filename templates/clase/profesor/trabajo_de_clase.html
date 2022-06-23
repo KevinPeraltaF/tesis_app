@@ -68,7 +68,7 @@
                                 </button>
                                 <div class="dropdown-menu" role="menu">
                                     {% if foo.tipo_publicacion == 1 %}
-                                        <a href="javascript:;"
+                                        <a href="?peticion=ver_tareas_entregadas&id={{ foo.pk }}"
                                            class="dropdown-item">Calificar</a>
 
                                     {% endif %}

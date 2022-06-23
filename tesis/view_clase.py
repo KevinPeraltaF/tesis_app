@@ -417,7 +417,10 @@ def Ver_Clase(request):
                     tarea_id = request.GET['tarea_id']
                     data['curso'] = Clase.objects.get(pk=clase_id)
                     data['tarea'] = publicac = Publicacion.objects.get(pk=tarea_id)
-                    data['estado_entrega'] =publicac.obtener_tarea().obtener_tarea_de_estudiante(request.user)
+                    if publicac.obtener_tarea().tiene_tarea(request.user):
+                        data['estado_entrega'] =publicac.obtener_tarea().obtener_tarea_de_estudiante(request.user)
+                    else:
+                        data['estado_entrega'] =None
                     return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

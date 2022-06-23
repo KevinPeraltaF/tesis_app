@@ -55,28 +55,28 @@
                             <label href="javascript:;" class="info-box-text">ESTADO DE LA TAREA</label>:
                             <p>
                                 {% if estado_entrega.estado_tarea == 1 %}
-                                    <span class="badge badge-sm bg-gradient-success">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                    <span class="badge badge-sm bg-gradient-success">{{ estado_entrega.get_estado_tarea_display }}</span>
                                 {% endif %}
 
                                 {% if estado_entrega.estado_tarea == 2 %}
-                                    <span class="badge badge-sm bg-gradient-warning">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                    <span class="badge badge-sm bg-gradient-warning">{{ estado_entrega.get_estado_tarea_display }}</span>
                                 {% endif %}
 
                                 {% if estado_entrega.estado_tarea == 3 %}
-                                    <span class="badge badge-sm bg-gradient-danger">{{ tarea.obtener_tarea.get_estado_tarea_display }}</span>
+                                    <span class="badge badge-sm bg-gradient-danger">{{ estado_entrega.get_estado_tarea_display }}</span>
                                 {% endif %}
                             </p>
 
                             {% if estado_entrega.estado_tarea == 1 %}
                                 <hr>
                                 <label href="javascript:;" class="info-box-text"> FECHA DE ENTREGA</label>:
-                                <p>{{ tarea.obtener_tarea.fecha_de_entrega }}</p>
+                                <p>{{ estado_entrega.fecha_de_entrega }}</p>
                                 <hr>
                                 <label href="javascript:;" class="info-box-text">NOTA OBTENIDA </label>:
-                                <p>{{ tarea.obtener_tarea.calificacion }}</p>
+                                <p>{{ estado_entrega.calificacion }}</p>
                                 <hr>
                                 <label> RETROALIMENTACIÓN: </label>
-                                <p>{{ tarea.obtener_tarea.retroalimentacion }} </p>
+                                <p>{{ estado_entrega.retroalimentacion }} </p>
 
                             {% endif %}
 

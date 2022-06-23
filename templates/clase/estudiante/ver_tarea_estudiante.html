@@ -39,12 +39,17 @@
                     <div class="col">
                         <div class="text-xl-right">
 
-                            <label class="info-box-text">SUBIR TAREA</label>:
-                            <div class="btn btn-default">
-                                <a href="javascript:;"
-                                   onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i
-                                        class="fas fa-paperclip"></i> Subir archivo</a>
-                            </div>
+                            {% if not tarea.puede_subir_tarea == True %}
+                                <label class="info-box-text">SUBIR TAREA</label>:
+                                <div class="btn btn-default">
+                                    <a href="javascript:;"
+                                       onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i
+                                            class="fas fa-paperclip"></i> Subir archivo</a>
+                                </div>
+
+                            {% else %}
+                                <span class="badge badge-sm bg-gradient-warning">El plazo para subir la tarea ha expirado.</span>
+                            {% endif %}
                             <hr>
 
                             <label href="javascript:;" class="info-box-text">ESTADO DE LA TAREA</label>:

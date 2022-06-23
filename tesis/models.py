@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -124,6 +125,12 @@ class Publicacion(ModeloBase):
 
     def obtener_tarea(self):
         return self.detallepublicaciontarea_set.get()
+
+    def puede_subir_tarea(self):
+        if self.fecha_fin_entrega > datetime.now().date():
+            return False
+        else:
+            return True
 
 ESTADO_TAREA = (
     (1, u"ENTREGADO"),

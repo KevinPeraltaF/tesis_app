@@ -124,7 +124,8 @@ class Publicacion(ModeloBase):
     def obtener_tarea(self):
         return self.detallepublicaciontarea_set.get()
 
-
+    def obtener_total_inscritos(self):
+        return self.detallepublicaciontarea_set.count()
 
 ESTADO_TAREA = (
     (1, "ENTREGADO"),

@@ -107,12 +107,11 @@ def Ver_Clase(request):
                         cabecera_publicacion.save(request)
 
                         tarea = DetallePublicacionTarea(
-                            publicacion =cabecera_publicacion,
+                            publicacion=cabecera_publicacion,
                             calificacion_maxima=calificacion_maxima,
                             fecha_fin_entrega=fecha_fin_entrega
                         )
                         tarea.save(request)
-
 
                         return redirect("/clase/?peticion=ver_clase&id=%s" % id_clase)
                     else:
@@ -313,18 +312,25 @@ def Ver_Clase(request):
                         archivo = form.cleaned_data['archivo']
                         id_tarea = request.POST['id']
 
-                        subir_tarea = tareaEstudiante(
-                            tarea_id=id_tarea,
-                            estudiante=request.user,
-                            archivo=archivo,
-                            fecha_de_entrega=datetime.now().date(),
-                            estado_tarea=2
+                        if tareaEstudiante.objects.filter(status=True, tarea_id=id_tarea,
+                                                          estudiante_id=request.user).exists():
+                            subir_tarea = tareaEstudiante.objects.get(status=True, tarea_id=id_tarea,estudiante=request.user)
+                            subir_tarea.archivo = archivo
+                            subir_tarea.save(request)
 
-                        )
-                        subir_tarea.save(request)
+                        else:
+                            subir_tarea = tareaEstudiante(
+                                tarea_id=id_tarea,
+                                estudiante=request.user,
+                                archivo=archivo,
+                                fecha_de_entrega=datetime.now().date(),
+                                estado_tarea=2
+
+                            )
+                            subir_tarea.save(request)
 
                         return redirect("/clase/?peticion=ver_tarea&clase_id=%s&tarea_id=%s" % (
-                        subir_tarea.tarea.publicacion.clase.id, subir_tarea.tarea.publicacion.pk))
+                            subir_tarea.tarea.publicacion.clase.id, subir_tarea.tarea.publicacion.pk))
 
 
                     else:
@@ -418,9 +424,9 @@ def Ver_Clase(request):
                     data['curso'] = Clase.objects.get(pk=clase_id)
                     data['tarea'] = publicac = Publicacion.objects.get(pk=tarea_id)
                     if publicac.obtener_tarea().tiene_tarea(request.user):
-                        data['estado_entrega'] =publicac.obtener_tarea().obtener_tarea_de_estudiante(request.user)
+                        data['estado_entrega'] = publicac.obtener_tarea().obtener_tarea_de_estudiante(request.user)
                     else:
-                        data['estado_entrega'] =None
+                        data['estado_entrega'] = None
                     return render(request, "clase/estudiante/ver_tarea_estudiante.html", data)
                 except Exception as ex:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

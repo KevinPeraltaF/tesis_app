@@ -10,7 +10,11 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 
 from tesis_app import settings
-
+TIPO_PUBLICACION = (
+    (1, u"TAREA"),
+    (2, u"MATERIAL"),
+    (3, u"VIDEO"),
+)
 
 class ModeloBase(models.Model):
     from django.contrib.auth.models import User
@@ -99,11 +103,7 @@ class ClaseInscrita(ModeloBase):
         return persona
 
 
-TIPO_PUBLICACION = (
-    (1, u"TAREA"),
-    (2, u"MATERIAL"),
-    (3, u"VIDEO"),
-)
+
 
 class Publicacion(ModeloBase):
     clase = models.ForeignKey(Clase, null=True, on_delete=models.CASCADE)
@@ -124,8 +124,21 @@ class Publicacion(ModeloBase):
     def obtener_tarea(self):
         return self.detallepublicaciontarea_set.get()
 
-    def obtener_total_inscritos(self):
+    def obtener_total_entregados(self):
         return self.detallepublicaciontarea_set.count()
+
+    def obtener_total_inscritos(self):
+        return ClaseInscrita.objects.filter(status=True,clase =self.clase).count()
+
+    def inscritos(self):
+        return ClaseInscrita.objects.filter(status=True,clase =self.clase)
+
+    def obtener_total_calificados(self):
+        tarea_detalle = self.detallepublicaciontarea_set.get()
+        return tareaEstudiante.objects.filter(status=True,tarea = tarea_detalle,calificado =True).count()
+
+
+
 
 ESTADO_TAREA = (
     (1, "ENTREGADO"),

@@ -14,7 +14,6 @@ from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
     DetallePublicacionTarea, ClaseInscrita, tareaEstudiante
 
-
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
 def Ver_Clase(request):
@@ -400,6 +399,7 @@ def Ver_Clase(request):
             if peticion == 'ver_tareas_entregadas':
                 try:
                     data['tarea'] = tarea = Publicacion.objects.get(pk=request.GET['id'])
+                    data['detalle_tarea'] = det = DetallePublicacionTarea.objects.get(publicacion=tarea)
                     return render(request, "clase/profesor/tareas_entregadas.html", data)
                 except Exception as ex:
                     pass

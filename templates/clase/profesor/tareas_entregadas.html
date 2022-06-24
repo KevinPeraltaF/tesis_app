@@ -31,11 +31,73 @@
 
             <div class="card-footer">
                 <div class="row">
-                    <p>Total entregados: {{ tarea.obtener_total_inscritos }}/3</p>
-                    <hr>3
-                    <p>Total calificados: 1/2</p>
+                    <p>Total entregados: {{ tarea.obtener_total_entregados }}/{{ tarea.obtener_total_inscritos }}</p>
+                    <hr>
+                    <p>Total calificados: {{ tarea.obtener_total_calificados }}/{{ tarea.obtener_total_entregados }}</p>
                 </div>
                 <div class="row">
+                    <table class="table table-responsive table-striped projects">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="width: 1%">
+                                N°.
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                ESTUDIANTE
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                ARCHIVO
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                NOTA
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                OBS.
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                ESTADO
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for foo in tarea.inscritos %}
+                            <tr>
+                                <td class="text-center">
+                                    {{ forloop.counter }}
+                                </td>
+
+                                <td class="text-center">
+                                    {{ foo }}
+                                </td>
+                                <td class="text-center">
+                                    {{ foo }}
+                                </td>
+                                <td class="text-center">
+                                    <input class="form-control input-sm" type="text" name="calificacion" id="id_calificacion"> /{{ tarea.obtener_tarea.calificacion_maxima }}
+                                </td>
+                                <td class="text-center">
+                                    <textarea class="form-control" name="" id="" cols="30" rows="6"></textarea>
+                                </td>
+                                <td class="text-center">
+
+                                </td>
+
+
+                            </tr>
+
+                        {% empty %}
+                            <tr>
+                                <td colspan="10"
+                                    class="text-center">No
+                                    existen registro
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
 
 
                 </div>

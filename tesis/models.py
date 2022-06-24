@@ -124,24 +124,15 @@ class Publicacion(ModeloBase):
     def obtener_tarea(self):
         return self.detallepublicaciontarea_set.get()
 
-    def obtener_total_entregados(self):
-        return self.detallepublicaciontarea_set.count()
 
-    def obtener_total_inscritos(self):
-        return ClaseInscrita.objects.filter(status=True,clase =self.clase).count()
 
-    def inscritos(self):
-        return ClaseInscrita.objects.filter(status=True,clase =self.clase)
 
-    def obtener_total_calificados(self):
-        tarea_detalle = self.detallepublicaciontarea_set.get()
-        return tareaEstudiante.objects.filter(status=True,tarea = tarea_detalle,calificado =True).count()
 
 
 
 
 ESTADO_TAREA = (
-    (1, "ENTREGADO"),
+    (1, "CALIFICADO"),
     (2, "ENVIADO PARA CALIFICAR"),
     (3, "NO ENTREGADO"),
 )
@@ -164,6 +155,22 @@ class DetallePublicacionTarea(ModeloBase):
 
     def tiene_tarea(self,usuario):
         return self.tareaestudiante_set.filter(status=True,estudiante = usuario).exists()
+
+    def obtener_total_calificados(self):
+        return tareaEstudiante.objects.filter(status=True, tarea=self, calificado=True).count()
+
+    def obtener_total_inscritos(self):
+        return ClaseInscrita.objects.filter(status=True,clase =self.publicacion.clase).count()
+
+    def obtener_total_entregados(self):
+        return tareaEstudiante.objects.filter(status=True,tarea = self).count()
+
+    def obtener_inscritos_entregados(self):
+        return tareaEstudiante.objects.filter(status=True, tarea=self,estado_tarea=2)
+
+    def obtener_inscritos_no_entregados(self):
+        estudiantes_si_entregaron = tareaEstudiante.objects.values_list('estudiante').filter(status=True, tarea=self, estado_tarea=2)
+        return ClaseInscrita.objects.filter(status=True,clase=self.publicacion.clase).exclude(usuario__in=estudiantes_si_entregaron)
 
 class tareaEstudiante(ModeloBase):
     tarea =  models.ForeignKey(DetallePublicacionTarea, null=True, on_delete=models.CASCADE)
@@ -188,9 +195,14 @@ class tareaEstudiante(ModeloBase):
         else:
             estado_entrega = 'No entregado'
 
-        return u'%s - %s - %s' % (self.publicacion, estado_entrega, estado_calificacion)
+        return u'%s - %s - %s' % (self.tarea, estado_entrega, estado_calificacion)
 
-
+    def obtener_estudiante(self):
+        if Persona.objects.filter(usuario=self.estudiante, status=True).exists():
+            persona = Persona.objects.get(usuario=self.estudiante, status=True)
+        else:
+            persona = self.estudiante
+        return persona
 
 class DetallePublicacionMaterial(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)

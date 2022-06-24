@@ -398,8 +398,8 @@ def Ver_Clase(request):
 
             if peticion == 'ver_tareas_entregadas':
                 try:
-                    data['tarea'] = tarea = Publicacion.objects.get(pk=request.GET['id'])
-                    data['detalle_tarea'] = det = DetallePublicacionTarea.objects.get(publicacion=tarea)
+                    data['tarea'] = tarea = DetallePublicacionTarea.objects.get(publicacion_id=request.GET['id'])
+
                     return render(request, "clase/profesor/tareas_entregadas.html", data)
                 except Exception as ex:
                     pass

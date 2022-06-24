@@ -36,6 +36,31 @@
                     <p>Total calificados: {{ tarea.obtener_total_calificados }}/{{ tarea.obtener_total_entregados }}</p>
                 </div>
                 <div class="row">
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tablon-tab" data-toggle="tab" href="#tablon" role="tab"
+                       aria-controls="tablon"
+                       aria-selected="true">ENTREGADOS - PARA CALIFICAR</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="trabajo_de_clase-tab" data-toggle="tab" href="#trabajo_de_clase"
+                       role="tab"
+                       aria-controls="trabajo_de_clase"
+                       aria-selected="false">NO ENTREGADOS</a>
+                </li>
+
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade  p-3 show active" id="tablon" role="tabpanel"
+                     aria-labelledby="tablon-tab">
                     <table class="table table-responsive table-striped projects">
                         <thead>
                         <tr>
@@ -60,25 +85,32 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for foo in tarea.inscritos %}
+                        {% for foo in tarea.obtener_inscritos_entregados %}
                             <tr>
                                 <td class="text-center">
                                     {{ forloop.counter }}
                                 </td>
 
                                 <td class="text-center">
-                                    {{ foo }}
+                                    {{ foo.obtener_estudiante }}
                                 </td>
                                 <td class="text-center">
-                                    {{ foo }}
+                                    <a href="{{ foo.archivo.url }}">Archivo</a>
                                 </td>
                                 <td class="text-center">
-                                    <input class="form-control input-sm" type="text" name="calificacion" id="id_calificacion"> /{{ tarea.obtener_tarea.calificacion_maxima }}
+                                    <input class="form-control input-sm" type="text" name="calificacion"
+                                           id="id_calificacion"> /{{ tarea.calificacion_maxima }}
                                 </td>
                                 <td class="text-center">
                                     <textarea class="form-control" name="" id="" cols="30" rows="6"></textarea>
                                 </td>
                                 <td class="text-center">
+
+                                    {% if foo.calificado %}
+                                        <span class="badge badge-sm bg-gradient-success">CALIFICADO</span>
+                                    {% else %}
+                                        <span class="badge badge-sm bg-gradient-warning">NO CALIFICADO</span>
+                                    {% endif %}
 
                                 </td>
 
@@ -98,8 +130,55 @@
 
                         </tbody>
                     </table>
+                </div>
+                <div class="tab-pane fade p-3" id="trabajo_de_clase" role="tabpanel"
+                     aria-labelledby="trabajo_de_clase-tab">
+                    <table class="table table-responsive table-striped projects">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="width: 1%">
+                                N°.
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                ESTUDIANTE
+                            </th>
+                              <th class="text-center" style="width: 20%">
+                                ESTADO TAREA
+                            </th>
 
 
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for foo in tarea.obtener_inscritos_no_entregados %}
+                            <tr>
+                                <td class="text-center">
+                                    {{ forloop.counter }}
+                                </td>
+
+                                <td class="text-center">
+                                    {{ foo }}
+                                </td>
+                                <td class="text-center">
+                                   <span class="badge badge-sm bg-gradient-danger">NO ENTREGADO</span>
+                                </td>
+
+
+                            </tr>
+
+                        {% empty %}
+                            <tr>
+                                <td colspan="10"
+                                    class="text-center">No
+                                    existen registro
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -163,6 +242,25 @@
         }
 
     </script>
+    <script>
+        $(function () {
+            var tab_trabajo_de_clase = localStorage.getItem('tab_trabajo_de_clase');
+            if (!tab_trabajo_de_clase) {
+                tab_trabajo_de_clase = "#tablon-tab";
+                localStorage.setItem("tab_trabajo_de_clase", tab_trabajo_de_clase);
+            }
+
+            $('.nav-link').each(function () {
+                if ($(this).attr('href') == tab_trabajo_de_clase) {
+                    $(this).trigger('click');
+                }
+            }).click(function () {
+                localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
+            });
+        });
+
+    </script>
+
 
 
 {% endblock %}

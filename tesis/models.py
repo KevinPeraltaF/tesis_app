@@ -166,10 +166,10 @@ class DetallePublicacionTarea(ModeloBase):
         return tareaEstudiante.objects.filter(status=True,tarea = self).count()
 
     def obtener_inscritos_entregados(self):
-        return tareaEstudiante.objects.filter(status=True, tarea=self,estado_tarea=2)
+        return tareaEstudiante.objects.filter(status=True, tarea=self)
 
     def obtener_inscritos_no_entregados(self):
-        estudiantes_si_entregaron = tareaEstudiante.objects.values_list('estudiante').filter(status=True, tarea=self, estado_tarea=2)
+        estudiantes_si_entregaron = tareaEstudiante.objects.values_list('estudiante').filter(status=True, tarea=self)
         return ClaseInscrita.objects.filter(status=True,clase=self.publicacion.clase).exclude(usuario__in=estudiantes_si_entregaron)
 
 class tareaEstudiante(ModeloBase):

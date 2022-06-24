@@ -98,11 +98,12 @@
                                     <a href="{{ foo.archivo.url }}">Archivo</a>
                                 </td>
                                 <td class="text-center">
-                                    <input class="form-control input-sm" type="text" name="calificacion"
+                                    <input class="form-control input-sm agregar_calificacion" type="text" name="calificacion" value="{{ foo.calificacion|floatformat }}"
+                                           id_tarea="{{ foo.pk }}"
                                            id="id_calificacion"> /{{ tarea.calificacion_maxima }}
                                 </td>
                                 <td class="text-center">
-                                    <textarea class="form-control" name="" id="" cols="30" rows="6"></textarea>
+                                    <textarea class="form-control agregar_observacion" name="observacion" id="id_observacion"      id_tarea="{{ foo.pk }}" cols="30" rows="6">{{ foo.retroalimentacion }}</textarea>
                                 </td>
                                 <td class="text-center">
 
@@ -261,6 +262,91 @@
                 }
             }).click(function () {
                 localStorage.setItem("tab_trabajo_de_clase", $(this).attr('href'));
+            });
+        });
+
+    </script>
+
+    <script>
+        $(function () {
+            $('.agregar_calificacion').on('blur', function () {
+                var calificacion = $(this).val();
+
+                if (calificacion) {
+
+                    var id = $(this).attr('id_tarea');
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{request.path}}",
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            'peticion': 'ingresar_calificacion',
+                            'id': id,
+                            'calificacion': calificacion,
+                        },
+
+                        success: function (data) {
+
+                            if (data.respuesta === true) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    type: 'success',
+                                    title: "Calificación guardada",
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                            } else {
+                                alert("Error de petición")
+                            }
+                        },
+                        error: function () {
+                            alert('Error de conexión')
+                        }
+
+                    });
+                }
+            });
+
+            $('.agregar_observacion').on('blur', function () {
+                var observacion = $(this).val();
+
+                if (observacion) {
+
+                    var id = $(this).attr('id_tarea');
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{request.path}}",
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            'peticion': 'ingresar_observacion',
+                            'id': id,
+                            'observacion': observacion,
+                        },
+
+                        success: function (data) {
+
+                            if (data.respuesta === true) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    type: 'success',
+                                    title: "observación guardada",
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                            } else {
+                                alert("Error de petición")
+                            }
+                        },
+                        error: function () {
+                            alert('Error de conexión')
+                        }
+
+                    });
+                }
             });
         });
 

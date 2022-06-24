@@ -340,8 +340,25 @@ def Ver_Clase(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'ingresar_calificacion':
+                try:
+                    tarea = tareaEstudiante.objects.get(id=int(request.POST['id']))
+                    tarea.calificacion = request.POST['calificacion']
+                    tarea.calificado =True
+                    tarea.estado_tarea = 1
+                    tarea.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "calificación guardada correctamente."})
+                except Exception as ex:
+                    pass
 
-
+            if peticion == 'ingresar_observacion':
+                try:
+                    tarea = tareaEstudiante.objects.get(id=int(request.POST['id']))
+                    tarea.retroalimentacion = request.POST['observacion']
+                    tarea.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "calificación guardada correctamente."})
+                except Exception as ex:
+                    pass
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']

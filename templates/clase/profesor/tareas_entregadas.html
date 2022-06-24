@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"
+    />
 
 {% endblock %}
 {% block opciones %}
@@ -95,15 +99,20 @@
                                     {{ foo.obtener_estudiante }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ foo.archivo.url }}">Archivo</a>
+
+                                    <a target="_blank" class="fancy-box" href="{{ foo.archivo.url }}" data-fancybox
+                                       data-type="iframe">Archivo</a>
                                 </td>
                                 <td class="text-center">
-                                    <input class="form-control input-sm agregar_calificacion" type="text" name="calificacion" value="{{ foo.calificacion|floatformat }}"
+                                    <input class="form-control input-sm agregar_calificacion" type="text"
+                                           name="calificacion" value="{{ foo.calificacion|floatformat }}"
                                            id_tarea="{{ foo.pk }}"
                                            id="id_calificacion"> /{{ tarea.calificacion_maxima }}
                                 </td>
                                 <td class="text-center">
-                                    <textarea class="form-control agregar_observacion" name="observacion" id="id_observacion"      id_tarea="{{ foo.pk }}" cols="30" rows="6">{{ foo.retroalimentacion }}</textarea>
+                                    <textarea class="form-control agregar_observacion" name="observacion"
+                                              id="id_observacion" id_tarea="{{ foo.pk }}" cols="30"
+                                              rows="6">{{ foo.retroalimentacion }}</textarea>
                                 </td>
                                 <td class="text-center">
 
@@ -220,8 +229,10 @@
 {% endblock %}
 
 {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 
     <script>
+
         function ventana_modal(peticion, pk, titulo) {
             $.ajax({
                 type: "GET",
@@ -269,6 +280,20 @@
 
     <script>
         $(function () {
+
+            function fancybox(archivo) {
+                Fancybox.show([
+                    {
+                        src: archivo,
+                        type: "iframe",
+                        width: 640,
+                        height: 360,
+                    },
+                ]);
+
+            }
+
+
             $('.agregar_calificacion').on('blur', function () {
                 var calificacion = $(this).val();
 

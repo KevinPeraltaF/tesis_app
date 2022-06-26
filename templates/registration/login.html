@@ -87,7 +87,8 @@
 <script>
     $(function () {
         login_usuario = function () {
-
+            const btn_enviar = $('#id_login_usuario');
+            const cargando = '<i class="fa fa-cog fa-spin" role="status" aria-hidden="true"></i>';
             var usuario = $("#id_usuario").val();
             var clave = $("#id_clave").val();
             if (usuario.length == 0) {
@@ -109,15 +110,23 @@
                     'usuario': usuario,
                     'clave': clave,
                 },
+                beforeSend: function () {
+                    btn_enviar.html(cargando);
+                    btn_enviar.attr("disabled", true);
+                },
                 success: function (data) {
                     if (data.respuesta === true) {
                         window.location = '/'
                     } else {
+                        btn_enviar.html('Login');
+                        btn_enviar.attr("disabled", false);
                         alert('Login Fallido.');
                     }
 
                 },
                 error: function () {
+                    btn_enviar.html('Login');
+                    btn_enviar.attr("disabled", false);
                     alert("Error al iniciar sesión, intentelo más tarde.");
                 }
 

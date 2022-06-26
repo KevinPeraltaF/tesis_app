@@ -1,20 +1,19 @@
-<form method="POST"  enctype="multipart/form-data">
-    <input type="hidden" name="peticion" value="{{ peticion }}"/>
-    <input type="hidden" name="id" value="{{ obtener_clase.pk }}"/>
+<input type="hidden" name="peticion" value="{{ peticion }}"/>
+<input type="hidden" name="id" value="{{ obtener_clase.pk }}"/>
 
-    <div class="row-fluid">
+<div class="row-fluid">
 
-        {{ form }}
-        <br>
+    {{ form }}
+    <br>
+</div>
+
+<div class="row-fluid">
+    <div style="text-align: right; float: left; width: 100%">
+        <button type="submit" id="submit" class="btn btn-success">Guardar
+        </button>
+        <a href="javascript:;" class="btn btn-danger" data-dismiss="modal">
+            Cancelar</a>
     </div>
+</div>
 
-    <div class="row-fluid">
-        <div style="text-align: right; float: left; width: 100%">
-            <button type="submit" id="submit" class="btn btn-success">Guardar
-            </button>
-            <a href="javascript:;" class="btn btn-danger" data-dismiss="modal">
-                Cancelar</a>
-        </div>
-    </div>
-</form>
 

@@ -15,7 +15,6 @@ TIPO_PUBLICACION = (
     (2, u"MATERIAL"),
     (3, u"VIDEO"),
 )
-
 class ModeloBase(models.Model):
     from django.contrib.auth.models import User
     usuario_creacion = models.ForeignKey(User, verbose_name='Usuario Creación', blank=True, null=True,
@@ -39,6 +38,31 @@ class ModeloBase(models.Model):
             self.usuario_creacion_id = usuario
         models.Model.save(self)
 
+class MetodoCalificacion(ModeloBase):
+    nombre =models.CharField(max_length=100, verbose_name='Nombre')
+    nota_aprobacion = models.FloatField(default=0, verbose_name='Nota Aprobación')
+
+    def __str__(self):
+        return '%s - %s' % (self.nombre,self.nota_aprobacion)
+
+class DetalleMetodoCalificacion(ModeloBase):
+    modelo = models.ForeignKey(MetodoCalificacion, verbose_name="Metodo calificación", on_delete=models.CASCADE)
+    nombre = models.CharField( max_length=90, verbose_name="Campo")
+    nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
+
+    def __str__(self):
+        return '%s - %s' % (self.nombre,self.nota_aprobacion)
+
+
+class CampoDetalleMetodoCalificacion(ModeloBase):
+    detallemetodocalificacion = models.ForeignKey(DetalleMetodoCalificacion, verbose_name="Metodo calificaciñon", on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=90, verbose_name="Campo")
+    nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
+
+    def __str__(self):
+        return '%s - %s' % (self.nombre,self.nota_aprobacion)
+
+
 
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)
@@ -47,7 +71,7 @@ class Clase(ModeloBase):
     aula = models.CharField(verbose_name="Aula", max_length=100)
     archivada = models.BooleanField(default=False, verbose_name=u'Archivada')
     codigo_clase = models.CharField(verbose_name="Código de la clase", max_length=100, null=True, unique=True)
-
+    modelo = models.ForeignKey(MetodoCalificacion, verbose_name="Metodo calificación", on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Clase"
         verbose_name_plural = "Clases"
@@ -140,6 +164,7 @@ class DetallePublicacionTarea(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     calificacion_maxima = models.IntegerField(verbose_name="Calificación máxima", blank=True, null=True)
     fecha_fin_entrega = models.DateField(verbose_name='Fecha máxima de entrega', blank=True, null=True)
+    publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.publicacion

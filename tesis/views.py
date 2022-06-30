@@ -34,6 +34,7 @@ def Dashboard(request):
                         seccion = form.cleaned_data['seccion']
                         materia = form.cleaned_data['materia']
                         aula = form.cleaned_data['aula']
+                        metodocalificacion = form.cleaned_data['metodocalificacion']
                         generador_codigo_clase = User.objects.make_random_password(length=7)
                         while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
                             generador_codigo_clase = User.objects.make_random_password(length=7)
@@ -44,7 +45,8 @@ def Dashboard(request):
                             materia=materia,
                             aula=aula,
                             archivada=False,
-                            codigo_clase=generador_codigo_clase
+                            codigo_clase=generador_codigo_clase,
+                            modelo=metodocalificacion
                         )
                         clase.save(request)
 
@@ -96,11 +98,13 @@ def Dashboard(request):
                         seccion = form.cleaned_data['seccion']
                         materia = form.cleaned_data['materia']
                         aula = form.cleaned_data['aula']
+                        metodocalificacion = form.cleaned_data['metodocalificacion']
                         clase = Clase.objects.get(pk=request.POST['id'])
                         clase.nombre = nombre
                         clase.seccion = seccion
                         clase.materia = materia
                         clase.aula = aula
+                        clase.modelo = metodocalificacion
                         clase.save(request)
                         return redirect('/')
                     else:
@@ -141,7 +145,13 @@ def Dashboard(request):
             if peticion == 'editar_clase':
                 try:
                     data['obtener_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
-                    form = ClaseForm(initial=model_to_dict(clase))
+                    form = ClaseForm(initial= {
+                        'nombre': clase.nombre,
+                        'seccion': clase.seccion,
+                        'materia': clase.materia,
+                        'aula': clase.aula,
+                        'metodocalificacion':clase.modelo,
+                         })
                     data['form'] = form
                     data['peticion'] = 'editar_clase'
                     template = get_template("clase/formClase.html")

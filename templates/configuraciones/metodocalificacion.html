@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block opciones %}
+{% endblock %}
+{% block rutas %}
+    <div class="row mb-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Configuraciones</li>
+                <li class="breadcrumb-item active" aria-current="page">Mètodo Calificación</li>
+
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="container-fluid">
+            <div class="row">
+                <a href="/configuracion/?peticion=addmetodocalificacion" class="btn btn-success"> Agregar</a>
+            </div>
+            <div class="row mt-3">
+
+                <div class="container-fluid">
+                    <table class="table table-responsive table-striped projects">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="width: 1%">
+                                N°.
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                Método Calificación
+                            </th>
+                            <th class="text-center" style="width: 20%">
+                                Nota Aprobación
+                            </th>
+
+                               <th class="text-center" style="width: 20%">
+                                Detalle
+                            </th>
+
+
+                            <th class="text-center" style="width: 20%">
+                                Acciones
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for foo in metodoCalificacion %}
+                            <tr>
+                                <td class="text-center text-sm ">
+                                    {{ forloop.counter }}
+                                </td>
+
+                                <td class="text-center text-sm ">
+                                    {{ foo.nombre }}
+                                </td>
+                                <td class="text-center text-sm ">
+                                    {{ foo.nota_aprobacion }}
+                                </td>
+
+                                <td class="text-center text-sm ">
+                                    <a href="javascript:;" onclick="ventana_modal('ver_modelo_calificacion','{{ foo.pk }}','Modelo Mètodo de calificaciòn')">Detalle</a>
+                                </td>
+
+
+
+
+
+                                <td class="text-center ">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                data-offset="-52">
+                                            <i class="fas fa-bars"></i>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+
+                                                <a href="?peticion=agregar_detalle_modelo&id={{ foo.pk }}"
+                                                   class="dropdown-item">Agregar Detalle</a>
+
+
+                                                <a href="javascript:;"
+                                                   onclick="ventana_modal('editar_metodo_calificacion','{{ foo.pk }}','Editar Método de Calificación')"
+                                                   class="dropdown-item">Editar</a>
+
+
+
+                                            <a href="javascript:;"
+                                               onclick="eliminar_registro('eliminar_metodo_calificacion','{{ foo }}','{{ foo.pk }}')"
+                                               class="dropdown-item">Eliminar</a>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <br><br><br><br><br><br>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block modal %}
+    <!-- Modal -->
+    <div class="modal fade" id="modalGeneric">
+
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-modal" autocomplete="off" method="post"
+                          enctype="multipart/form-data" action="{{ request.path }}">
+                        {% csrf_token %}
+                        <div class=" contenido-modal">
+                        </div>
+                    </form>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+ <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.modal-body').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
+    </script>
+
+{% endblock %}

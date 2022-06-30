@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput
 
+from tesis.models import MetodoCalificacion
+
 
 class ClaseForm(forms.Form):
     nombre = forms.CharField(label='Nombre del curso ( Obligatorio)', required=False,
@@ -14,6 +16,9 @@ class ClaseForm(forms.Form):
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
     aula = forms.CharField(label='Aula', required=False,
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
+
+    metodocalificacion= forms.ModelChoiceField(required=True, queryset=MetodoCalificacion.objects.filter(status=True).order_by('id'),
+                             label=u'Mètodo de Calificación',  widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 

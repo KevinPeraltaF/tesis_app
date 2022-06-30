@@ -33,6 +33,8 @@ def Ver_Clase(request):
                         seccion = form.cleaned_data['seccion']
                         materia = form.cleaned_data['materia']
                         aula = form.cleaned_data['aula']
+                        metodocalificacion = form.cleaned_data['metodocalificacion']
+
                         generador_codigo_clase = User.objects.make_random_password(length=7)
                         while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
                             generador_codigo_clase = User.objects.make_random_password(length=7)
@@ -43,7 +45,8 @@ def Ver_Clase(request):
                             materia=materia,
                             aula=aula,
                             archivada=False,
-                            codigo_clase=generador_codigo_clase
+                            codigo_clase=generador_codigo_clase,
+                            modelo=metodocalificacion
                         )
                         clase.save(request)
 

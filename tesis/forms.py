@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput
 
-from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion
+from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion
 
 
 class ClaseForm(forms.Form):
@@ -106,6 +106,21 @@ class CrearTareaForm(FormularioGeneralPublicacion):
     fecha_fin_entrega = forms.DateField(label="Fecha Fin de entrega",input_formats=['%d-%m-%Y'],
                             widget=DateTimeInput(format='%d-%m-%Y',attrs={'class': 'form-control'}), required=False)
 
+    metodo = forms.CharField(label='Método de calificación', required=False,disabled=True, widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+    detallecalificacion = forms.ModelChoiceField(required=True,
+                                                queryset=DetalleMetodoCalificacion.objects.filter(status=True).order_by('id'),
+                                                label=u'Nivel',
+                                                widget=forms.Select(attrs={'class': 'form-control'}))
+
+    campo = forms.ModelChoiceField(required=True,
+                                                 queryset=CampoDetalleMetodoCalificacion.objects.none(),
+                                                 label=u'Campo',
+                                                 widget=forms.Select(attrs={'class': 'form-control'}))
+
+    def add(self,modelo):
+        self.fields['detallecalificacion'].queryset =DetalleMetodoCalificacion.objects.filter(status=True,modelo = modelo ).order_by('id')
+        self.fields['metodo'].initial = modelo
 
 class CrearMaterialForm(FormularioGeneralPublicacion):
     archivo= forms.FileField(label='Archivo', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf docx' }))

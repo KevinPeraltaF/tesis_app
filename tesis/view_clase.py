@@ -12,7 +12,8 @@ from django.template.loader import get_template
 from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm, ClaseForm, UnirmeClaseForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
-    DetallePublicacionTarea, ClaseInscrita, tareaEstudiante
+    DetallePublicacionTarea, ClaseInscrita, tareaEstudiante, CampoDetalleMetodoCalificacion
+
 
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
@@ -23,6 +24,8 @@ def Ver_Clase(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
+
+
 
             if peticion == 'crear_clase':
                 try:
@@ -480,6 +483,8 @@ def Ver_Clase(request):
                 try:
                     form = CrearTareaForm()
                     data['form'] = form
+                    modelo = Clase.objects.get(pk=request.GET['id'])
+                    form.add(modelo.modelo)
                     data['peticion'] = 'crear_tarea'
                     data['id_clase'] = request.GET['id']
                     template = get_template("clase/profesor/formCrearTarea.html")
@@ -570,6 +575,18 @@ def Ver_Clase(request):
                     data['id_tarea'] = request.GET['id']
                     template = get_template("clase/estudiante/formSubirTarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'cargar_campo_calificacion':
+                try:
+                    lista = []
+                    campos = CampoDetalleMetodoCalificacion.objects.filter(
+                        detallemetodocalificacion_id=int(request.GET['id']), status=True)
+                    for campo in campos:
+                        lista.append([campo.id, campo.nombre])
+
+                    return JsonResponse({"respuesta": True, 'lista': lista})
                 except Exception as ex:
                     pass
 

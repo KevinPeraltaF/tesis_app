@@ -23,7 +23,7 @@
     <div class="row">
         <div class="container-fluid">
             <div class="row">
-                <a href="/configuracion/?peticion=addmetodocalificacion" class="btn btn-success"> Agregar</a>
+                <a href="javascript:;" onclick="ventana_modal('addmetodocalificaciondetalle', '{{ padre }}', 'AGREGAR MÓDELO DE CALIFICACIÓN')"  class="btn btn-success"> Agregar</a>
             </div>
             <div class="row mt-3">
 
@@ -91,10 +91,12 @@
                                                    class="dropdown-item">Editar</a>
 
 
+                                            {% if not foo.en_uso %}
+                                                <a href="javascript:;"
+                                                   onclick="eliminar_registro('eliminar_metodo_calificacion','{{ foo }}','{{ foo.pk }}')"
+                                                   class="dropdown-item">Eliminar</a>
 
-                                            <a href="javascript:;"
-                                               onclick="eliminar_registro('eliminar_metodo_calificacion','{{ foo }}','{{ foo.pk }}')"
-                                               class="dropdown-item">Eliminar</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </td>
@@ -130,7 +132,7 @@
                     <form class="form-horizontal form-modal" autocomplete="off" method="post"
                           enctype="multipart/form-data" action="{{ request.path }}">
                         {% csrf_token %}
-                        <div class=" contenido-modal">
+                        <div class="contenido-modal">
                         </div>
                     </form>
 
@@ -155,7 +157,7 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        $('.modal-body').html(data.data);
+                        $('.contenido-modal').html(data.data);
                         $('#modalGeneric .modal-title').html(titulo);
                         $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
                     } else {

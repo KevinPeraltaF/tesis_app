@@ -45,6 +45,9 @@ class MetodoCalificacion(ModeloBase):
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
 
+    def en_uso(self):
+        return self.detallemetodocalificacion_set.filter(status=True).exists()
+
 class DetalleMetodoCalificacion(ModeloBase):
     modelo = models.ForeignKey(MetodoCalificacion, verbose_name="Metodo calificación", on_delete=models.CASCADE)
     nombre = models.CharField( max_length=90, verbose_name="Campo")
@@ -52,6 +55,9 @@ class DetalleMetodoCalificacion(ModeloBase):
 
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
+
+    def en_uso(self):
+        return self.campodetallemetodocalificacion_set.filter(status=True).exists()
 
 
 class CampoDetalleMetodoCalificacion(ModeloBase):
@@ -165,6 +171,7 @@ class DetallePublicacionTarea(ModeloBase):
     calificacion_maxima = models.IntegerField(verbose_name="Calificación máxima", blank=True, null=True)
     fecha_fin_entrega = models.DateField(verbose_name='Fecha máxima de entrega', blank=True, null=True)
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
+    campoubicacionNota = models.ForeignKey(CampoDetalleMetodoCalificacion, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s' % self.publicacion

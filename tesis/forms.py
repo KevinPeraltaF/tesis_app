@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput
 
-from tesis.models import MetodoCalificacion
+from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion
 
 
 class ClaseForm(forms.Form):
@@ -103,8 +103,6 @@ class FormularioGeneralPublicacion(forms.Form):
 
 
 class CrearTareaForm(FormularioGeneralPublicacion):
-    calificacion_maxima = forms.IntegerField(label='Calificación máxima', required=False,
-                             widget=forms.TextInput(attrs={'class': ' form-control', }))
     fecha_fin_entrega = forms.DateField(label="Fecha Fin de entrega",input_formats=['%d-%m-%Y'],
                             widget=DateTimeInput(format='%d-%m-%Y',attrs={'class': 'form-control'}), required=False)
 
@@ -123,3 +121,26 @@ class SubirTareaForm(forms.Form):
     archivo= forms.FileField(label='Subir Tarea', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf docx' }))
 
 
+
+class MetodoCalifcacionForm(forms.Form):
+    nombre = forms.CharField(label='Método de calificación', required=False,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+    nota_aprobacion = forms.IntegerField(label='Calificación máxima', required=False,
+                                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+
+
+class DetalleMetodoCalificacionForm(forms.Form):
+
+    nombre = forms.CharField(label='Modelo de calificación', required=False,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+    nota_aprobacion = forms.IntegerField(label='Calificación máxima', required=False,
+                                         widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+class CampoDetalleMetodoCalificacionForm(forms.Form):
+
+    nombre = forms.CharField(label='Campo', required=False,
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+    nota_aprobacion = forms.IntegerField(label='Calificación máxima', required=False,
+                                         widget=forms.TextInput(attrs={'class': ' form-control', }))

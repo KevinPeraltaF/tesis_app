@@ -29,11 +29,7 @@
 
                         </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body" style="background: url({% static 'dist/img/boxed-bg.jpg' %}) center center;">
-                        <br><br><br><br><br><br>
 
-                    </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center ">
                         <a href="/configuracion/?peticion=metodo_calificacion" class="small-box-footer">Ingresar <i
@@ -62,7 +58,7 @@
                     <form class="form-horizontal form-modal" autocomplete="off" method="post"
                           enctype="multipart/form-data" action="{{ request.path }}">
                         {% csrf_token %}
-                        <div class=" contenido-modal">
+                        <div class="contenido-modal">
                         </div>
                     </form>
 

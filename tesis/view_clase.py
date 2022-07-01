@@ -101,7 +101,7 @@ def Ver_Clase(request):
                         titulo = form.cleaned_data['titulo']
                         instrucciones = form.cleaned_data['instrucciones']
                         fecha_fin_entrega = form.cleaned_data['fecha_fin_entrega']
-                        ubicacionNota = form.cleaned_data['campoubicacionNota']
+                        ubicacionNota = form.cleaned_data['campo']
                         cabecera_publicacion = Publicacion(
                             clase_id=id_clase,
                             tipo_publicacion=1,
@@ -109,10 +109,9 @@ def Ver_Clase(request):
                             instrucciones=instrucciones
                         )
                         cabecera_publicacion.save(request)
-
                         tarea = DetallePublicacionTarea(
                             publicacion=cabecera_publicacion,
-                            calificacion_maxima=1,
+                            calificacion_maxima=ubicacionNota.nota_aprobacion,
                             fecha_fin_entrega=fecha_fin_entrega,
                             campoubicacionNota = ubicacionNota
                         )

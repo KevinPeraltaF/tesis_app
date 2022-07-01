@@ -108,13 +108,13 @@ class CrearTareaForm(FormularioGeneralPublicacion):
 
     metodo = forms.CharField(label='Método de calificación', required=False,disabled=True, widget=forms.TextInput(attrs={'class': ' form-control', }))
 
-    detallecalificacion = forms.ModelChoiceField(required=True,
+    detallecalificacion = forms.ModelChoiceField(required=False,
                                                 queryset=DetalleMetodoCalificacion.objects.filter(status=True).order_by('id'),
                                                 label=u'Nivel',
                                                 widget=forms.Select(attrs={'class': 'form-control'}))
 
     campo = forms.ModelChoiceField(required=True,
-                                                 queryset=CampoDetalleMetodoCalificacion.objects.none(),
+                                                 queryset=CampoDetalleMetodoCalificacion.objects.all(),
                                                  label=u'Campo',
                                                  widget=forms.Select(attrs={'class': 'form-control'}))
 

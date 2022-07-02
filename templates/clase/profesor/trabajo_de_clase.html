@@ -4,10 +4,9 @@
             <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
                     data-toggle="dropdown"
                     data-offset="53">
-                <i class="fas fa-bars"></i> CREAR ACTIVIDAD
+                <i class="fas fa-bars"></i> CREAR PUBLICACIÓN
             </button>
             <div class="dropdown-menu" role="menu">
-                <a href="javascript:;" id="option_tarea" class="dropdown-item">Crear Tarea</a>
                 <a href="javascript:;" id="option_material" class="dropdown-item">Crear Material</a>
                 <a href="javascript:;" id="option_video" class="dropdown-item">Crear Video</a>
 
@@ -44,7 +43,7 @@
                             {{ forloop.counter }}
                         </td>
 
-                        <td class="text-sm ">
+                        <td class="text-sm text-center ">
                             <h6 class="text-xms mb-0">{{ foo.titulo }}</h6>
                             {% if foo.tipo_publicacion == 1 %}
                                 <p class="text-xs  text-secondary mb-0"><strong>Fecha máxima de
@@ -54,9 +53,9 @@
 
                         <td class="text-center text-sm ">
                             {{ foo.get_tipo_publicacion_display }}<br>
-                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.modelo.nombre }}<br>
-                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.nombre }}<br>
-                            {{ foo.obtener_tarea.campoubicacionNota }}<br>
+{#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.modelo.nombre }}<br>#}
+{#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.nombre }}<br>#}
+{#                            {{ foo.obtener_tarea.campoubicacionNota }}<br>#}
 
                         </td>
                         <td class="text-center text-sm ">

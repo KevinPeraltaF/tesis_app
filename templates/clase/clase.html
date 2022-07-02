@@ -88,13 +88,20 @@
             <li class="nav-item">
                 <a class="nav-link" id="trabajo_de_clase-tab" data-toggle="tab" href="#trabajo_de_clase" role="tab"
                    aria-controls="trabajo_de_clase"
-                   aria-selected="false">Publicaciones de actividades</a>
+                   aria-selected="false">Publicaciones</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="personas-tab" data-toggle="tab" href="#persona" role="tab"
                    aria-controls="persona"
                    aria-selected="false">Personas inscritas</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="tarea-tab" data-toggle="tab" href="#tarea" role="tab"
+                   aria-controls="tarea"
+                   aria-selected="false">Tareas</a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab"
                    aria-controls="calificaciones"
@@ -107,6 +114,9 @@
             </div>
             <div class="tab-pane fade p-3" id="trabajo_de_clase" role="tabpanel" aria-labelledby="trabajo_de_clase-tab">
                 {% include 'clase/profesor/trabajo_de_clase.html' %}
+            </div>
+            <div class="tab-pane fade p-3" id="tarea" role="tabpanel" aria-labelledby="tarea-tab">
+                {% include 'clase/profesor/tarea.html' %}
             </div>
             <div class="tab-pane fade p-3" id="persona" role="tabpanel" aria-labelledby="personas-tab">
                 {% include 'clase/profesor/personas.html' %}

@@ -48,6 +48,9 @@ class MetodoCalificacion(ModeloBase):
     def en_uso(self):
         return self.detallemetodocalificacion_set.filter(status=True).exists()
 
+    def obtenerDetallemetododetallecalificacion(self):
+        return self.detallemetodocalificacion_set.filter(status=True)
+
 class DetalleMetodoCalificacion(ModeloBase):
     modelo = models.ForeignKey(MetodoCalificacion, verbose_name="Metodo calificación", on_delete=models.CASCADE)
     nombre = models.CharField( max_length=90, verbose_name="Campo")
@@ -58,6 +61,9 @@ class DetalleMetodoCalificacion(ModeloBase):
 
     def en_uso(self):
         return self.campodetallemetodocalificacion_set.filter(status=True).exists()
+
+    def obtenerCampo(self):
+        return self.campodetallemetodocalificacion_set.filter(status=True)
 
 
 class CampoDetalleMetodoCalificacion(ModeloBase):
@@ -199,6 +205,9 @@ class DetallePublicacionTarea(ModeloBase):
 
     def obtener_inscritos_entregados(self):
         return tareaEstudiante.objects.filter(status=True, tarea=self)
+
+    def existen_entregas(self):
+        return tareaEstudiante.objects.filter(status=True, tarea=self).exists()
 
     def obtener_inscritos_no_entregados(self):
         estudiantes_si_entregaron = tareaEstudiante.objects.values_list('estudiante').filter(status=True, tarea=self)

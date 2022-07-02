@@ -1,0 +1,46 @@
+
+<div class="row mt-3">
+    <table class="table table-striped">
+
+        <tr>
+            <th>DESCRIPCIÓN</th>
+            <th>TITULO DE LA TAREA</th>
+            <th>NOTA</th>
+
+            <th></th>
+        </tr>
+        {% for foo in detalle %}
+            <tr>
+                <th colspan="5">{{ foo.nombre }}</th>
+            </tr>
+            {% for foo2 in foo.obtenerCampo %}
+                <tr>
+                    <th colspan="5"> {{ foo2.nombre }}</th>
+                </tr>
+                <tr>
+                    {% for t in publicacion_tipo_tarea %}
+                        {% if t.obtener_tarea.campoubicacionNota.id == foo2.id %}
+                            <th>
+                            <td><h6>{{ t.titulo }}</h6></td>
+                            <td><h6> /{{ t.obtener_tarea.calificacion_maxima }}</h6></td>
+
+                            <td class="text-center ">
+                                <div class="btn-group">
+
+                                </div>
+                            </td>
+                            </th>
+                        {% endif %}
+                    {% empty %}
+                        <td colspan="5"><h6>No registra tareas</h6></td>
+                    {% endfor %}
+
+
+                </tr>
+            {% endfor %}
+
+        {% endfor %}
+
+    </table>
+  <br><br><br>
+</div>  <br><br><br>

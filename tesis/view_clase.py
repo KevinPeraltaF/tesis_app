@@ -412,8 +412,16 @@ def Ver_Clase(request):
             if peticion == 'ver_clase':
                 try:
                     data['mi_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
-                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).order_by(
+                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).exclude(tipo_publicacion=1).order_by(
                         '-id')
+
+                    data['publicacionpanel'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).order_by(
+                        '-id')
+                    data['tarea'] = tarea = Publicacion.objects.filter(status=True, clase=clase,
+                                                                       tipo_publicacion=1).order_by('-id')
+                    data['metodo'] = clase.modelo
+                    data['detalle'] = clase.modelo.obtenerDetallemetododetallecalificacion()
+
                     return render(request, "clase/clase.html", data)
                 except Exception as ex:
                     pass
@@ -435,6 +443,9 @@ def Ver_Clase(request):
                                                                                                          clase=curso,
                                                                                                          tipo_publicacion=1).order_by(
                         '-id')
+
+                    data['metodo'] = curso.modelo
+                    data['detalle'] = curso.modelo.obtenerDetallemetododetallecalificacion()
                     return render(request, "clase/estudiante/estudiante_ver_clase.html", data)
                 except Exception as ex:
                     pass

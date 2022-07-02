@@ -18,30 +18,22 @@
 {% endblock %}
 {% block content %}
 
- <div class="row">
-   <div class="col-md-3">
-                <div class="card card-primary card-outline direct-chat direct-chat-primary bg-gradient-white">
-                    <div class="card-header" style="background: url({% static 'dist/img/boxed-bg.jpg' %}) center center;">
-                        <h5 class=" text-center">Métodos de califcación</h5>
+    <div class="btn-group ">
+        <a class="btn btn-app " href="/configuracion/?peticion=metodo_calificacion">
+            <i class="fas fa-plus"></i> Métodos de califcación
+        </a>
 
-                    </div>
+    </div>
 
-                    <!-- /.card-body -->
-                    <div class="card-footer text-center " >
-                        <a href="/configuracion/?peticion=metodo_calificacion" class="small-box-footer">Ingresar <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                    <!-- /.card-footer-->
-                </div>
 
-            </div>
- </div>
+
+
 
 {% endblock %}
 
 
 {% block modal %}
-  <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="modalGeneric">
 
         <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">

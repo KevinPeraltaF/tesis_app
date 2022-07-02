@@ -1,5 +1,48 @@
 <div class="row-fluid">
+    <table class="table ">
 
+        <colgroup>
+
+        <colgroup span="2">
+
+        <colgroup span="2">
+            <tr>
+
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="9"> MÉTODO: {{ modelo.nombre }}</th>
+                <th></th>
+            </tr>
+            <tr colspan="9">
+
+                {% for foo in modelo.obtenerDetallemetododetallecalificacion %}
+                    <th></th>
+                    <th colspan="2">{{ foo.nombre }}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                {% endfor %}
+
+
+
+                <th></th>
+            </tr>
+            <tr colspan="10">
+                {% for foo in  modelo.obtenerDetallemetododetallecalificacion %}
+                    {% for foo2 in  foo.obtenerCampo %}
+                        <th>{{ foo2.nombre }}</th>
+                    {% endfor %}
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                {% endfor %}
+
+
+            </tr>
+
+
+    </table>
 </div>
 <div class="row-fluid">
     <div style="text-align: right; float: left; width: 100%">

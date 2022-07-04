@@ -68,7 +68,7 @@
             {% endblock %}
             <li class="nav-item">
 
-            <a href="javascript:;" class="nav-link text-right"> <strong>Bienvenido: </strong>{{ request.user }}</a>
+                <a href="javascript:;" class="nav-link text-right"> <strong>Bienvenido: </strong>{{ request.user }}</a>
             </li>
 
             <li class="nav-item">
@@ -80,8 +80,26 @@
                             <i class="fas fa-plus"></i>
                         </button>
                         <div class="dropdown-menu" role="menu">
-                            <a href="javascript:;" onclick="ventana_modal('crear_clase','{{ fila.pk }}','Crear curso')"
-                               class="dropdown-item">Crear curso</a>
+                            {% if request.user.is_superuser %}
+                                <a href="javascript:;"
+                                   onclick="ventana_modal('crear_clase','{{ fila.pk }}','Crear curso')"
+                                   class="dropdown-item">Crear curso</a>
+                            {% else %}
+                                {% for foo in request.user.groups.all %}
+                                    {% if not foo.pk == 2 %}
+                                        <a href="javascript:;"
+                                           onclick="ventana_modal('crear_clase','{{ fila.pk }}','Crear curso')"
+                                           class="dropdown-item">Crear curso</a>
+
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+
+
+
+
+
                             <a href="javascript:;"
                                onclick="ventana_modal('unirme_a_clase','{{ fila.pk }}','Unirme a curso')"
                                class="dropdown-item">Unirme a curso</a>
@@ -103,7 +121,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
-            <img  src="{% static 'dist/img/tarea.png' %}" alt="SayCT" class="brand-image img-circle elevation-3"
+            <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">Gestión de tareas</span>
         </a>
@@ -146,13 +164,16 @@
                             <p class="text">Mis Cursos</p>
                         </a>
                     </li>
-                 <li class="nav-header">CONFIGURACIONES</li>
-                    <li class="nav-item">
-                        <a href="/configuracion" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p class="text">Configuraciones</p>
-                        </a>
-                    </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-header">CONFIGURACIONES</li>
+                        <li class="nav-item">
+                            <a href="/configuracion" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p class="text">Configuraciones</p>
+                            </a>
+                        </li>
+
+                    {% endif %}
 
 
                 </ul>

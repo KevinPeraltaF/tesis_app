@@ -93,7 +93,7 @@
             <li class="nav-item">
                 <a class="nav-link" id="personas-tab" data-toggle="tab" href="#persona" role="tab"
                    aria-controls="persona"
-                   aria-selected="false">Personas inscritas</a>
+                   aria-selected="false">Estudiantes</a>
             </li>
 
             <li class="nav-item">
@@ -102,11 +102,11 @@
                    aria-selected="false">Tareas</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab"
-                   aria-controls="calificaciones"
-                   aria-selected="false">Calificaciones</a>
-            </li>
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" id="calificaciones-tab" data-toggle="tab" href="#calificaciones" role="tab"#}
+{#                   aria-controls="calificaciones"#}
+{#                   aria-selected="false">Calificaciones</a>#}
+{#            </li>#}
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade  p-3 show active" id="tablon" role="tabpanel" aria-labelledby="tablon-tab">
@@ -121,9 +121,9 @@
             <div class="tab-pane fade p-3" id="persona" role="tabpanel" aria-labelledby="personas-tab">
                 {% include 'clase/profesor/personas.html' %}
             </div>
-            <div class="tab-pane fade p-3" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">
-                {% include 'clase/profesor/calificaciones.html' %}
-            </div>
+{#            <div class="tab-pane fade p-3" id="calificaciones" role="tabpanel" aria-labelledby="calificaciones-tab">#}
+{#                {% include 'clase/profesor/calificaciones.html' %}#}
+{#            </div>#}
         </div>
     </div>
 

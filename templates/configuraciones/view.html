@@ -18,13 +18,29 @@
 {% endblock %}
 {% block content %}
 
-    <div class="btn-group ">
-        <a class="btn btn-app " href="/configuracion/?peticion=metodo_calificacion">
-            <i class="fas fa-plus"></i> Métodos de califcación
-        </a>
-
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong> Métodos de califcación</strong></h5>
+                    <p class="card-text">En esta opción usted podrá crear su modelo de calificación de acuerdo a su
+                        fomra de calificación.</p>
+                    <a href="/configuracion/?peticion=metodo_calificacion" class="btn btn-primary">Ingresar al
+                        módulo</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Profesores</strong></h5>
+                    <p class="card-text">En esta opción usted podrá gestionar a los profesores del sistema.</p><br>
+                    <a href="/configuracion/?peticion=profesor" class="btn btn-primary">Ingresar al
+                        módulo</a>
+                </div>
+            </div>
+        </div>
     </div>
-
 
 
 

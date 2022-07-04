@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from tesis.models import Clase, ClaseInscrita, Publicacion, MetodoCalificacion, DetalleMetodoCalificacion, \
     CampoDetalleMetodoCalificacion, DetallePublicacionVideo, DetallePublicacionMaterial, DetallePublicacionTarea, \
-    tareaEstudiante
+    tareaEstudiante, Persona
 
 
 @admin.register(Clase)
@@ -19,14 +19,18 @@ class ClaseInscritaAdmin(admin.ModelAdmin):
 
 
 admin.register(Publicacion)
-
-
 class PublicacionAdmin(admin.ModelAdmin):
     list_display = (
     'clase', 'tipo_publicacion', 'titulo', 'instrucciones', 'clase', 'usuario_creacion', 'fecha_creacion',
     'usuario_modificacion', 'fecha_modificacion', 'status',)
     search_fields = ('titulo', 'instrucciones',)
 
+@admin.register(Persona)
+class PersonaAdmin(admin.ModelAdmin):
+    list_display = (
+    'nombre1', 'nombre2', 'apellido1', 'apellido2', 'cedula', 'usuario_creacion', 'fecha_creacion',
+    'usuario_modificacion', 'fecha_modificacion', 'status',)
+    search_fields = ('apellido1', 'apellido2',)
 
 @admin.register(Publicacion)
 class PublicacionAdmin(admin.ModelAdmin):

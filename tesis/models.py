@@ -110,6 +110,7 @@ class Persona(ModeloBase):
     apellido1 = models.CharField(max_length=100, verbose_name="1er Apellido")
     apellido2 = models.CharField(max_length=100, verbose_name="2do Apellido")
     email = models.CharField(default='', max_length=200, verbose_name="Correo electronico")
+    cedula =  models.CharField(max_length=10, verbose_name="Cédula")
 
     class Meta:
         verbose_name = "Persona"

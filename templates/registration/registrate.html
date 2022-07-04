@@ -64,6 +64,15 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    {{ form.cedula.label_tag }} {{ form.cedula }}{{ form.cedula.errors }}
+                    {% if form.cedula.help_text %}
+                        <small id="help"
+                               class="form-text text-muted">{{ form.cedula.help_text|safe }}</small> {% endif %}
+                </div>
+
+
                 <div class="form-group">
                     {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
                     {% if form.username.help_text %}
@@ -76,6 +85,7 @@
                         <small id="help"
                                class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
                 </div>
+
 
                 <div class="row">
                     <div class="form-group ">

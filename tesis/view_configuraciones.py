@@ -1,5 +1,6 @@
 import sys
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -7,7 +8,7 @@ from django.template.loader import get_template
 
 from tesis.forms import MetodoCalifcacionForm, DetalleMetodoCalificacionForm, CampoDetalleMetodoCalificacionForm
 from tesis.funciones import Data_inicial
-from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion
+from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion, Persona
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -105,6 +106,14 @@ def Configuraciones(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
+
+            if peticion == 'profesor':
+                try:
+                    data['profesor'] = Persona.objects.filter(status=True, usuario__groups__id= 1)#1 profesor
+                    return render(request, "profesor/view.html", data)
+                except Exception as ex:
+                    pass
+
 
             if peticion == 'metodo_calificacion':
                 try:

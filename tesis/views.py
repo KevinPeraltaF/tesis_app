@@ -246,6 +246,7 @@ def registrate(request):
                         nombre2 = form.cleaned_data['nombre2']
                         apellido1 = form.cleaned_data['apellido1']
                         apellido2 = form.cleaned_data['apellido2']
+                        cedula = form.cleaned_data['cedula']
                         email = form.cleaned_data['email']
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
@@ -262,6 +263,7 @@ def registrate(request):
                             apellido1=apellido1,
                             apellido2=apellido2,
                             email=email,
+                            cedula=cedula,
                         )
                         persona.save(request)
                         return redirect('/login/')

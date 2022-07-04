@@ -135,12 +135,31 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-header">PANEL</li>
-                    <li class="nav-item">
-                        <a href="{% url 'dashboard' %}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p class="text">Cursos</p>
-                        </a>
-                    </li>
+
+
+                    {% for foo in request.user.groups.all %}
+                        {% if not foo.pk == 2 %}
+                            <li class="nav-item">
+                                <a href="{% url 'dashboard' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p class="text">Cursos</p>
+                                </a>
+
+                            </li>
+
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="/clase/?peticion=cursos_inscritos" class="nav-link">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p class="text">Cursos</p>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+
+
+
                     <li class="nav-header">CURSOS IMPARTIDOS</li>
                     {% for clase in clases %}
                         <li class="nav-item">
@@ -157,13 +176,7 @@
                             <p class="text">Cursos Finalizados</p>
                         </a>
                     </li>
-                    <li class="nav-header">CURSOS INSCRITOS</li>
-                    <li class="nav-item">
-                        <a href="/clase/?peticion=cursos_inscritos" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p class="text">Mis Cursos</p>
-                        </a>
-                    </li>
+
                     {% if request.user.is_superuser %}
                         <li class="nav-header">CONFIGURACIONES</li>
                         <li class="nav-item">

@@ -1,6 +1,6 @@
 
 <div class="row mt-3">
-    <table class="table table-striped">
+    <table class="table table-valign-middle">
 
         <tr>
             <th>DESCRIPCIÓN</th>
@@ -20,7 +20,8 @@
                 <tr>
                     {% for t in publicacion_tipo_tarea %}
                         {% if t.obtener_tarea.campoubicacionNota.id == foo2.id %}
-                            <th>
+                            <tr>
+                            <td></td>
                             <td><h6>{{ t.titulo }}</h6></td>
                             <td><h6> /{{ t.obtener_tarea.calificacion_maxima }}</h6></td>
 
@@ -29,7 +30,7 @@
 
                                 </div>
                             </td>
-                            </th>
+                            </tr>
                         {% endif %}
                     {% empty %}
                         <td colspan="5"><h6>No registra tareas</h6></td>

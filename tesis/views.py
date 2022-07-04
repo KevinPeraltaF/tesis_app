@@ -1,7 +1,7 @@
 import sys
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
@@ -251,6 +251,9 @@ def registrate(request):
                         password = password.strip()
                         usuario = User.objects.create_user(username, '', password)
                         usuario.save()
+
+                        grupo = Group.objects.get(pk=2)  # ESTUDIANTE
+                        grupo.user_set.add(usuario)
 
                         persona = Persona(
                             usuario=usuario,

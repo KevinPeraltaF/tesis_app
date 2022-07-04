@@ -67,6 +67,9 @@
                                 {% if estado_entrega.estado_tarea == 3 %}
                                     <span class="badge badge-sm bg-gradient-danger">{{ estado_entrega.get_estado_tarea_display }}</span>
                                 {% endif %}
+                                {% if not estado_entrega %}
+                                    <span class="badge badge-sm bg-gradient-danger">NO HA ENTREGADO LA TAREA</span>
+                                {% endif %}
                             </p>
 
                             {% if estado_entrega.estado_tarea == 1 %}

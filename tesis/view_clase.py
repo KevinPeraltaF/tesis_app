@@ -9,7 +9,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
-from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm, ClaseForm, UnirmeClaseForm
+from tesis.forms import CrearVideoForm, CrearMaterialForm, CrearTareaForm, SubirTareaForm, ClaseForm, UnirmeClaseForm, \
+    MoverTareForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Publicacion, DetallePublicacionVideo, DetallePublicacionMaterial, \
     DetallePublicacionTarea, ClaseInscrita, tareaEstudiante, CampoDetalleMetodoCalificacion
@@ -509,12 +510,33 @@ def Ver_Clase(request):
                         'titulo': publicacion.titulo,
                         'instrucciones': publicacion.instrucciones,
                         'calificacion_maxima': publicacion.obtener_tarea().calificacion_maxima,
-                        'fecha_fin_entrega': publicacion.obtener_tarea().fecha_fin_entrega
+                        'fecha_fin_entrega': publicacion.obtener_tarea().fecha_fin_entrega,
+                        'metodo': publicacion.obtener_tarea().campoubicacionNota.detallemetodocalificacion.modelo,
+                        'detallecalificacion': publicacion.obtener_tarea().campoubicacionNota.detallemetodocalificacion,
+                        'campo': publicacion.obtener_tarea().campoubicacionNota
                     })
+                    form.edit(publicacion.obtener_tarea().campoubicacionNota.detallemetodocalificacion.modelo,publicacion.obtener_tarea().campoubicacionNota.detallemetodocalificacion,publicacion.obtener_tarea().campoubicacionNota)
                     data['form'] = form
                     data['id_clase'] = request.GET['id']
                     data['peticion'] = 'editar_tarea'
                     template = get_template("clase/profesor/formCrearTarea.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+
+            if peticion == 'mover_tarea':
+                try:
+                    form = MoverTareForm()
+                    Tarea = DetallePublicacionTarea.objects.get(pk=request.GET['id'])
+                    modelo = Tarea.campoubicacionNota.detallemetodocalificacion.modelo
+                    detalle = Tarea.campoubicacionNota.detallemetodocalificacion
+                    campo = Tarea.campoubicacionNota
+                    form.add(modelo,detalle,campo)
+                    data['form'] = form
+                    data['peticion'] = 'mover_tarea'
+                    data['tarea'] = Tarea
+                    template = get_template("clase/profesor/form_mover_tarea.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

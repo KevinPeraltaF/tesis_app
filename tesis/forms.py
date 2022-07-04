@@ -122,6 +122,13 @@ class CrearTareaForm(FormularioGeneralPublicacion):
         self.fields['detallecalificacion'].queryset =DetalleMetodoCalificacion.objects.filter(status=True,modelo = modelo ).order_by('id')
         self.fields['metodo'].initial = modelo
 
+    def edit(self,modelo,detalle,campo):
+        self.fields['detallecalificacion'].queryset =DetalleMetodoCalificacion.objects.filter(status=True,modelo = modelo ).order_by('id')
+        self.fields['campo'].queryset =CampoDetalleMetodoCalificacion.objects.filter(status=True,detallemetodocalificacion = detalle ).order_by('id')
+        self.fields['metodo'].initial = modelo
+        self.fields['detallecalificacion'].initial = detalle
+        self.fields['campo'].initial = campo
+
 class CrearMaterialForm(FormularioGeneralPublicacion):
     archivo= forms.FileField(label='Archivo', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf docx' }))
 
@@ -159,3 +166,29 @@ class CampoDetalleMetodoCalificacionForm(forms.Form):
                              widget=forms.TextInput(attrs={'class': ' form-control', }))
     nota_aprobacion = forms.IntegerField(label='Calificación máxima', required=False,
                                          widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+
+
+class MoverTareForm(forms.Form):
+
+    metodo = forms.CharField(label='Método de calificación', required=False,disabled=True, widget=forms.TextInput(attrs={'class': ' form-control', }))
+
+    detallecalificacion = forms.ModelChoiceField(required=False,
+                                                queryset=DetalleMetodoCalificacion.objects.filter(status=True).order_by('id'),
+                                                label=u'Nivel',
+                                                widget=forms.Select(attrs={'class': 'form-control'}))
+
+    campo = forms.ModelChoiceField(required=True,
+                                                 queryset=CampoDetalleMetodoCalificacion.objects.all(),
+                                                 label=u'Campo',
+                                                 widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+    def add(self,modelo,detalle,campo):
+        self.fields['detallecalificacion'].queryset =DetalleMetodoCalificacion.objects.filter(status=True,modelo = modelo ).order_by('id')
+        self.fields['campo'].queryset = CampoDetalleMetodoCalificacion.objects.filter(status=True,
+                                                                                      detallemetodocalificacion=detalle).order_by(
+            'id')
+        self.fields['metodo'].initial = modelo
+        self.fields['detallecalificacion'].initial = detalle
+        self.fields['campo'].initial = campo

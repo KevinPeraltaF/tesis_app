@@ -126,6 +126,26 @@ def Ver_Clase(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+            if peticion == 'mover_tarea':
+                try:
+                    form = MoverTareForm(request.POST, request.FILES)
+                    id_Tarea = request.POST['id']
+                    tarea = DetallePublicacionTarea.objects.get(pk=id_Tarea)
+
+                    if form.is_valid():
+                        ubicacionNota = form.cleaned_data['campo']
+
+                        tarea.campoubicacionNota = ubicacionNota
+                        tarea.save(request)
+
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % tarea.publicacion.clase.pk)
+                    else:
+                        return redirect("/clase/?peticion=ver_clase&id=%s" % tarea.publicacion.clase.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
             if peticion == 'editar_tarea':
                 try:

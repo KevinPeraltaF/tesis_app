@@ -137,26 +137,36 @@
                     <li class="nav-header">PANEL</li>
 
 
-                    {% for foo in request.user.groups.all %}
-                        {% if not foo.pk == 2 %}
-                            <li class="nav-item">
-                                <a href="{% url 'dashboard' %}" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
-                                    <p class="text">Cursos</p>
-                                </a>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item">
+                            <a href="{% url 'dashboard' %}" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p class="text">Cursos</p>
+                            </a>
 
-                            </li>
+                        </li>
+                    {% else %}
+                        {% for foo in request.user.groups.all %}
+                            {% if not foo.pk == 2 %}
+                                <li class="nav-item">
+                                    <a href="{% url 'dashboard' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-th"></i>
+                                        <p class="text">Cursos</p>
+                                    </a>
 
-                        {% else %}
-                            <li class="nav-item">
-                                <a href="/clase/?peticion=cursos_inscritos" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
-                                    <p class="text">Cursos</p>
-                                </a>
-                            </li>
-                        {% endif %}
+                                </li>
 
-                    {% endfor %}
+                            {% else %}
+                                <li class="nav-item">
+                                    <a href="/clase/?peticion=cursos_inscritos" class="nav-link">
+                                        <i class="nav-icon fas fa-th"></i>
+                                        <p class="text">Cursos</p>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
 
 
 

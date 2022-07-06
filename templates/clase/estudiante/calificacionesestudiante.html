@@ -1,4 +1,4 @@
-
+{% load extra_my %}
 <div class="row mt-3">
     <table class="table table-valign-middle">
 
@@ -23,8 +23,18 @@
                             <tr>
                             <td></td>
                             <td><h6>{{ t.titulo }}</h6></td>
-                            <td><h6>
-                                /{{ t.obtener_tarea.calificacion_maxima }}</h6></td>
+                            <td>
+                                {% with tarea=t.obtener_tarea|args:t.obtener_tarea|args:request.user|call:"entrego_esta_tarea" %}
+
+                                    {% if tarea %}
+                                        {% with calificacion=t.obtener_tarea|args:request.user|call:"obtener_tarea_de_estudiante" %}
+                                        <h6>{{ calificacion.calificacion }}/{{ t.obtener_tarea.calificacion_maxima }}</h6>
+                                         {% endwith %}
+                                    {% else %}
+                                        <h6>sin entregar(0)/ {{ t.obtener_tarea.calificacion_maxima }}</h6>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
 
                                 <td class="text-center ">
                                 <div class="btn-group">

@@ -195,6 +195,9 @@ class DetallePublicacionTarea(ModeloBase):
     def tiene_tarea(self,usuario):
         return self.tareaestudiante_set.filter(status=True,estudiante = usuario).exists()
 
+    def entrego_esta_tarea(self,tarea,usuario):
+        return self.tareaestudiante_set.filter(status=True, estudiante=usuario, tarea_id=tarea).exists()
+
     def obtener_total_calificados(self):
         return tareaEstudiante.objects.filter(status=True, tarea=self, calificado=True).count()
 

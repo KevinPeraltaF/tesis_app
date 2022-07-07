@@ -477,15 +477,26 @@ def Ver_Clase(request):
             if peticion == 'estudiante_ver_clase':
                 try:
                     data['curso'] = curso = Clase.objects.get(pk=request.GET['id'])
-                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by(
+                    publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by(
                         '-id')
-                    data['publicacion_tipo_tarea'] = publicacion_tipo_tarea = Publicacion.objects.filter(status=True,
+                    publicacion_tipo_tarea = Publicacion.objects.filter(status=True,
                                                                                                          clase=curso,
                                                                                                          tipo_publicacion=1).order_by(
                         '-id')
 
                     data['metodo'] = curso.modelo
                     data['detalle'] = curso.modelo.obtenerDetallemetododetallecalificacion()
+
+                    paginator = Paginator(publicacion, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['publicacion'] = page_obj
+
+                    paginator2 = Paginator(publicacion_tipo_tarea, 15)
+                    page_number2 = request.GET.get('page2')
+                    page_obj2 = paginator2.get_page(page_number2)
+                    data['publicacion_tipo_tarea'] =  page_obj2
+
                     return render(request, "clase/estudiante/estudiante_ver_clase.html", data)
                 except Exception as ex:
                     pass

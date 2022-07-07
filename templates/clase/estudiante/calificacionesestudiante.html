@@ -42,7 +42,7 @@
                         <td colspan="5"><h6>No registra tareas</h6></td>
                     {% endfor %}
                 </tr>
-                <td>CALIFICACIÓN {{ foo2.nombre }} :
+                <td colspan="5">CALIFICACIÓN {{ foo2.nombre }} :
                     {% with nota=foo2|args:foo2|args:request.user|call:"obtener_total_nota_campos" %}
                         {{ nota }}
                     {% endwith %}

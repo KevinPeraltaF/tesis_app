@@ -172,6 +172,107 @@ def Configuraciones(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'eliminar_metodo_calificacion':
+                try:
+                    with transaction.atomic():
+                        registro = MetodoCalificacion.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
+
+            if peticion == 'eliminar_detalle_calificacion':
+                try:
+                    with transaction.atomic():
+                        registro = DetalleMetodoCalificacion.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
+
+            if peticion == 'eliminar_campo_calificacion':
+                try:
+                    with transaction.atomic():
+                        registro = CampoDetalleMetodoCalificacion.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
+
+            if peticion == 'editar_metodo_calificacion':
+                try:
+                    form = MetodoCalifcacionForm(request.POST, request.FILES)
+                    metodo = MetodoCalificacion.objects.get(pk=request.POST['id'])
+
+                    if form.is_valid():
+                        nombre = form.cleaned_data['nombre']
+                        nota_aprobacion = form.cleaned_data['nota_aprobacion']
+
+                        metodo.nombre = nombre
+                        metodo.nota_aprobacion = nota_aprobacion
+                        metodo.save(request)
+
+
+                        return redirect("/configuracion/?peticion=metodo_calificacion" )
+                    else:
+                        return redirect("/configuracion/?peticion=metodo_calificacion")
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'editar_detalle_calificacion':
+                try:
+                    form = DetalleMetodoCalificacionForm(request.POST, request.FILES)
+                    metodo = DetalleMetodoCalificacion.objects.get(pk=request.POST['id'])
+
+                    if form.is_valid():
+                        nombre = form.cleaned_data['nombre']
+                        nota_aprobacion = form.cleaned_data['nota_aprobacion']
+
+                        metodo.nombre = nombre
+                        metodo.nota_aprobacion = nota_aprobacion
+                        metodo.save(request)
+
+                        return redirect("/configuracion/?peticion=agregar_detalle_modelo&id=%s"% metodo.modelo.pk )
+                    else:
+                        return redirect("/configuracion/?peticion=agregar_detalle_modelo&id=%s"% metodo.modelo.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'editar_campo_calificacion':
+                try:
+                    form = CampoDetalleMetodoCalificacionForm(request.POST, request.FILES)
+                    metodo = CampoDetalleMetodoCalificacion.objects.get(pk=request.POST['id'])
+
+                    if form.is_valid():
+                        nombre = form.cleaned_data['nombre']
+                        nota_aprobacion = form.cleaned_data['nota_aprobacion']
+
+                        metodo.nombre = nombre
+                        metodo.nota_aprobacion = nota_aprobacion
+                        metodo.save(request)
+
+                        return redirect("/configuracion/?peticion=agregar_campo_detalle_modelo&id=%s"% metodo.detallemetodocalificacion.pk)
+                    else:
+                        return redirect("/configuracion/?peticion=agregar_campo_detalle_modelo&id=%s"% metodo.detallemetodocalificacion.pk)
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
@@ -285,6 +386,55 @@ def Configuraciones(request):
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
+
+            if peticion == 'editar_metodo_calificacion':
+                try:
+                    data['metodo'] = metodo = MetodoCalificacion.objects.get(pk=request.GET['id'])
+                    form = MetodoCalifcacionForm(initial={
+                        'nombre': metodo.nombre,
+                        'nota_aprobacion': metodo.nota_aprobacion
+                    })
+
+                    data['form'] = form
+
+                    data['peticion'] = 'editar_metodo_calificacion'
+                    template = get_template("configuraciones/modal/metodocalificacion.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'editar_detalle_calificacion':
+                try:
+                    data['metodo'] = metodo = DetalleMetodoCalificacion.objects.get(pk=request.GET['id'])
+                    form = DetalleMetodoCalificacionForm(initial={
+                        'nombre': metodo.nombre,
+                        'nota_aprobacion': metodo.nota_aprobacion
+                    })
+                    data['padre'] = request.GET['id']
+                    data['form'] = form
+                    data['peticion'] = 'editar_detalle_calificacion'
+                    template = get_template("configuraciones/modal/metodocalificaciondetalle.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'editar_campo_calificacion':
+                try:
+                    data['metodo'] = metodo = CampoDetalleMetodoCalificacion.objects.get(pk=request.GET['id'])
+                    form = CampoDetalleMetodoCalificacionForm(initial={
+                        'nombre': metodo.nombre,
+                        'nota_aprobacion': metodo.nota_aprobacion
+                    })
+                    data['padre'] = request.GET['id']
+                    data['form'] = form
+
+                    data['peticion'] = 'editar_campo_calificacion'
+                    template = get_template("configuraciones/modal/metodocalificacioncampo.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+
 
         else:
             try:

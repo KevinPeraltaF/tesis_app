@@ -129,7 +129,7 @@
                 {% for i in metodoCalificacion.paginator.page_range %}
                     {% if i == metodoCalificacion.number %}
                         <li class="page-item active">
-                            <a class="page-link" href="#">{{ i }}</a>
+                            <a class="page-link" href="/configuracion/?peticion=metodo_calificacion">{{ i }}</a>
                         </li>
                     {% else %}
                         <li class="page-item ">

@@ -76,13 +76,13 @@
 
 
                                                 <a href="javascript:;"
-                                                   onclick="ventana_modal('editar_metodo_calificacion','{{ foo.pk }}','Editar Método de Calificación')"
+                                                   onclick="ventana_modal('editar_campo_calificacion','{{ foo.pk }}','Editar campo de Calificación')"
                                                    class="dropdown-item">Editar</a>
 
 
 
                                             <a href="javascript:;"
-                                               onclick="eliminar_registro('eliminar_metodo_calificacion','{{ foo }}','{{ foo.pk }}')"
+                                               onclick="eliminar_registro('eliminar_campo_calificacion','{{ foo }}','{{ foo.pk }}')"
                                                class="dropdown-item">Eliminar</a>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                 {% for i in campo.paginator.page_range %}
                     {% if i == campo.number %}
                         <li class="page-item active">
-                            <a class="page-link" href="#">{{ i }}</a>
+                            <a class="page-link" href="/configuracion/?peticion=agregar_campo_detalle_modelo&id={{ padre }}">{{ i }}</a>
                         </li>
                     {% else %}
                         <li class="page-item ">

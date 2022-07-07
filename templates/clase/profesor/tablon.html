@@ -7,7 +7,9 @@
                     <i class="fas fa-user bg-green"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nueva tarea <br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p></h3>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nueva tarea <br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        </h3>
 
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
@@ -24,7 +26,9 @@
                     <i class="fas fa-user bg-green"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nuevo material<br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Creo una nuevo
+                            material<br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
                         </h3>
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
@@ -69,7 +73,9 @@
                     <div class="timeline-item">
                         <span class="time"><i class="fas fa-clock"></i> {{ foo.fecha_creacion }}</span>
 
-                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Compartio un video<br><p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p></h3>
+                        <h3 class="timeline-header"><a href="#">{{ foo.usuario_creacion }}</a> Compartio un video<br>
+                            <p class="text-xs  text-secondary mb-0">{{ foo.clase.obtener_profesor_clase|upper }}</p>
+                        </h3>
 
                         <div class="timeline-body">
                             <p class="text-xs  text-secondary mb-0">{{ foo.instrucciones }}</p>
@@ -90,6 +96,43 @@
             </div>
         {% endfor %}
 
+
+    </div>
+    <div class="row">
+
+        <div class="pagination-container justify-content-center">
+            <ul class="pagination pagination-secondary">
+                {% if publicacionpanel.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=ver_clase&id={{ mi_clase.pk }}&page={{ publicacionpanel.previous_page_number }}"
+                           aria-label="Previous">Anterior
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in publicacionpanel.paginator.page_range %}
+                    {% if i == publicacionpanel.number %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item ">
+                            <a class="page-link"
+                               href="?peticion=ver_clase&id={{ mi_clase.pk }}&page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if publicacionpanel.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=ver_clase&id={{ mi_clase.pk }}&page={{ publicacionpanel.next_page_number }}"
+                           aria-label="Next"> <span
+                                aria-hidden="true">Siguiente</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
 
     </div>
 </div>

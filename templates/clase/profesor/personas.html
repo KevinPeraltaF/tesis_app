@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for foo in mi_clase.obtener_inscritos %}
+        {% for foo in inscritos %}
 
             <tr>
                 <td class="text-center">
@@ -38,4 +38,41 @@
 
         </tbody>
     </table>
+</div>
+
+<div class="row">
+
+    <div class="pagination-container justify-content-center">
+        <ul class="pagination pagination-secondary">
+            {% if inscritos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?peticion=ver_clase&id={{ mi_clase.pk }}&page3={{ inscritos.previous_page_number }}"
+                       aria-label="Previous">Anterior
+                    </a>
+                </li>
+            {% endif %}
+            {% for i in inscritos.paginator.page_range %}
+                {% if i == inscritos.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item ">
+                        <a class="page-link" href="?peticion=ver_clase&id={{ mi_clase.pk }}&page3={{ i }}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if inscritos.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?peticion=ver_clase&id={{ mi_clase.pk }}&page3={{ publicacionpanel.next_page_number }}"
+                       aria-label="Next"> <span
+                            aria-hidden="true">Siguiente</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
 </div>

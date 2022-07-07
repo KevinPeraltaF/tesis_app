@@ -53,9 +53,9 @@
 
                         <td class="text-center text-sm ">
                             {{ foo.get_tipo_publicacion_display }}<br>
-{#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.modelo.nombre }}<br>#}
-{#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.nombre }}<br>#}
-{#                            {{ foo.obtener_tarea.campoubicacionNota }}<br>#}
+                            {#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.modelo.nombre }}<br>#}
+                            {#                            {{ foo.obtener_tarea.campoubicacionNota.detallemetodocalificacion.nombre }}<br>#}
+                            {#                            {{ foo.obtener_tarea.campoubicacionNota }}<br>#}
 
                         </td>
                         <td class="text-center text-sm ">
@@ -115,5 +115,44 @@
             </table>
         </div>
         <br><br><br><br><br><br>
+
     </div>
+
+</div>
+
+<div class="row">
+
+    <div class="pagination-container justify-content-center">
+        <ul class="pagination pagination-secondary">
+            {% if publicacion.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?peticion=ver_clase&id={{ mi_clase.pk }}&page2={{ publicacion.previous_page_number }}"
+                       aria-label="Previous">Anterior
+                    </a>
+                </li>
+            {% endif %}
+            {% for i in publicacion.paginator.page_range %}
+                {% if i == publicacion.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item ">
+                        <a class="page-link" href="?peticion=ver_clase&id={{ mi_clase.pk }}&page2={{ i }}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if publicacion.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?peticion=ver_clase&id={{ mi_clase.pk }}&page2={{ publicacion.next_page_number }}"
+                       aria-label="Next"> <span
+                            aria-hidden="true">Siguiente</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
 </div>

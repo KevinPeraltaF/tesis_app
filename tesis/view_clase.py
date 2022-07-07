@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
@@ -433,15 +434,33 @@ def Ver_Clase(request):
             if peticion == 'ver_clase':
                 try:
                     data['mi_clase'] = clase = Clase.objects.get(pk=request.GET['id'])
-                    data['publicacion'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).exclude(tipo_publicacion=1).order_by(
+                    publicacion = Publicacion.objects.filter(status=True, clase=clase).exclude(
+                        tipo_publicacion=1).order_by(
                         '-id')
 
-                    data['publicacionpanel'] = publicacion = Publicacion.objects.filter(status=True, clase=clase).order_by(
+                    publicacionpanel = Publicacion.objects.filter(status=True, clase=clase).order_by(
                         '-id')
                     data['tarea'] = tarea = Publicacion.objects.filter(status=True, clase=clase,
                                                                        tipo_publicacion=1).order_by('-id')
                     data['metodo'] = clase.modelo
                     data['detalle'] = clase.modelo.obtenerDetallemetododetallecalificacion()
+
+                    paginator = Paginator(publicacionpanel, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['publicacionpanel'] = page_obj
+
+                    paginator2 = Paginator(publicacion, 15)
+                    page_number2 = request.GET.get('page2')
+                    page_obj2 = paginator2.get_page(page_number2)
+                    data['publicacion'] = page_obj2
+
+                    inscritos = clase.obtener_inscritos()
+
+                    paginator3 = Paginator(inscritos, 15)
+                    page_number3 = request.GET.get('page3')
+                    page_obj3 = paginator3.get_page(page_number3)
+                    data['inscritos'] = page_obj3
 
                     return render(request, "clase/clase.html", data)
                 except Exception as ex:

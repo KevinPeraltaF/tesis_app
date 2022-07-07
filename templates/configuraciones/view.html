@@ -76,8 +76,83 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
+        function accion_archivar_clase(peticion, registro, id) {
+
+            Swal.fire({
+                title: '¿Estás seguro de archivar esta clase?',
+                text: registro,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, archivar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ reques.path }}',
+                        async: false,
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            peticion: peticion,
+                            id: id,
+                        },
+                        dataType: "json",
+                        beforeSend: function () {
+
+                        }
+                    }).done(function (data) {
+                        if (data.respuesta === true) {
+                            Swal.fire(
+                                'Archivado!',
+                                data.mensaje,
+                                'success'
+                            ).then(function () {
+                                location.reload();
+                            });
+                        } else {
+
+                            Swal.fire(data.mensaje);
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                    }).always(function () {
+                    });
 
 
+                }
 
+            })
+
+
+        }
+    </script>
 
 {% endblock %}

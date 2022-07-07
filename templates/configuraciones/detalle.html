@@ -83,7 +83,7 @@
                                         <div class="dropdown-menu" role="menu">
 
                                                 <a href="?peticion=agregar_campo_detalle_modelo&id={{ foo.pk }}"
-                                                   class="dropdown-item">Campos</a>
+                                                   class="dropdown-item">campos</a>
 
 
                                             <a href="javascript:;"
@@ -112,6 +112,44 @@
                 </div>
                 <br><br><br><br><br><br>
             </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="pagination-container justify-content-center">
+            <ul class="pagination pagination-secondary">
+                {% if modelo.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=agregar_detalle_modelo&id={{ padre }}&page={{ modelo.previous_page_number }}"
+                           aria-label="Previous">Anterior
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in modelo.paginator.page_range %}
+                    {% if i == modelo.number %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item ">
+                            <a class="page-link"
+                               href="?peticion=agregar_detalle_modelo&id={{ padre }}&page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if modelo.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=agregar_detalle_modelo&id={{ padre }}&page={{ modelo.next_page_number }}"
+                           aria-label="Next"> <span
+                                aria-hidden="true">Siguiente</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
 
     </div>

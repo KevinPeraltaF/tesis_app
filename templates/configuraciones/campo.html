@@ -102,6 +102,44 @@
         </div>
 
     </div>
+
+    <div class="row">
+
+        <div class="pagination-container justify-content-center">
+            <ul class="pagination pagination-secondary">
+                {% if campo.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=agregar_campo_detalle_modelo&id={{ padre }}&page={{ campo.previous_page_number }}"
+                           aria-label="Previous">Anterior
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in campo.paginator.page_range %}
+                    {% if i == campo.number %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item ">
+                            <a class="page-link"
+                               href="?peticion=agregar_campo_detalle_modelo&id={{ padre }}&page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if campo.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?peticion=agregar_campo_detalle_modelo&id={{ padre }}&page={{ campo.next_page_number }}"
+                           aria-label="Next"> <span
+                                aria-hidden="true">Siguiente</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
 {% endblock %}
 
 

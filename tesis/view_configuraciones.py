@@ -1,14 +1,17 @@
 import sys
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
-from tesis.forms import MetodoCalifcacionForm, DetalleMetodoCalificacionForm, CampoDetalleMetodoCalificacionForm
+from tesis.forms import MetodoCalifcacionForm, DetalleMetodoCalificacionForm, CampoDetalleMetodoCalificacionForm, \
+    ClaseForm, UnirmeClaseForm
 from tesis.funciones import Data_inicial
-from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion, Persona
+from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion, Persona, Clase, \
+    ClaseInscrita
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -20,6 +23,72 @@ def Configuraciones(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
+
+            if peticion == 'crear_clase':
+                try:
+                    form = ClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+
+                        nombre = form.cleaned_data['nombre']
+                        seccion = form.cleaned_data['seccion']
+                        materia = form.cleaned_data['materia']
+                        aula = form.cleaned_data['aula']
+                        metodocalificacion = form.cleaned_data['metodocalificacion']
+
+                        generador_codigo_clase = User.objects.make_random_password(length=7)
+                        while Clase.objects.filter(codigo_clase=generador_codigo_clase).exists():
+                            generador_codigo_clase = User.objects.make_random_password(length=7)
+
+                        clase = Clase(
+                            nombre=nombre,
+                            seccion=seccion,
+                            materia=materia,
+                            aula=aula,
+                            archivada=False,
+                            codigo_clase=generador_codigo_clase,
+                            modelo=metodocalificacion
+                        )
+                        clase.save(request)
+
+                        return redirect('/')
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm(request.POST, request.FILES)
+                    if form.is_valid():
+
+                        codigo_clase = form.cleaned_data['codigo_clase']
+                        usuario = request.user
+                        if Clase.objects.filter(codigo_clase=codigo_clase).exists():
+                            clase = Clase.objects.get(codigo_clase=codigo_clase)
+                            if not clase.usuario_creacion == usuario:
+                                clase_inscrita = ClaseInscrita(
+                                    usuario=usuario,
+                                    clase=clase,
+
+                                )
+                                clase_inscrita.save(request)
+
+                            return redirect('/clase/?peticion=estudiante_ver_clase&id=%s' % clase.pk)
+                        else:
+                            return JsonResponse(
+                                {"respuesta": False, "mensaje": "El código que ingreso es incorrecto."})
+
+
+                    else:
+                        return render(request, "registration/dashboard.html", {'form': form})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
             if peticion == 'addmetodocalificacion':
                 try:
@@ -117,7 +186,11 @@ def Configuraciones(request):
 
             if peticion == 'metodo_calificacion':
                 try:
-                    data['metodoCalificacion'] = metodoCalificacion = MetodoCalificacion.objects.filter(status=True)
+                    metodoCalificacion = MetodoCalificacion.objects.filter(status=True)
+                    paginator = Paginator(metodoCalificacion, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['metodoCalificacion'] = page_obj
 
                     return render(request, "configuraciones/metodocalificacion.html", data)
                 except Exception as ex:
@@ -134,18 +207,29 @@ def Configuraciones(request):
 
             if peticion == 'agregar_detalle_modelo':
                 try:
-                    detalle = DetalleMetodoCalificacion.objects.filter(modelo_id=request.GET['id'],status=True)
-                    data['modelo'] = detalle
+                    detalle = DetalleMetodoCalificacion.objects.filter(modelo_id=request.GET['id'], status=True)
                     data['padre'] = request.GET['id']
+
+                    paginator = Paginator(detalle, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['modelo'] = page_obj
+
                     return render(request, "configuraciones/detalle.html", data)
                 except Exception as ex:
                     pass
 
             if peticion == 'agregar_campo_detalle_modelo':
                 try:
-                    campo = CampoDetalleMetodoCalificacion.objects.filter(detallemetodocalificacion_id=request.GET['id'],status=True)
-                    data['campo'] = campo
+                    campo = CampoDetalleMetodoCalificacion.objects.filter(
+                        detallemetodocalificacion_id=request.GET['id'], status=True)
                     data['padre'] = request.GET['id']
+
+                    paginator = Paginator(campo, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['campo'] = page_obj
+
                     return render(request, "configuraciones/campo.html", data)
                 except Exception as ex:
                     pass
@@ -178,6 +262,26 @@ def Configuraciones(request):
                     data['padre'] = request.GET['id']
                     data['peticion'] = 'addmetodocalificacioncampo'
                     template = get_template("configuraciones/modal/metodocalificacioncampo.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'crear_clase':
+                try:
+                    form = ClaseForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_clase'
+                    template = get_template("clase/formClase.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'unirme_a_clase':
+                try:
+                    form = UnirmeClaseForm()
+                    data['form'] = form
+                    data['peticion'] = 'unirme_a_clase'
+                    template = get_template("clase/formUnirmeClase.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass

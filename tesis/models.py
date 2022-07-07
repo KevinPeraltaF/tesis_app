@@ -6,6 +6,7 @@ from django.db import models
 
 
 # Create your models here.
+from django.db.models import Sum
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 
@@ -67,15 +68,40 @@ class DetalleMetodoCalificacion(ModeloBase):
 
 
 class CampoDetalleMetodoCalificacion(ModeloBase):
-    detallemetodocalificacion = models.ForeignKey(DetalleMetodoCalificacion, verbose_name="Metodo calificaciñon", on_delete=models.CASCADE)
+    detallemetodocalificacion = models.ForeignKey(DetalleMetodoCalificacion, verbose_name="Metodo calificaciñon",
+                                                  on_delete=models.CASCADE)
     nombre = models.CharField(max_length=90, verbose_name="Campo")
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
 
     def __str__(self):
-        return '%s - %s' % (self.nombre,self.nota_aprobacion)
+        return '%s - %s' % (self.nombre, self.nota_aprobacion)
 
+    def obtener_total_nota_campos(self, campo, usuario):
+        suma_nota = tareaEstudiante.objects.filter(status=True, tarea__campoubicacionNota=campo,
+                                                   estudiante=usuario).aggregate(Sum('calificacion'))
 
+        if suma_nota['calificacion__sum'] is None:
+            nota = 0
+        else:
+            nota = suma_nota['calificacion__sum']
+        return nota
 
+    def obtener_cantiad_de_tarea(self, campo):
+        total = DetallePublicacionTarea.objects.filter(status=True, campoubicacionNota=campo).count()
+        return total
+
+    def obtener_promedio_nota_campos(self, campo, usuario):
+        promedio = 0
+        nota = tareaEstudiante.objects.filter(status=True, tarea__campoubicacionNota=campo,
+                                              estudiante=usuario).aggregate(Sum('calificacion'))
+        cantidad = DetallePublicacionTarea.objects.filter(status=True, campoubicacionNota=campo).count()
+        if nota['calificacion__sum'] is None:
+            promedio = 0
+        else:
+            nota = nota['calificacion__sum']
+            promedio = nota / cantidad
+
+        return promedio
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)
     seccion = models.CharField(verbose_name="Sección", max_length=100)
@@ -216,6 +242,7 @@ class DetallePublicacionTarea(ModeloBase):
     def obtener_inscritos_no_entregados(self):
         estudiantes_si_entregaron = tareaEstudiante.objects.values_list('estudiante').filter(status=True, tarea=self)
         return ClaseInscrita.objects.filter(status=True,clase=self.publicacion.clase).exclude(usuario__in=estudiantes_si_entregaron)
+
 
 class tareaEstudiante(ModeloBase):
     tarea =  models.ForeignKey(DetallePublicacionTarea, null=True, on_delete=models.CASCADE)

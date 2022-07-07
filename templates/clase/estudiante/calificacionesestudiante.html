@@ -21,38 +21,45 @@
                     {% for t in publicacion_tipo_tarea %}
                         {% if t.obtener_tarea.campoubicacionNota.id == foo2.id %}
                             <tr>
-                            <td></td>
-                            <td><h6>{{ t.titulo }}</h6></td>
-                            <td>
-                                {% with tarea=t.obtener_tarea|args:t.obtener_tarea|args:request.user|call:"entrego_esta_tarea" %}
+                                <td></td>
+                                <td><h6>{{ t.titulo }}</h6></td>
+                                <td>
+                                    {% with tarea=t.obtener_tarea|args:t.obtener_tarea|args:request.user|call:"entrego_esta_tarea" %}
 
-                                    {% if tarea %}
-                                        {% with calificacion=t.obtener_tarea|args:request.user|call:"obtener_tarea_de_estudiante" %}
-                                        <h6>{{ calificacion.calificacion }}/{{ t.obtener_tarea.calificacion_maxima }}</h6>
-                                         {% endwith %}
-                                    {% else %}
-                                        <h6>sin entregar(0)/ {{ t.obtener_tarea.calificacion_maxima }}</h6>
-                                    {% endif %}
-                                {% endwith %}
-                            </td>
+                                        {% if tarea %}
+                                            {% with calificacion=t.obtener_tarea|args:request.user|call:"obtener_tarea_de_estudiante" %}
+                                                <h6>{{ calificacion.calificacion }}/{{ t.obtener_tarea.calificacion_maxima }}</h6>
+                                            {% endwith %}
+                                        {% else %}
+                                            <h6>0/ {{ t.obtener_tarea.calificacion_maxima }} - sin entregar </h6>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
 
-                                <td class="text-center ">
-                                <div class="btn-group">
-
-                                </div>
-                            </td>
                             </tr>
                         {% endif %}
                     {% empty %}
                         <td colspan="5"><h6>No registra tareas</h6></td>
                     {% endfor %}
-
-
                 </tr>
+                <td>CALIFICACIÓN {{ foo2.nombre }} :
+                    {% with nota=foo2|args:foo2|args:request.user|call:"obtener_total_nota_campos" %}
+                        {{ nota }}
+                    {% endwith %}
+                    /
+                    {% with cantidad=foo2|args:foo2|call:"obtener_cantiad_de_tarea" %}
+                        {{ cantidad }}
+                    {% endwith %}
+                    =
+                    {% with promedio=foo2|args:foo2|args:request.user|call:"obtener_promedio_nota_campos" %}
+                        {{ promedio }}
+                    {% endwith %}
+
+                </td>
             {% endfor %}
 
         {% endfor %}
 
     </table>
-  <br><br><br>
+    <br><br><br>
 </div>  <br><br><br>

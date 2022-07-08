@@ -120,11 +120,38 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/" class="brand-link">
+
+        {% if request.user.is_superuser %}
+             <a href="/" class="brand-link">
             <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">Gestión de tareas</span>
         </a>
+        {% else %}
+            {% for foo in request.user.groups.all %}
+                {% if  foo.pk == 2 %}
+                    <a href="/clase/?peticion=cursos_inscritos" class="brand-link">
+                        <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT"
+                             class="brand-image img-circle elevation-3"
+                             style="opacity: .8">
+                        <span class="brand-text font-weight-light">Gestión de tareas</span>
+                    </a>
+
+                {% endif %}
+
+                 {% if foo.pk == 2 %}
+                    <a href="/clase/?peticion=cursos_inscritos" class="brand-link">
+                        <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT"
+                             class="brand-image img-circle elevation-3"
+                             style="opacity: .8">
+                        <span class="brand-text font-weight-light">Gestión de tareas</span>
+                    </a>
+
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+
         <!-- Sidebar -->
         <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-overflow-x">
 

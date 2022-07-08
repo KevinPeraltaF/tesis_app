@@ -194,7 +194,15 @@ def Login(request):
                     if usuario is not None:
                         if usuario.is_active:
                             login(request, usuario)
-                            return JsonResponse({"respuesta": True})
+                            valor = False
+                            for foo in usuario.groups.all():
+                                if foo.pk == 2:
+                                    valor =True
+                                else:
+                                    valor = False
+
+
+                            return JsonResponse({"respuesta": True, 'es_estudiante':valor})
                         else:
                             return JsonResponse(
                                 {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})

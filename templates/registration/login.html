@@ -116,7 +116,12 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        window.location = '/'
+                        if (data.es_estudiante === true){
+                            window.location = '/clase/?peticion=cursos_inscritos'
+                        }else{
+                            window.location = '/'
+                        }
+
                     } else {
                         btn_enviar.html('Login');
                         btn_enviar.attr("disabled", false);

@@ -9,10 +9,12 @@
     <div class="row mb-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Configuraciones</li>
-                <li class="breadcrumb-item active" aria-current="page">Mètodo Calificación</li>
-                <li class="breadcrumb-item active" aria-current="page">Detalle Mètodo Calificación</li>
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item " aria-current="page" ><a href="/configuracion/">Configuraciones</a></li>
+                <li class="breadcrumb-item " aria-current="page"><a href="/configuracion/?peticion=metodo_calificacion">Método calificación</a></li>
+                <li class="breadcrumb-item " aria-current="page"><a href="/configuracion/?peticion=agregar_detalle_modelo&id={{ campo.0.detallemetodocalificacion.modelo.id}}">Segmento</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Campos</li>
+
 
             </ol>
         </nav>

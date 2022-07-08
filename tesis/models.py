@@ -43,8 +43,14 @@ class MetodoCalificacion(ModeloBase):
     nombre =models.CharField(max_length=100, verbose_name='Nombre')
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota Aprobación')
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
+
+    class Meta:
+        ordering = ['-id']
 
     def en_uso(self):
         return self.detallemetodocalificacion_set.filter(status=True).exists()
@@ -56,6 +62,9 @@ class DetalleMetodoCalificacion(ModeloBase):
     modelo = models.ForeignKey(MetodoCalificacion, verbose_name="Metodo calificación", on_delete=models.CASCADE)
     nombre = models.CharField( max_length=90, verbose_name="Campo")
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
+
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
@@ -72,6 +81,9 @@ class CampoDetalleMetodoCalificacion(ModeloBase):
                                                   on_delete=models.CASCADE)
     nombre = models.CharField(max_length=90, verbose_name="Campo")
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
+
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return '%s - %s' % (self.nombre, self.nota_aprobacion)
@@ -151,6 +163,9 @@ class ClaseInscrita(ModeloBase):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     clase = models.ForeignKey(Clase, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         if Persona.objects.filter(usuario=self.usuario, status=True).exists():
             persona = Persona.objects.get(usuario=self.usuario, status=True)
@@ -187,7 +202,8 @@ class Publicacion(ModeloBase):
     def obtener_tarea(self):
         return self.detallepublicaciontarea_set.get()
 
-
+    class Meta:
+        ordering = ['-id']
 
 
 
@@ -205,6 +221,9 @@ class DetallePublicacionTarea(ModeloBase):
     fecha_fin_entrega = models.DateField(verbose_name='Fecha máxima de entrega', blank=True, null=True)
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     campoubicacionNota = models.ForeignKey(CampoDetalleMetodoCalificacion, blank=True, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return '%s' % self.publicacion
@@ -255,6 +274,8 @@ class tareaEstudiante(ModeloBase):
     estado_tarea = models.IntegerField(choices=ESTADO_TAREA, null=True, blank=True, verbose_name='Tipo publicación')
     retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=True, null=True)
 
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         if self.calificado:
@@ -280,6 +301,9 @@ class DetallePublicacionMaterial(ModeloBase):
     publicacion = models.ForeignKey(Publicacion, null=True, on_delete=models.CASCADE)
     archivo = models.FileField(upload_to='material_subido/%Y/%m/%d', verbose_name='Archivo Material')
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         return u'%s - %s' % (self.publicacion, self.get_tipo_archivo_display())
 
@@ -292,7 +316,8 @@ class DetallePublicacionVideo(ModeloBase):
     def __str__(self):
         return u'%s - %s' % (self.publicacion, self.urlvideo)
 
-
+    class Meta:
+        ordering = ['-id']
 
 
 

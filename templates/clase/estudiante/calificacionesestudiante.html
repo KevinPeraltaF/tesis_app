@@ -2,7 +2,7 @@
 <div class="row mt-3">
     <table class="table table-valign-middle">
 
-        <tr>
+        <tr class="table-success">
             <th>DESCRIPCIÓN</th>
             <th>TITULO DE LA TAREA</th>
             <th>NOTA</th>
@@ -10,20 +10,20 @@
             <th></th>
         </tr>
         {% for foo in detalle %}
-            <tr>
+            <tr class="table-info">
                 <th colspan="5">{{ foo.nombre }}</th>
             </tr>
             {% for foo2 in foo.obtenerCampo %}
-                <tr>
+                <tr class="table-warning">
                     <th colspan="5"> {{ foo2.nombre }}</th>
                 </tr>
                 <tr>
                     {% for t in publicacion_tipo_tarea %}
                         {% if t.obtener_tarea.campoubicacionNota.id == foo2.id %}
-                            <tr>
+                            <tr class="table-warning">
                                 <td></td>
                                 <td><h6>{{ t.titulo }}</h6></td>
-                                <td>
+                                <td colspan="2">
                                     {% with tarea=t.obtener_tarea|args:t.obtener_tarea|args:request.user|call:"entrego_esta_tarea" %}
 
                                         {% if tarea %}
@@ -31,32 +31,47 @@
                                                 <h6>{{ calificacion.calificacion }}/{{ t.obtener_tarea.calificacion_maxima }}</h6>
                                             {% endwith %}
                                         {% else %}
-                                            <h6>0/ {{ t.obtener_tarea.calificacion_maxima }} - sin entregar </h6>
+                                            <h6>0/ {{ t.obtener_tarea.calificacion_maxima }} - <span
+                                                    class="badge badge-sm bg-gradient-danger">sin entregar</span></h6>
                                         {% endif %}
                                     {% endwith %}
                                 </td>
 
                             </tr>
+
                         {% endif %}
                     {% empty %}
                         <td colspan="5"><h6>No registra tareas</h6></td>
                     {% endfor %}
                 </tr>
-                <td colspan="5">CALIFICACIÓN {{ foo2.nombre }} :
-                    {% with nota=foo2|args:foo2|args:request.user|call:"obtener_total_nota_campos" %}
-                        {{ nota }}
-                    {% endwith %}
-                    /
-                    {% with cantidad=foo2|args:foo2|call:"obtener_cantiad_de_tarea" %}
-                        {{ cantidad }}
-                    {% endwith %}
-                    =
-                    {% with promedio=foo2|args:foo2|args:request.user|call:"obtener_promedio_nota_campos" %}
-                        {{ promedio }}
-                    {% endwith %}
+                <td colspan="5" class="table-active">NOTA {{ foo2.nombre }} :
+                    {#                  {% with nota=foo2|args:foo2|args:request.user|call:"obtener_total_nota_campos" %}#}
+                    {#                        {{ nota }}#}
+                    {#                    {% endwith %}#}
+                    {#                    /#}
+                    {#                    {% with cantidad=foo2|args:foo2|call:"obtener_cantiad_de_tarea" %}#}
+                    {#                        {{ cantidad }}#}
+                    {#                    {% endwith %}#}
+                    {#                    =#}
+
+                    <span class="badge badge-sm bg-gradient-blue">
+                          {% with promedio=foo2|args:foo2|args:request.user|call:"obtener_promedio_nota_campos" %}
+                              {{ promedio }}
+                              <input type="hidden" name="" class="promedio_parcial_{{ foo.id }}"
+                                     value=" {{ promedio }}">
+                          {% endwith %}
+
+                      </span>
 
                 </td>
             {% endfor %}
+
+            {#            <tr class="table-primary">#}
+            {#                <th></th>#}
+            {#                <th></th>#}
+            {#                <th colspan="5">NOTA {{ foo.nombre }}:</th>#}
+            {#            </tr>#}
+
 
         {% endfor %}
 

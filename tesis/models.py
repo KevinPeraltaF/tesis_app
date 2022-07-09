@@ -44,13 +44,13 @@ class MetodoCalificacion(ModeloBase):
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota Aprobación')
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def en_uso(self):
         return self.detallemetodocalificacion_set.filter(status=True).exists()
@@ -64,7 +64,7 @@ class DetalleMetodoCalificacion(ModeloBase):
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return '%s - %s' % (self.nombre,self.nota_aprobacion)
@@ -83,7 +83,7 @@ class CampoDetalleMetodoCalificacion(ModeloBase):
     nota_aprobacion = models.FloatField(default=0, verbose_name='Nota')
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return '%s - %s' % (self.nombre, self.nota_aprobacion)
@@ -114,6 +114,7 @@ class CampoDetalleMetodoCalificacion(ModeloBase):
             promedio = nota / cantidad
 
         return promedio
+
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)
     seccion = models.CharField(verbose_name="Sección", max_length=100)
@@ -164,7 +165,7 @@ class ClaseInscrita(ModeloBase):
     clase = models.ForeignKey(Clase, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         if Persona.objects.filter(usuario=self.usuario, status=True).exists():
@@ -203,7 +204,7 @@ class Publicacion(ModeloBase):
         return self.detallepublicaciontarea_set.get()
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
 
 
@@ -223,7 +224,7 @@ class DetallePublicacionTarea(ModeloBase):
     campoubicacionNota = models.ForeignKey(CampoDetalleMetodoCalificacion, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return '%s' % self.publicacion
@@ -275,7 +276,7 @@ class tareaEstudiante(ModeloBase):
     retroalimentacion = models.TextField(default='', verbose_name='Retroalimentacion', blank=True, null=True)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         if self.calificado:
@@ -302,7 +303,7 @@ class DetallePublicacionMaterial(ModeloBase):
     archivo = models.FileField(upload_to='material_subido/%Y/%m/%d', verbose_name='Archivo Material')
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
     def __str__(self):
         return u'%s - %s' % (self.publicacion, self.get_tipo_archivo_display())
@@ -317,7 +318,7 @@ class DetallePublicacionVideo(ModeloBase):
         return u'%s - %s' % (self.publicacion, self.urlvideo)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
 
 
 

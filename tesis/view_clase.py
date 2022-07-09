@@ -477,12 +477,10 @@ def Ver_Clase(request):
             if peticion == 'estudiante_ver_clase':
                 try:
                     data['curso'] = curso = Clase.objects.get(pk=request.GET['id'])
-                    publicacion = Publicacion.objects.filter(status=True, clase=curso).order_by(
-                        '-id')
+                    publicacion = Publicacion.objects.filter(status=True, clase=curso)
                     publicacion_tipo_tarea = Publicacion.objects.filter(status=True,
-                                                                                                         clase=curso,
-                                                                                                         tipo_publicacion=1).order_by(
-                        '-id')
+                                                                        clase=curso,
+                                                                        tipo_publicacion=1)
 
                     data['metodo'] = curso.modelo
                     data['detalle'] = curso.modelo.obtenerDetallemetododetallecalificacion()

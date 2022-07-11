@@ -307,7 +307,7 @@ def registrate(request):
 
                 if peticion == 'validar_email':
                     correo = request.GET['email']
-                    email = Persona.objects.filter(email=correo)
+                    email = Persona.objects.filter(email=correo, status=True)
                     if email.exists():
                         return JsonResponse({"respuesta": True, 'mensaje': 'Email ya existe'})
                     else:

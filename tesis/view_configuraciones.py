@@ -1,6 +1,6 @@
 import sys
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
@@ -206,6 +206,17 @@ def Configuraciones(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'eliminar_profesor':
+                try:
+                    with transaction.atomic():
+                        registro = Persona.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
+
             if peticion == 'editar_metodo_calificacion':
                 try:
                     form = MetodoCalifcacionForm(request.POST, request.FILES)
@@ -272,6 +283,44 @@ def Configuraciones(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'crear_profesor':
+                try:
+                    form = PersonaForm(request.POST)
+                    if form.is_valid():
+                        nombre1 = form.cleaned_data['nombre1']
+                        nombre2 = form.cleaned_data['nombre2']
+                        apellido1 = form.cleaned_data['apellido1']
+                        apellido2 = form.cleaned_data['apellido2']
+                        cedula = form.cleaned_data['cedula']
+                        email = form.cleaned_data['email']
+
+                        username = email.strip()  # Eliminar espacios y líneas nuevas
+                        password = cedula.strip()
+                        usuario = User.objects.create_user(username, '', password)
+                        usuario.save()
+
+                        grupo = Group.objects.get(pk=1)  # PROFESOR
+                        grupo.user_set.add(usuario)
+
+                        persona = Persona(
+                            usuario=usuario,
+                            nombre1=nombre1,
+                            nombre2=nombre2,
+                            apellido1=apellido1,
+                            apellido2=apellido2,
+                            email=email,
+                            cedula=cedula,
+                        )
+                        persona.save(request)
+
+                        return redirect('/configuracion/?peticion=profesor')
+                    else:
+                        return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
 
     else:
         if 'peticion' in request.GET:

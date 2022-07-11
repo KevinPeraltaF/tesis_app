@@ -11,12 +11,16 @@
             <ol class="breadcrumb">
                 {% if request.user.is_superuser %}
                     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item " aria-current="page" ><a href="/configuracion/">Configuraciones</a></li>
                 {% else %}
                     {% for foo in request.user.groups.all %}
                         {% if not foo.pk == 2 %}
                             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                            <li class="breadcrumb-item " aria-current="page" ><a href="/configuracion/">Configuraciones</a></li>
                         {% else %}
+
                             <li class="breadcrumb-item"><a href="/clase/?peticion=cursos_inscritos">Inicio</a></li>
+                            <li class="breadcrumb-item " aria-current="page" ><a href="/configuracion/">Configuraciones</a></li>
                         {% endif %}
 
                     {% endfor %}

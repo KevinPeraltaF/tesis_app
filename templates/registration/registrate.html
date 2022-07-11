@@ -26,6 +26,29 @@
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="peticion" value="registrate">
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
+                            {% if form.username.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
+                        </div>
+
+                    </div>
+                    <div class="col">
+
+                        <div class="form-group">
+                            {{ form.cedula.label_tag }} {{ form.cedula }}{{ form.cedula.errors }}
+                            {% if form.cedula.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.cedula.help_text|safe }}</small> {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col">
                         <fieldset class="form-group ">
@@ -40,11 +63,11 @@
                         <div class="form-group   ">
                             {{ form.nombre2.label_tag }} {{ form.nombre2 }}{{ form.nombre2.errors }}
                             {% if form.nombre2.help_text %}
-                                <small id="help"
-                                       class="form-text text-muted">{{ form.nombre2.help_text|safe }}</small> {% endif %}
+                                <small id="help"   class="form-text text-muted">{{ form.nombre2.help_text|safe }}</small> {% endif %}
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col">
                         <div class="form-group   ">
@@ -65,20 +88,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    {{ form.cedula.label_tag }} {{ form.cedula }}{{ form.cedula.errors }}
-                    {% if form.cedula.help_text %}
-                        <small id="help"
-                               class="form-text text-muted">{{ form.cedula.help_text|safe }}</small> {% endif %}
-                </div>
 
-
-                <div class="form-group">
-                    {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
-                    {% if form.username.help_text %}
-                        <small id="help"
-                               class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
-                </div>
                 <div class="form-group">
                     {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
                     {% if form.email.help_text %}
@@ -88,22 +98,22 @@
 
 
                 <div class="row">
-                   <div class="col">
+                    <div class="col">
                         <div class="form-group ">
-                        {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
-                        {% if form.password1.help_text %}
-                            <small id="help"
-                                   class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
+                            {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
+                            {% if form.password1.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
+                        </div>
                     </div>
-                   </div>
-                   <div class="col">
+                    <div class="col">
                         <div class="form-group">
-                        {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
-                        {% if form.password2.help_text %}
-                            <small id="help"
-                                   class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
+                            {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
+                            {% if form.password2.help_text %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
+                        </div>
                     </div>
-                   </div>
                 </div>
 
                 <div class="text-center">
@@ -115,7 +125,6 @@
                 </div>
 
             </form>
-
 
 
         </div>
@@ -134,22 +143,52 @@
 <script src="{% static 'dist/js/ruc_jquery_validator.min.js' %}"></script>
 
 <script>
+    function mensajeSuccess(mensaje) {
+        Swal.fire('', mensaje, 'success')
+    }
+
+    function mensajeWarning(mensaje) {
+        Swal.fire('', mensaje, 'warning')
+    }
+
+    function mensajeDanger(mensaje) {
+        Swal.fire('', mensaje, 'error')
+    }
 
     var opciones = {
         strict: true,              // va a validar siempre, aunque la cantidad de caracteres no sea 10 ni 13
         events: "change",          // evento que va a disparar la validación
         the_classes: "invalid",    // clase que se va a agregar al nodo en el que se realiza la validación
         onValid: function () {
+
+            if ($("#id_cedula").val().length == 10) {
+                $.ajax({
+                    type: "GET",
+                    url: `{{ request.path }}`,
+                    dataType: "json",
+                    data: {
+                        'peticion': 'validar_cedula',
+                        'cedula': $("#id_cedula").val(),
+                    },
+                    success: function (data) {
+                        if (data.respuesta === true) {
+                            mensajeDanger(data.mensaje)
+                        } else {
+                            mensajeWarning(data.mensaje);
+                        }
+                    },
+                    error: function () {
+                        alert("Error de conexión.");
+                    },
+
+                });
+            }
+
+
         },   // callback cuando la cédula es correcta.
         onInvalid: function () {
             if ($("#id_cedula").val().length == 10) {
-                Swal.fire({
-                    type: 'error',
-                    icon: 'warning',
-                    title: "cédula es incorrecta.",
-                    showConfirmButton: false,
-                    timer: 8000
-                });
+                mensajeWarning("cédula es incorrecta.");
 
             }
 
@@ -158,6 +197,61 @@
 
     $("#id_cedula").validarCedulaEC(opciones);
 
+</script>
+
+<script>
+    $(function () {
+        $('#id_username').on('blur', function () {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': 'validar_usuario',
+                    'usuario': $("#id_username").val(),
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        mensajeDanger(data.mensaje)
+                    } else {
+
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        });
+
+        $('#id_email').on('blur', function () {
+            email =$("#id_email").val()
+            if (email.length > 0) {
+
+
+                $.ajax({
+                    type: "GET",
+                    url: `{{ request.path }}`,
+                    dataType: "json",
+                    data: {
+                        'peticion': 'validar_email',
+                        'email': email,
+                    },
+                    success: function (data) {
+                        if (data.respuesta === true) {
+                            mensajeDanger(data.mensaje)
+                        } else {
+
+                        }
+                    },
+                    error: function () {
+                        alert("Error de conexión.");
+                    },
+
+                });
+            }
+        });
+    });
 </script>
 </body>
 </html>

@@ -256,6 +256,7 @@ def registrate(request):
                         apellido2 = form.cleaned_data['apellido2']
                         cedula = form.cleaned_data['cedula']
                         email = form.cleaned_data['email']
+
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
                         usuario = User.objects.create_user(username, '', password)

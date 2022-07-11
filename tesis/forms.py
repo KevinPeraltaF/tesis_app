@@ -53,7 +53,7 @@ class RegistroUsuarioForm(UserCreationForm):
     nombre2 = forms.CharField(label="2do. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
-    cedula = forms.CharField(label="Cédula",max_length=10, widget=forms.TextInput(attrs={'class': 'form-control', }))
+    cedula = forms.CharField(label="Cédula",max_length=10, required=True ,widget=forms.TextInput(attrs={'class': 'form-control', }))
 
 
 

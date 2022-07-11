@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
 from tesis.forms import MetodoCalifcacionForm, DetalleMetodoCalificacionForm, CampoDetalleMetodoCalificacionForm, \
-    ClaseForm, UnirmeClaseForm
+    ClaseForm, UnirmeClaseForm, PersonaForm
 from tesis.funciones import Data_inicial
 from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion, Persona, Clase, \
     ClaseInscrita
@@ -284,6 +284,16 @@ def Configuraciones(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'crear_profesor':
+                try:
+                    form =PersonaForm()
+                    data['form'] = form
+                    data['peticion'] = 'crear_profesor'
+                    template = get_template("profesor/modal/crear_profesor.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
 
             if peticion == 'metodo_calificacion':
                 try:
@@ -311,6 +321,7 @@ def Configuraciones(request):
                     detalle = DetalleMetodoCalificacion.objects.filter(modelo_id=request.GET['id'], status=True)
                     data['padre'] = request.GET['id']
 
+                    paginator = Paginator(detalle, 15)
                     paginator = Paginator(detalle, 15)
                     page_number = request.GET.get('page')
                     page_obj = paginator.get_page(page_number)

@@ -1,0 +1,167 @@
+<input type="hidden" name="peticion" value="{{ peticion }}"/>
+<input type="hidden" name="id" value=""/>
+
+<div class="row-fluid">
+
+    <div class="row">
+        <div class="col">
+            <fieldset class="form-group ">
+                {{ form.nombre1.label_tag }} {{ form.nombre1 }}{{ form.nombre1.errors }}
+                {% if form.nombre1.help_text %}
+                    <small id="help"
+                           class="form-text text-muted">{{ form.nombre1.help_text|safe }}</small> {% endif %}
+
+            </fieldset>
+        </div>
+        <div class="col">
+            <div class="form-group   ">
+                {{ form.nombre2.label_tag }} {{ form.nombre2 }}{{ form.nombre2.errors }}
+                {% if form.nombre2.help_text %}
+                    <small id="help" class="form-text text-muted">{{ form.nombre2.help_text|safe }}</small> {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group   ">
+                {{ form.apellido1.label_tag }} {{ form.apellido1 }}{{ form.apellido1.errors }}
+                {% if form.apellido1.help_text %}
+                    <small id="help"
+                           class="form-text text-muted">{{ form.apellido1.help_text|safe }}</small> {% endif %}
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group  ">
+                {{ form.apellido2.label_tag }} {{ form.apellido2 }}{{ form.apellido2.errors }}
+                {% if form.apellido2.help_text %}
+                    <small id="help"
+                           class="form-text text-muted">{{ form.apellido2.help_text|safe }}</small> {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
+                {% if form.email.help_text %}
+                    <small id="help"
+                           class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
+            </div>
+        </div>
+        <div class="col">
+
+            <div class="form-group">
+                {{ form.cedula.label_tag }} {{ form.cedula }}{{ form.cedula.errors }}
+                {% if form.cedula.help_text %}
+                    <small id="help"
+                           class="form-text text-muted">{{ form.cedula.help_text|safe }}</small> {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row-fluid">
+    <div style="text-align: right; float: left; width: 100%">
+        <button type="submit" id="submit" class="btn btn-success">Guardar
+        </button>
+        <a href="javascript:;" class="btn btn-danger" data-dismiss="modal">
+            Cancelar</a>
+    </div>
+</div>
+
+
+<script>
+    var opciones = {
+        strict: true,              // va a validar siempre, aunque la cantidad de caracteres no sea 10 ni 13
+        events: "change",          // evento que va a disparar la validación
+        the_classes: "invalid",    // clase que se va a agregar al nodo en el que se realiza la validación
+        onValid: function () {
+
+            if ($("#id_cedula").val().length == 10) {
+                $.ajax({
+                    type: "GET",
+                    url: `/registrate/`,
+                    dataType: "json",
+                    data: {
+                        'peticion': 'validar_cedula',
+                        'cedula': $("#id_cedula").val(),
+                    },
+                    success: function (data) {
+                        if (data.respuesta === true) {
+                            mensajeDanger(data.mensaje)
+                        }
+                    },
+                    error: function () {
+                        alert("Error de conexión.");
+                    },
+
+                });
+            }
+
+
+        },   // callback cuando la cédula es correcta.
+        onInvalid: function () {
+            if ($("#id_cedula").val().length == 10) {
+                mensajeWarning("cédula es incorrecta.");
+
+            }
+
+        }  // callback cuando la cédula es incorrecta.
+    };
+
+    $("#id_cedula").validarCedulaEC(opciones);
+</script>
+
+<script>
+
+    function mensajeSuccess(mensaje) {
+        Swal.fire('', mensaje, 'success')
+    }
+
+    function mensajeWarning(mensaje) {
+        Swal.fire('', mensaje, 'warning')
+    }
+
+    function mensajeDanger(mensaje) {
+        Swal.fire('', mensaje, 'error')
+    }
+
+    $(function () {
+
+        $('#id_email').on('blur', function () {
+            email =$("#id_email").val()
+            if (email.length > 0) {
+
+
+                $.ajax({
+                    type: "GET",
+                    url: `/registrate/`,
+                    dataType: "json",
+                    data: {
+                        'peticion': 'validar_email',
+                        'email': email,
+                    },
+                    success: function (data) {
+                        if (data.respuesta === true) {
+                            mensajeDanger(data.mensaje)
+                        } else {
+
+                        }
+                    },
+                    error: function () {
+                        alert("Error de conexión.");
+                    },
+
+                });
+            }
+        });
+    });
+</script>
+
+

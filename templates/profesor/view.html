@@ -37,9 +37,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm">
+            <a href="javascript:;"   id="option_profesor" class="btn btn-primary btn-sm">
                 <i class="fas fa-bars"></i>     AÑADIR
-            </button>
+            </a>
         </div>
     </div>
     <div class="row mt-3">
@@ -134,7 +134,39 @@
 
 {% block script %}
 
+    <script>
+     function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.contenido-modal').html(data.data);
+                        $('#modalGeneric .modal-title').html(titulo);
+                        $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
 
+            });
+        }
+
+        $(function () {
+
+            $("#option_profesor").click(function () {
+                ventana_modal('crear_profesor', '', 'Agregar Profesor');
+            });
+        });
+    </script>
 
 
 {% endblock %}

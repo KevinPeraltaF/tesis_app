@@ -58,6 +58,9 @@
                                            onclick="ventana_modal('subir_tarea','{{ tarea.obtener_tarea.pk }}','Subir tarea')"><i
                                                 class="fas fa-paperclip"></i> Subir archivo</a>
                                     </div>
+                                    <br>
+                                    <small>Solo archivos .pdf</small>
+
                                 {% endif %}
 
                             {% else %}
@@ -169,5 +172,11 @@
             });
         }
     </script>
+
+
+
+
+
+
 {% endblock %}
 

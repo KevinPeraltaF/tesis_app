@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
 </head>
-<body class="hold-transition register-page">
-<div class="register-box">
+<body class="register-page">
+<div class="    ">
     <div class="register-logo">
         <a href="/"><b>Registrate</b>SAYCT</a>
     </div>
@@ -88,30 +88,36 @@
 
 
                 <div class="row">
-                    <div class="form-group ">
+                   <div class="col">
+                        <div class="form-group ">
                         {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
                         {% if form.password1.help_text %}
                             <small id="help"
                                    class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
                     </div>
-                    <div class="form-group">
+                   </div>
+                   <div class="col">
+                        <div class="form-group">
                         {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
                         {% if form.password2.help_text %}
                             <small id="help"
                                    class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
                     </div>
+                   </div>
                 </div>
 
                 <div class="text-center">
                     <button id="enviar_registro_usuario" type="submit"
                             class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Crear cuenta
                     </button>
+                    <br><br>
+                    <a href="{% url 'login' %}" class="text-center">Ya tengo una cuenta, iniciar sesión.</a>
                 </div>
 
             </form>
 
 
-            <a href="{% url 'login' %}" class="text-center">Ya tengo una cuenta, iniciar sesión.</a>
+
         </div>
         <!-- /.form-box -->
     </div><!-- /.card -->

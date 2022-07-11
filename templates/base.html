@@ -122,15 +122,15 @@
         <!-- Brand Logo -->
 
         {% if request.user.is_superuser %}
-             <a href="/" class="brand-link">
-            <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">Gestión de tareas</span>
-        </a>
+            <a href="/" class="brand-link">
+                <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">Gestión de tareas</span>
+            </a>
         {% else %}
             {% for foo in request.user.groups.all %}
-                {% if  foo.pk == 2 %}
-                    <a href="/clase/?peticion=cursos_inscritos" class="brand-link">
+                {% if  foo.pk == 1 %}
+                    <a href="/" class="brand-link">
                         <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT"
                              class="brand-image img-circle elevation-3"
                              style="opacity: .8">
@@ -139,7 +139,7 @@
 
                 {% endif %}
 
-                 {% if foo.pk == 2 %}
+                {% if foo.pk == 2 %}
                     <a href="/clase/?peticion=cursos_inscritos" class="brand-link">
                         <img src="{% static 'dist/img/tarea.png' %}" alt="SayCT"
                              class="brand-image img-circle elevation-3"
@@ -196,23 +196,51 @@
                     {% endif %}
 
 
-
-                    <li class="nav-header">CURSOS IMPARTIDOS</li>
-                    {% for clase in clases %}
+                    {% if request.user.is_superuser %}
+                        <li class="nav-header">CURSOS IMPARTIDOS</li>
+                        {% for clase in clases %}
+                            <li class="nav-item">
+                                <a href="/clase/?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
+                                    <i class="nav-icon fas fa-table"></i>
+                                    <p class="text">{{ clase.nombre }}</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        <li class="nav-header">CURSOS TERMINADOS</li>
                         <li class="nav-item">
-                            <a href="/clase/?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p class="text">{{ clase.nombre }}</p>
+                            <a href="/clase/?peticion=clases_archivadas" class="nav-link">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p class="text">Cursos Finalizados</p>
                             </a>
                         </li>
-                    {% endfor %}
-                    <li class="nav-header">CURSOS TERMINADOS</li>
-                    <li class="nav-item">
-                        <a href="/clase/?peticion=clases_archivadas" class="nav-link">
-                            <i class="nav-icon fas fa-file"></i>
-                            <p class="text">Cursos Finalizados</p>
-                        </a>
-                    </li>
+
+                    {% else %}
+                        {% for foo in request.user.groups.all %}
+                            {% if not foo.pk == 2 %}
+                                <li class="nav-header">CURSOS IMPARTIDOS</li>
+                                {% for clase in clases %}
+                                    <li class="nav-item">
+                                        <a href="/clase/?peticion=ver_clase&id={{ clase.pk }}" class="nav-link">
+                                            <i class="nav-icon fas fa-table"></i>
+                                            <p class="text">{{ clase.nombre }}</p>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                <li class="nav-header">CURSOS ARCHIVADOS</li>
+                                <li class="nav-item">
+                                    <a href="/clase/?peticion=clases_archivadas" class="nav-link">
+                                        <i class="nav-icon fas fa-file"></i>
+                                        <p class="text">Cursos Archivados</p>
+                                    </a>
+                                </li>
+
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
+
+
+
 
                     {% if request.user.is_superuser %}
                         <li class="nav-header">CONFIGURACIONES</li>

@@ -9,7 +9,18 @@
     <div class="row mb-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+               {% if request.user.is_superuser %}
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                {% else %}
+                    {% for foo in request.user.groups.all %}
+                        {% if not foo.pk == 2 %}
+                            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        {% else %}
+                            <li class="breadcrumb-item"><a href="/clase/?peticion=cursos_inscritos">Inicio</a></li>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
                 <li class="breadcrumb-item active" aria-current="page">Cursos archivados</li>
             </ol>
         </nav>
@@ -32,8 +43,6 @@
                                     <i class="fas fa-bars"></i>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a href="#" class="dropdown-item">Copiar enlace de invitación</a>
-                                    <a href="#" class="dropdown-item">Editar</a>
                                     <a href="javascript:;"
                                        onclick="accion_archivar_clase('restaurar_clase','{{ foo | upper }}','{{ foo.pk }}')"
                                        class="dropdown-item">Restaurar</a>
@@ -49,8 +58,9 @@
                         <br><br><br><br><br><br><br><br>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer">
-                        <br><br>
+                     <div class="card-footer text-center ">
+                        <a href="/clase/?peticion=ver_clase&id={{ foo.pk }}" class="small-box-footer">Ir a la clase <i
+                                class="fas fa-arrow-circle-right"></i></a>
                     </div>
                     <!-- /.card-footer-->
                 </div>

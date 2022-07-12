@@ -1,5 +1,6 @@
 <input type="hidden" name="peticion" value="{{ peticion }}"/>
-<input type="hidden" name="id" value=""/>
+<input type="hidden" name="id" value="{{ persona.id }}"/>
+<input type="hidden" id = "es_editar" name="es_editar" value="{{ es_editar }}"/>
 
 <div class="row-fluid">
 
@@ -104,7 +105,6 @@
                 });
             }
 
-
         },   // callback cuando la cédula es correcta.
         onInvalid: function () {
             if ($("#id_cedula").val().length == 10) {
@@ -114,8 +114,9 @@
 
         }  // callback cuando la cédula es incorrecta.
     };
-
-    $("#id_cedula").validarCedulaEC(opciones);
+    if (!$('#es_editar').val() == 'es_editar') {
+        $("#id_cedula").validarCedulaEC(opciones);
+    }
 </script>
 
 <script>
@@ -134,7 +135,8 @@
 
     $(function () {
 
-        $('#id_email').on('blur', function () {
+       if (!$('#es_editar').val()=='es_editar'){
+            $('#id_email').on('blur', function () {
             email =$("#id_email").val()
             if (email.length > 0) {
 
@@ -161,6 +163,7 @@
                 });
             }
         });
+       }
     });
 </script>
 

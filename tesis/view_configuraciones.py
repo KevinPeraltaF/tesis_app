@@ -210,8 +210,8 @@ def Configuraciones(request):
                 try:
                     with transaction.atomic():
                         registro = Persona.objects.get(pk=request.POST['id'])
-                        registro.status = False
-                        registro.save(request)
+                        registro.usuario.delete()
+
                         return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
 
                 except Exception as ex:
@@ -321,6 +321,32 @@ def Configuraciones(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'editar_profesor':
+                try:
+                    form = PersonaForm(request.POST)
+                    form.solo_lec()
+                    persona = Persona.objects.get(pk = request.POST['id'])
+                    if form.is_valid():
+                        nombre1 = form.cleaned_data['nombre1']
+                        nombre2 = form.cleaned_data['nombre2']
+                        apellido1 = form.cleaned_data['apellido1']
+                        apellido2 = form.cleaned_data['apellido2']
+
+
+                        persona.nombre1 = nombre1
+                        persona.nombre2 = nombre2
+                        persona.apellido1 = apellido1
+                        persona.apellido2 = apellido2
+
+
+                        persona.save(request)
+
+                        return redirect('/configuracion/?peticion=profesor')
+                    else:
+                        return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
     else:
         if 'peticion' in request.GET:
@@ -343,6 +369,26 @@ def Configuraciones(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'editar_profesor':
+                try:
+                    persona = Persona.objects.get(pk=request.GET['id'])
+                    form = PersonaForm(initial={
+                        'nombre1': persona.nombre1,
+                        'nombre2': persona.nombre2,
+                        'apellido1': persona.apellido1,
+                        'apellido2': persona.apellido2,
+                        'email': persona.email,
+                        'cedula': persona.cedula
+                    })
+                    form.editar()
+                    data['form'] = form
+                    data['persona'] = persona
+                    data['es_editar'] = 'es_editar'
+                    data['peticion'] = 'editar_profesor'
+                    template = get_template("profesor/modal/crear_profesor.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
 
             if peticion == 'metodo_calificacion':
                 try:
@@ -493,6 +539,7 @@ def Configuraciones(request):
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
+
 
 
 

@@ -6,6 +6,9 @@ from django.forms import DateTimeInput
 
 from tesis.models import MetodoCalificacion, DetalleMetodoCalificacion, CampoDetalleMetodoCalificacion
 
+def campo_solo_lectura(form, campo):
+    form.fields[campo].widget.attrs['readonly'] = True
+    form.fields[campo].widget.attrs['disabled'] = True
 
 class ClaseForm(forms.Form):
     nombre = forms.CharField(label='Nombre del curso ( Obligatorio)', required=False,
@@ -37,7 +40,13 @@ class PersonaForm(forms.Form):
     cedula = forms.CharField(label='Cédula', required=True, max_length=10,
                              widget=forms.TextInput(attrs={'class': ' form-control', }))
 
+    def editar(self):
+        campo_solo_lectura(self, 'email')
+        campo_solo_lectura(self, 'cedula')
 
+    def solo_lec(self):
+        self.fields['email'].required = False
+        self.fields['cedula'].required = False
 
 
 class RegistroUsuarioForm(UserCreationForm):

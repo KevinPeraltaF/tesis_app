@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block content %}
+    <div class="row">
+        <div class="col">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="container mt-3">
+        <div class="row ">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="card card-outline-secondary">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <form class="form" role="form" autocomplete="off" method="post">
+                            <fieldset class="form-group">
+                                {% include "form_snippet.html" %}
+                            </fieldset>
+                            <div class="m-t-20 text-center">
+                                <a type="button" class="btn btn-danger submit-btn" href="javascript:history.back()">Cancelar</a>
+                                <button type="submit" class="btn btn-primary submit-btn">Cambiar Contraseña</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-1">
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    </div>
+
+
+
+
+
+{% endblock %} {% block content_extra_js %} {% endblock content_extra_js %}

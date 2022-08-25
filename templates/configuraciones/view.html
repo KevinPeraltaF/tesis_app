@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 {% if request.user.is_superuser %}
-                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/configuracion">Inicio</a></li>
                 {% else %}
                     {% for foo in request.user.groups.all %}
                         {% if not foo.pk == 2 %}
@@ -33,7 +33,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong> Métodos de califcación</strong></h5>
+                    <h5 class="card-title"><strong> Métodos de calificación</strong></h5>
                     <p class="card-text">Crear y gestionar modelo de calificación.</p><br>
                     <a href="/configuracion/?peticion=metodo_calificacion" class="btn btn-primary">Ingresar al
                         módulo</a>

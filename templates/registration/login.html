@@ -116,10 +116,14 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        if (data.es_estudiante === true){
+                        if (data.es_estudiante === true) {
                             window.location = '/clase/?peticion=cursos_inscritos'
-                        }else{
-                            window.location = '/'
+                        } else {
+                            if (data.super_user === true) {
+                                window.location = '/configuracion/'
+                            } else {
+                                window.location = '/'
+                            }
                         }
 
                     } else {

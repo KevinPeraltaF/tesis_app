@@ -2,6 +2,7 @@ import sys
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.views import PasswordChangeView
 from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseRedirect
@@ -9,10 +10,25 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.template.loader import get_template
+from django.urls import reverse_lazy
 
-from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm
+from tesis.forms import ClaseForm, RegistroUsuarioForm, UnirmeClaseForm, CambiarContraseñaForm
 from tesis.funciones import Data_inicial
 from tesis.models import Clase, Persona, ClaseInscrita
+
+
+# cambiar contraseña
+class PasswordChangeView(PasswordChangeView):
+    template_name = 'registration/cambiarContraseña.html'
+    form_class = CambiarContraseñaForm
+    success_url = reverse_lazy('logout')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['titulo'] = "Cambiar Contraseña"
+        return context
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -195,14 +211,18 @@ def Login(request):
                         if usuario.is_active:
                             login(request, usuario)
                             valor = False
+                            super_user = False
+                            if usuario.is_superuser:
+                                super_user = True
+
                             for foo in usuario.groups.all():
-                                if foo.pk == 2:
-                                    valor =True
-                                else:
-                                    valor = False
+                                if foo:
+                                    if foo.pk == 2:
+                                        valor = True
+                                    else:
+                                        valor = False
 
-
-                            return JsonResponse({"respuesta": True, 'es_estudiante':valor})
+                            return JsonResponse({"respuesta": True, 'es_estudiante': valor, 'super_user': super_user})
                         else:
                             return JsonResponse(
                                 {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})

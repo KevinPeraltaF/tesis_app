@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput
@@ -153,7 +153,8 @@ class CrearVideoForm(FormularioGeneralPublicacion):
 
 
 class SubirTareaForm(forms.Form):
-    archivo= forms.FileField(label='Subir Tarea', required=True, widget=forms.ClearableFileInput(attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf' }))
+    archivo = forms.FileField(label='Subir Tarea', required=True, widget=forms.ClearableFileInput(
+        attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf doc docx'}))
 
 
 
@@ -196,12 +197,22 @@ class MoverTareForm(forms.Form):
                                                  label=u'Campo',
                                                  widget=forms.Select(attrs={'class': 'form-control'}))
 
-
-    def add(self,modelo,detalle,campo):
-        self.fields['detallecalificacion'].queryset =DetalleMetodoCalificacion.objects.filter(status=True,modelo = modelo ).order_by('id')
+    def add(self, modelo, detalle, campo):
+        self.fields['detallecalificacion'].queryset = DetalleMetodoCalificacion.objects.filter(status=True,
+                                                                                               modelo=modelo).order_by(
+            'id')
         self.fields['campo'].queryset = CampoDetalleMetodoCalificacion.objects.filter(status=True,
                                                                                       detallemetodocalificacion=detalle).order_by(
             'id')
         self.fields['metodo'].initial = modelo
         self.fields['detallecalificacion'].initial = detalle
         self.fields['campo'].initial = campo
+
+
+class CambiarContraseñaForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Le añadimos clases CSS a los inputs
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control '

@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 {% if request.user.is_superuser %}
-                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/configuracion">Inicio</a></li>
                 {% else %}
                     {% for foo in request.user.groups.all %}
                         {% if not foo.pk == 2 %}

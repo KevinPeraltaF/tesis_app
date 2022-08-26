@@ -306,7 +306,7 @@ class DetallePublicacionMaterial(ModeloBase):
         ordering = ['id']
 
     def __str__(self):
-        return u'%s - %s' % (self.publicacion)
+        return u'%s' % (self.publicacion)
 
 
 

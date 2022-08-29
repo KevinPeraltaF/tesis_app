@@ -156,14 +156,13 @@ def Ver_Clase(request):
                     if form.is_valid():
                         titulo = form.cleaned_data['titulo']
                         instrucciones = form.cleaned_data['instrucciones']
-                        calificacion_maxima = form.cleaned_data['calificacion_maxima']
+
                         fecha_fin_entrega = form.cleaned_data['fecha_fin_entrega']
 
                         publicacion.titulo = titulo
                         publicacion.instrucciones = instrucciones
                         publicacion.save(request)
 
-                        tarea.calificacion_maxima = calificacion_maxima
                         tarea.fecha_fin_entrega = fecha_fin_entrega
                         tarea.save(request)
 

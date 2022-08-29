@@ -53,6 +53,10 @@
                                 <input class="form-control" placeholder="clave" name="clave" id='id_clave'
                                        type="password">
                             </div>
+                            <div class="form-group text-right">
+                                <a href="{% url 'password_reset' %}">Olvido su contraseña?</a>
+                            </div>
+
 
                             <!-- Change this to a button or input when using this as a form -->
                             <a href="javascript:;" id="id_login_usuario"
@@ -62,7 +66,11 @@
                     </form>
                     <fieldset class="mt-3"><br>
                         <p class="mt-3">
+
+
                             <a href="{% url 'registrate' %}" class="text-center">Registrarme!</a>
+
+
                         </p>
                     </fieldset>
                 </div>

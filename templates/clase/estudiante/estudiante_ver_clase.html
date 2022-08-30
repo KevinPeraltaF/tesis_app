@@ -196,6 +196,15 @@
 
     </script>
 
+    <script>
+        var suma = 0;
+        $('.promedio_segmento').each(function () {
+            suma += parseFloat($(this).val());
+        });
+
+        $('#promediototal').val(suma)
+    </script>
+
 
 
 

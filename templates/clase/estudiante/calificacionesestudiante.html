@@ -14,10 +14,8 @@
                 <th colspan="5">{{ foo.nombre }} <br>
                     NOTA:
                     {% with nota=foo|args:foo|args:request.user|call:"obtener_promedio_por_notas_segmentos" %}
-                        {{ nota }} <input type="hidden" class='promedio' value="{{ nota }}">
+                        {{ nota }} <input type="hidden" class='promedio_segmento' value="{{ nota }}">
                     {% endwith %}
-
-
                 </th>
             </tr>
             {% for foo2 in foo.obtenerCampo %}
@@ -76,7 +74,8 @@
         <tr>
             <td colspan="5" class="table-active">PROMEDIO TOTAL:
 
-                <span class="badge badge-sm bg-gradient-blue"><input type="text" id="promediototal"> </span>
+                <span class="badge badge-sm bg-gradient-blue"><input type="text" class="form-control" id="promediototal"
+                                                                     disabled readonly> </span>
 
             </td>
         </tr>
@@ -85,8 +84,3 @@
     <br><br><br>
 </div>  <br><br><br>
 
-
-<script>
-
-
-</script>

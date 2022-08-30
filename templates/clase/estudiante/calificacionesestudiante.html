@@ -11,10 +11,12 @@
         </tr>
         {% for foo in detalle %}
             <tr class="table-info">
-                <th colspan="5">{{ foo.nombre }}:
+                <th colspan="5">{{ foo.nombre }} <br>
+                    NOTA:
                     {% with nota=foo|args:foo|args:request.user|call:"obtener_promedio_por_notas_segmentos" %}
-                        {{ nota }}
+                        {{ nota }} <input type="hidden" class='promedio' value="{{ nota }}">
                     {% endwith %}
+
 
                 </th>
             </tr>
@@ -74,7 +76,7 @@
         <tr>
             <td colspan="5" class="table-active">PROMEDIO TOTAL:
 
-                <span class="badge badge-sm bg-gradient-blue">100 </span>
+                <span class="badge badge-sm bg-gradient-blue"><input type="text" id="promediototal"> </span>
 
             </td>
         </tr>
@@ -82,3 +84,9 @@
     </table>
     <br><br><br>
 </div>  <br><br><br>
+
+
+<script>
+
+
+</script>

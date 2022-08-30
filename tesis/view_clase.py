@@ -74,12 +74,16 @@ def Ver_Clase(request):
                         if Clase.objects.filter(codigo_clase=codigo_clase).exists():
                             clase = Clase.objects.get(codigo_clase=codigo_clase)
                             if not clase.usuario_creacion == usuario:
-                                clase_inscrita = ClaseInscrita(
-                                    usuario=usuario,
-                                    clase=clase,
+                                if not ClaseInscrita.objects.filter(clase=clase, usuario=usuario).exists():
+                                    clase_inscrita = ClaseInscrita(
+                                        usuario=usuario,
+                                        clase=clase,
 
-                                )
-                                clase_inscrita.save(request)
+                                    )
+                                    clase_inscrita.save(request)
+                                else:
+                                    return JsonResponse(
+                                        {"respuesta": False, "mensaje": "Ya se encuentra registrado en este curso."})
 
                             return redirect('/clase/?peticion=estudiante_ver_clase&id=%s' % clase.pk)
                         else:

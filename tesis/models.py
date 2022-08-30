@@ -78,16 +78,14 @@ class DetalleMetodoCalificacion(ModeloBase):
     def obtener_promedio_por_notas_segmentos(self, segmento, usuario):
         suma_segmento = 0
         promedio_segmento = 0
-        campos = tareaEstudiante.objects.filter(status=True,
-                                                tarea__campoubicacionNota__detallemetodocalificacion=segmento,
-                                                estudiante=usuario)
+        campos = self
         contador_campos = 0
-        for c in campos:
+        for c in campos.obtenerCampo():
             promedio_campo = 0
-            nota = tareaEstudiante.objects.filter(status=True, tarea__campoubicacionNota=c.tarea.campoubicacionNota,
+            nota = tareaEstudiante.objects.filter(status=True, tarea__campoubicacionNota=c,
                                                   estudiante=usuario).aggregate(Sum('calificacion'))
             cantidad = DetallePublicacionTarea.objects.filter(status=True,
-                                                              campoubicacionNota=c.tarea.campoubicacionNota).count()
+                                                              campoubicacionNota=c).count()
             if nota['calificacion__sum'] is None:
                 promedio_campo = 0
             else:

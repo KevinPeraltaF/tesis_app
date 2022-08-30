@@ -14,7 +14,7 @@
                 <th colspan="5">{{ foo.nombre }} <br>
                     NOTA:
                     {% with nota=foo|args:foo|args:request.user|call:"obtener_promedio_por_notas_segmentos" %}
-                        {{ nota }} <input type="hidden" class='promedio_segmento' value="{{ nota }}">
+                        {{ nota|floatformat:2}} <input type="hidden" class='promedio_segmento' value="{{ nota }}">
                     {% endwith %}
                 </th>
             </tr>
@@ -53,9 +53,9 @@
 
                     <span class="badge badge-sm bg-gradient-blue">
                           {% with promedio=foo2|args:foo2|args:request.user|call:"obtener_promedio_nota_campos" %}
-                              {{ promedio }}
+                              {{ promedio |floatformat:2}}
                               <input type="hidden" name="" class="promedio_parcial_{{ foo.id }}"
-                                     value=" {{ promedio }}">
+                                     value=" {{ promedio|floatformat:2 }}">
                           {% endwith %}
 
                       </span>

@@ -154,7 +154,7 @@ class CrearVideoForm(FormularioGeneralPublicacion):
 
 class SubirTareaForm(forms.Form):
     archivo = forms.FileField(label='Subir Tarea', required=True, widget=forms.ClearableFileInput(
-        attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf doc docx'}))
+        attrs={'class': 'dropify', 'data-allowed-file-extensions': 'pdf doc docx pptx ppt'}))
 
 
 

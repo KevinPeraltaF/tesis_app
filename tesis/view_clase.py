@@ -314,6 +314,13 @@ def Ver_Clase(request):
                         registro = Publicacion.objects.get(pk=request.POST['id'])
                         registro.status = False
                         registro.save(request)
+
+                        if registro.tipo_publicacion == 1:  # tarea
+                            detalle_tarea = registro.obtener_tarea()
+                            if detalle_tarea:
+                                detalle_tarea.status = False
+                                detalle_tarea.save(request)
+
                         return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
 
                 except Exception as ex:

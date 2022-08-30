@@ -67,7 +67,7 @@ class DetalleMetodoCalificacion(ModeloBase):
         ordering = ['id']
 
     def __str__(self):
-        return '%s - %s' % (self.nombre,self.nota_aprobacion)
+        return '%s - %s' % (self.nombre, self.nota_aprobacion)
 
     def en_uso(self):
         return self.campodetallemetodocalificacion_set.filter(status=True).exists()
@@ -75,6 +75,33 @@ class DetalleMetodoCalificacion(ModeloBase):
     def obtenerCampo(self):
         return self.campodetallemetodocalificacion_set.filter(status=True)
 
+    def obtener_promedio_por_notas_segmentos(self, segmento, usuario):
+        suma_segmento = 0
+        promedio_segmento = 0
+        campos = tareaEstudiante.objects.filter(status=True,
+                                                tarea__campoubicacionNota__detallemetodocalificacion=segmento,
+                                                estudiante=usuario)
+        contador_campos = 0
+        for c in campos:
+            promedio_campo = 0
+            nota = tareaEstudiante.objects.filter(status=True, tarea__campoubicacionNota=c.tarea.campoubicacionNota,
+                                                  estudiante=usuario).aggregate(Sum('calificacion'))
+            cantidad = DetallePublicacionTarea.objects.filter(status=True,
+                                                              campoubicacionNota=c.tarea.campoubicacionNota).count()
+            if nota['calificacion__sum'] is None:
+                promedio_campo = 0
+            else:
+                nota = nota['calificacion__sum']
+                promedio_campo = nota / cantidad
+            contador_campos = contador_campos + 1
+            suma_segmento = suma_segmento + promedio_campo
+
+        if not contador_campos == 0:
+            promedio_segmento = suma_segmento / contador_campos
+        else:
+            promedio_segmento = 0
+
+        return promedio_segmento
 
 class CampoDetalleMetodoCalificacion(ModeloBase):
     detallemetodocalificacion = models.ForeignKey(DetalleMetodoCalificacion, verbose_name="Metodo calificaciñon",
@@ -114,6 +141,7 @@ class CampoDetalleMetodoCalificacion(ModeloBase):
             promedio = nota / cantidad
 
         return promedio
+
 
 class Clase(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre de la clase", max_length=100)

@@ -11,7 +11,12 @@
         </tr>
         {% for foo in detalle %}
             <tr class="table-info">
-                <th colspan="5">{{ foo.nombre }}</th>
+                <th colspan="5">{{ foo.nombre }}:
+                    {% with nota=foo|args:foo|args:request.user|call:"obtener_promedio_por_notas_segmentos" %}
+                        {{ nota }}
+                    {% endwith %}
+
+                </th>
             </tr>
             {% for foo2 in foo.obtenerCampo %}
                 <tr class="table-warning">
@@ -45,14 +50,6 @@
                     {% endfor %}
                 </tr>
                 <td colspan="5" class="table-active">NOTA {{ foo2.nombre }} :
-                    {#                  {% with nota=foo2|args:foo2|args:request.user|call:"obtener_total_nota_campos" %}#}
-                    {#                        {{ nota }}#}
-                    {#                    {% endwith %}#}
-                    {#                    /#}
-                    {#                    {% with cantidad=foo2|args:foo2|call:"obtener_cantiad_de_tarea" %}#}
-                    {#                        {{ cantidad }}#}
-                    {#                    {% endwith %}#}
-                    {#                    =#}
 
                     <span class="badge badge-sm bg-gradient-blue">
                           {% with promedio=foo2|args:foo2|args:request.user|call:"obtener_promedio_nota_campos" %}
@@ -74,6 +71,13 @@
 
 
         {% endfor %}
+        <tr>
+            <td colspan="5" class="table-active">PROMEDIO TOTAL:
+
+                <span class="badge badge-sm bg-gradient-blue">100 </span>
+
+            </td>
+        </tr>
 
     </table>
     <br><br><br>
